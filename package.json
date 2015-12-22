@@ -1,14 +1,18 @@
 {
-  "name"         : "node-todo",
+  "name"         : "node-troublshooting",
   "version"      : "0.0.0",
-  "description"  : "Simple todo application.",
+  "description"  : "Troubleshooting application",
   "main"         : "server.js",
-  "author"       : "Scotch",
+  "author"       : "Vello Vaherpuu",
   "dependencies" : {
     "express"         : "~4.6.1",
     "mongoose"        : "~3.8.13",
     "morgan"          : "~1.1.1",
     "body-parser"     : "~1.4.3",
-    "method-override" : "~2.1.1"
+    "method-override" : "~2.1.1",
+    "bcrypt"          : "*",
+    "moment"          : "2.10.3",
+    "jsonwebtoken"    : "~0.4.0"
+
   }
 }

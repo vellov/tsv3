@@ -8,11 +8,7 @@ userModule.controller('userController', ['$scope','$http','userService', functio
     // GET =====================================================================
     // when landing on the page, get all todos and show them
     // use the service to get all the todos
-    userService.get()
-        .success(function(data) {
-            $scope.users = data;
-            $scope.loading = false;
-        });
+
 
     // CREATE ==================================================================
     // when submitting the add form, send the text to the node API

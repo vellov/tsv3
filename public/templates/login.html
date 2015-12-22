@@ -1,0 +1,18 @@
+<div>
+    <form name="loginForm" class="form-signin" novalidate ng-submit="loginForm.$valid && login()" ng-if="viewData.showLogin">
+        <h2 class="form-signin-heading">Palun logi sisse</h2>
+        <input type="text" ng-model="loginData.username" class="form-control" placeholder="Kasutajanimi" required autofocus>
+        <input type="password" ng-model="loginData.password" class="form-control" placeholder="Parool" required>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Logi sisse</button>
+        <button class="btn btn-lg btn-primary btn-block" type="button" ng-click="showRegisterView()">Uus kasutaja</button>
+    </form>
+
+    <form name="registerForm" class="form-signin" novalidate ng-submit="registerForm.$valid && register()" ng-if="viewData.showRegister">
+        <h2 class="form-signin-heading">Registreerimine</h2>
+        <input type="text" ng-model="registerData.username" class="form-control" placeholder="Kasutajanimi" required autofocus>
+        <input type="password" ng-model="registerData.password" class="form-control" placeholder="Parool" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Registreeri</button>
+        <button class="btn btn-lg btn-default btn-block" type="button" ng-click="showLoginView()">Tagasi</button>
+    </form>
+</div>
