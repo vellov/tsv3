@@ -1,11 +1,12 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("adminController", ["$scope", "userService","projectService", "$state", function($scope, userService, projectService, $state){
+app.controller("adminController", ["$scope", "userService","projectService", "$state", "$location", function($scope, userService, projectService, $state, $location){
     $scope.currentUser = userService.getCurrentUser();
     $scope.projectData = { };
     $scope.viewData = { };
     $scope.projects = [];
     $scope.showForm = false;
+    $scope.$location = $location;
     $scope.logout = function(){
         userService.logout();
     };
