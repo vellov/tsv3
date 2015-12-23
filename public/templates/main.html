@@ -1,41 +1,14 @@
-
-<!-- HEADER AND TODO COUNT -->
-<div class="jumbotron text-center">
-    <h1>I'm a Todo-aholic234 <span class="label label-info">{{ todos.length }}</span></h1>
-</div>
-
-<!-- TODO LIST -->
-<div id="todo-list" class="row">
-    <div class="col-sm-4 col-sm-offset-4">
-
-
-
-        <!-- LOOP OVER THE TODOS IN $scope.todos -->
-        <div class="checkbox" ng-repeat="user in users">
-            <label>
-                <input type="checkbox" ng-click="deleteUser(user._id)"> {{ user.text }}
-            </label>
+<div class="panel panel-default panel-custom">
+    <div class="panel-heading">{{view.title}}</div>
+    <div class="panel-body text-center">
+        <p ng-bind-html="view.content"></p>
+        <div ng-if="currentViewChilds.length > 1" ng-repeat="child in currentViewChilds">
+            <a href class="btn btn-primary w200 m-t-s" ng-click="setItemActive(child)">{{child.title}}</a>
         </div>
-
-        <p class="text-center" ng-show="loading">
-            <span class="fa fa-spinner fa-spin fa-3x"></span>
-        </p>
-
     </div>
-</div>
 
-<!-- FORM TO CREATE TODOS -->
-<div id="todo-form" class="row">
-    <div class="col-sm-8 col-sm-offset-2 text-center">
-        <form>
-            <div class="form-group">
-
-                <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-                <input type="text" class="form-control input-lg text-center" placeholder="I want to buy a puppy that will love me forever" ng-model="formData.text">
-            </div>
-
-            <!-- createToDo() WILL CREATE NEW TODOS -->
-            <button type="submit" class="btn btn-primary btn-lg" ng-click="createUser()">Add</button>
-        </form>
+    <div class="panel-footer" ng-if="breadCrumbs.length || currentViewChilds.length == 1">
+        <a href ng-click="activatePreviousItem()" ng-if="breadCrumbs.length"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
+        <a href class="m-left-10" ng-click="setItemActive(child)" ng-repeat="child in currentViewChilds" ng-if="currentViewChilds.length == 1">Edasi <i class="glyphicon glyphicon-arrow-right"></i></a>
     </div>
 </div>

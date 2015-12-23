@@ -37,7 +37,26 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             url: "/admin/:projectId",
             controller:"projectController",
             templateUrl: "templates/projectEdit.html",
-            access: { requiredLogin: true }
+            access: { requiredLogin: true },
+            resolve: {
+                project: function($stateParams, projectService){
+                    return projectService.getProjectById($stateParams.projectId).then(function(d){return d.data;});
+                },
+                questions: function($stateParams, projectService){
+                    return projectService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
+                }
+            }
+        })
+        .state("troubleshoot",{
+            url:"/ts/:projectId",
+            controller: "questionViewController",
+            templateUrl: "templates/main.html",
+            access: { requiredLogin: false},
+            resolve: {
+                questions: function($stateParams, projectService){
+                    return projectService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
+                }
+            }
         });
 
 

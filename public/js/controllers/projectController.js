@@ -1,38 +1,51 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("projectController", ["$scope","projectService","$stateParams", "userService", function($scope, projectService, $stateParams, userService){
+app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", function($scope, projectService, userService, project, questions){
     $scope.currentUser = userService.getCurrentUser();
+    $scope.project = project;
+    $scope.questions = questions;
     $scope.projectEditData = { };
-    $scope.questions = [];
-
+    $scope.showForm = false;
     $scope.editorOptions = {
     };
 
-    projectService.getProjectQuestions($stateParams.projectId).then(function(d){
-        $scope.questions = d.data;
-        console.log($scope.questions);
-    });
-
     $scope.saveQuestion = function(){
-        var data = angular.extend({projectId: $stateParams.projectId}, $scope.projectEditData);
+        var data = angular.extend({projectId: project._id}, $scope.projectEditData);
         projectService.saveQuestion(data).then(function(d){
-            $scope.questions.push(d.data);
+            if(data._id){
+                $scope.questions = d.data;
+            } else {
+                $scope.questions.push(d.data);
+            }
             $scope.projectEditData = { };
-            console.log($scope.questions);
-
+            $scope.showForm = false;
         })
     };
 
     $scope.add = function(id){
+        $scope.projectEditData = { };
+        $scope.showForm = true;
         $scope.projectEditData.parentId = id;
     };
 
+    $scope.delete = function(question){
+       if(question._confirmDelete){
+           projectService.deleteQuestion(question._id).then(function(d){
+               $scope.questions = d.data;
+           })
+       } else {
+           question._confirmDelete = true;
+       }
+    };
+
+    $scope.edit = function(question){
+        $scope.projectEditData = angular.copy(question);
+        $scope.showForm = true;
+    };
 
 
     $scope.logout = function(){
         userService.logout();
     };
-
-
 
 }]);

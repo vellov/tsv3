@@ -1,9 +1,11 @@
 <script type="text/ng-template"  id="tree_item_renderer.html">
-    {{data.title}}
-    <a href ng-click="add(data._id)"><i class="glyphicon glyphicon-plus"></i></a>
-    <a href ng-click="delete(data._id)"><i class="glyphicon glyphicon-minus"></i></a>
-    <ul>
-        <li ng-repeat="data in viewData.questions | filter: {parentId: data._id}" ng-include="'tree_item_renderer.html'"></li>
+   <a href ng-click="edit(data)">{{data.title}}</a>
+   <a href ng-click="add(data._id)"><i class="glyphicon glyphicon-plus"></i></a>
+    <a href ng-click="delete(data)" ng-if="!data._confirmDelete && data.parentId"><i class="glyphicon glyphicon-minus"></i></a>
+   <a href ng-click="delete(data)" ng-if="data._confirmDelete" class="confirm"><i class="glyphicon glyphicon-minus"></i></a>
+
+   <ul class="list-unstyled">
+        <li class="m-left-20" ng-repeat="data in questions | filter:{parentId:data._id}:true" ng-include="'tree_item_renderer.html'"></li>
     </ul>
 </script>
 
@@ -15,17 +17,26 @@
     </div>
 
     <div class="col-md-4">
-        <ul>
-            <li ng-repeat="data in questions | filter: {parentId: ''}" ng-include="'tree_item_renderer.html'"></li>
+        <h5><a target="_blank" ui-sref="troubleshoot({projectId:project._id})">Eelvaade</a> </h5>
+        <h5>Küsimustik: {{project.projectName}}</h5>
+        <div ng-if="questions.length == 0">
+            <a href ng-click="add()">Lisa esimene küsimus <i class="glyphicon glyphicon-plus"></i></a>
+        </div>
+        <ul class="list-unstyled">
+            <li ng-repeat="data in questions | filter: {parentId: ''}:true" ng-include="'tree_item_renderer.html'"></li>
         </ul>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" ng-if="showForm">
         <form novalidate name="projectEditForm" ng-submit="projectEditForm.$valid && saveQuestion()">
-            <label>Küsimuse pealkiri:</label>
-            <input type="text" ng-model="projectEditData.title">
-            <textarea ckeditor="editorOptions" ng-model="projectEditData.content"></textarea>
+            <div class="form-group">
+                <label>Küsimuse pealkiri:</label>
+                <input type="text" class="form-control" ng-model="projectEditData.title">
+            </div>
+            <div class="form-group">
+                <label>Vaate sisu</label>
+                <textarea ckeditor="editorOptions" ng-model="projectEditData.content"></textarea>
+            </div>
             <button class="btn btn-primary" type="submit">Salvesta</button>
         </form>
     </div>
-
 </div>

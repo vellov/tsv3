@@ -29,6 +29,40 @@ function getUser(res, id){
         });
     });
 }
+function findQuestiosnByProject(userId, projectId, callback){
+    Question.find({creatorUserId:userId, projectId:projectId}, callback);
+}
+function deleteQuestionChildren(question, doneCallback){
+
+    var findChildren  = function(parentId, callback){
+        Question.find({parentId: parentId}, callback);
+    };
+
+    var deleteChild = function(id, callback){
+        Question.findByIdAndRemove(id, callback)
+    };
+
+    var count = 0;
+    var deleteChildren = function(parentId) {
+        findChildren(parentId, function (err, children)  {
+            count += children.length;
+            for (var i in children) {
+                deleteChildren(children[i]._id); // delete children
+                deleteChild(children[i]._id, function (err, child) { //delete itself
+                    count--;
+                    if(count == 0){
+                        doneCallback();
+                    }
+                })
+            }
+        })
+    };
+
+    findChildren(question._id, function(err, childs){
+        if(childs.length > 0) deleteChildren(question._id);
+        else doneCallback();
+    });
+}
 
 module.exports = function(app) {
 
@@ -91,12 +125,20 @@ module.exports = function(app) {
     });
 
     app.get('/api/projects', function(req, res){
-        verifyToken(req.headers.authorization, function(err,decoded){
+        verifyToken(req.headers.authorization, function(err, decoded){
             Project.find({creatorUserId:decoded._id},function(err, projects) {
                 if (err)
                     res.send(err)
                 res.json(projects); // return all currentuser projects in JSON format
             });
+        });
+    });
+
+    app.get('/api/projects/:projectId', function(req, res){
+        Project.findOne({_id:req.params.projectId},function(err, project) {
+            if (err)
+                res.send(err);
+            res.json(project); // return all currentuser projects in JSON format
         });
     });
 
@@ -121,12 +163,10 @@ module.exports = function(app) {
     });
 
     app.get('/api/questions/:projectId', function(req, res){
-        verifyToken(req.headers.authorization, function(err,decoded){
-            Question.find({creatorUserId:decoded._id, projectId:req.params.projectId},function(err, questions) {
-                if (err)
-                    res.send(err)
-                res.json(questions); // return all currentuser projects in JSON format
-            });
+        Question.find({projectId:req.params.projectId},function(err, questions) {
+            if (err)
+                res.send(err)
+            res.json(questions); // return all currentuser projects in JSON format
         });
     });
 
@@ -135,25 +175,62 @@ module.exports = function(app) {
             if(err){
                 res.status(400).send("Something bad happened, contact with support");
             } else {
-                console.log(req.body);
-                Question.create({
-                    creatorUserId: decoded._id,
-                    projectId: req.body.projectId,
-                    title: req.body.title,
-                    content:req.body.content,
-                    parentId:req.body.parentId
-                }, function(error, result){
-                    if(error){
-                        res.send(error);
-                    } else {
-                        res.json(result);
-                    }
+                if(req.body._id){
+                    Question.update({_id:req.body._id},{
+                        title: req.body.title,
+                        content:req.body.content,
+                    }, function(error, result){
+                        if(error){
+                            res.send(error);
+                        } else {
+                            findQuestiosnByProject(decoded._id, req.body.projectId, function(err, questions) {
+                                if (err)
+                                    res.send(err);
+                                res.json(questions);
+                            });
+                        }
 
-                })
+                    });
+                }
+                else {
+                    Question.create({
+                        creatorUserId: decoded._id,
+                        projectId: req.body.projectId,
+                        title: req.body.title,
+                        content:req.body.content,
+                        parentId:req.body.parentId ? req.body.parentId : ""
+                    }, function(error, result){
+                        if(error){
+                            res.send(error);
+                        } else {
+                            res.json(result);
+                        }
+
+                    });
+                }
+
             }
         });
     });
 
+    app.delete('/api/questions/delete/:id', function(req, res){
+        verifyToken(req.headers.authorization, function(err, decoded){
+            if(err){
+                res.status(400).send("Something bad happened, contact with support");
+            } else {
+                Question.findByIdAndRemove(req.params.id, function(err, obj){
+                    deleteQuestionChildren(obj, function(){
+                        findQuestiosnByProject(decoded._id, obj.projectId, function(err, questions) {
+                            if (err)
+                                res.send(err);
+                            res.json(questions);
+                        });
+                    });
+                });
+
+            }
+        });
+    });
 
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {
