@@ -1,4 +1,4 @@
-<div class="panel panel-default panel-custom">
+<div class="panel panel-info panel-custom">
     <div class="panel-heading">{{view.title}}</div>
     <div class="panel-body text-center">
         <p ng-bind-html="view.content"></p>
@@ -7,8 +7,13 @@
         </div>
     </div>
 
-    <div class="panel-footer" ng-if="breadCrumbs.length || currentViewChilds.length == 1">
-        <a href ng-click="activatePreviousItem()" ng-if="breadCrumbs.length"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
-        <a href class="m-left-10" ng-click="setItemActive(child)" ng-repeat="child in currentViewChilds" ng-if="currentViewChilds.length == 1">Edasi <i class="glyphicon glyphicon-arrow-right"></i></a>
+    <div class="panel-footer">
+        <div class="pull-left">
+            <a href ng-click="activatePreviousItem()" ng-if="breadCrumbs.length"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
+            <a href class="m-left-10" ng-click="setItemActive(child)" ng-repeat="child in currentViewChilds" ng-if="currentViewChilds.length == 1">Edasi <i class="glyphicon glyphicon-arrow-right"></i></a>
+        </div>
+        <div class="pull-right">
+            <span class="text-muted">&#169; Vello Vaherpuu 2015, Tartu Ülikool</span>
+        </div>
     </div>
 </div>
