@@ -12,6 +12,8 @@
         <h2 class="form-signin-heading">Registreerimine</h2>
         <input type="text" ng-model="registerData.username" class="form-control" placeholder="Kasutajanimi" required autofocus>
         <input type="password" ng-model="registerData.password" class="form-control" placeholder="Parool" required>
+        <input type="text" ng-model="registerData.firstname" class="form-control" placeholder="Eesnimi" required>
+        <input type="text" ng-model="registerData.lastname" class="form-control" placeholder="Perekonnanimi" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Registreeri</button>
         <button class="btn btn-lg btn-default btn-block" type="button" ng-click="showLoginView()">Tagasi</button>
     </form>

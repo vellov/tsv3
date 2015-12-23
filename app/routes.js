@@ -105,7 +105,7 @@ module.exports = function(app) {
                 res.status(400).send(e);
             } else{
                 var token = jwt.sign(o, config.secretToken, { expiresInMinutes: 60 });
-                res.json({token:token, user:{id: o._id, username: o.username}});
+                res.json({token:token, user:{id: o._id, username: o.username, firstname: o.firstname, lastname: o.lastname}});
             }
         });
     });
@@ -113,13 +113,15 @@ module.exports = function(app) {
     app.post("/api/users/registerUser", function(req, res) {
         AM.addNewAccount({
             username: req.body.username,
-            password: req.body.password
+            password: req.body.password,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname
         }, function(e,o){
             if (e){
                 res.status(400).send(e);
             }	else{
                 var token = jwt.sign(o, config.secretToken, { expiresInMinutes: 60 });
-                res.json({token:token, user:{id: o._id, username: o.username}});
+                res.json({token:token, user:{id: o._id, username: o.username, firstname: o.firstname, lastname: o.lastname}});
             }
         });
     });
