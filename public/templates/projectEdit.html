@@ -20,7 +20,6 @@
     <div class="col-md-4">
         <h5><a target="_blank" ui-sref="troubleshoot({projectId:project._id})">Eelvaade</a> </h5>
         <h5>Küsimustik: {{project.projectName}}</h5>
-        <div class="m-b-s"><label>Jagamise link:</label> {{$location.protocol()}}://{{$location.host()}}/#/ts/{{project._id}}</div>
 
         <div ng-if="questions.length == 0">
             <a href ng-click="add()">Lisa esimene küsimus <i class="glyphicon glyphicon-plus"></i></a>

@@ -7,6 +7,7 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
     $scope.projects = [];
     $scope.showForm = false;
     $scope.$location = $location;
+    $scope.$state = $state;
     $scope.logout = function(){
         userService.logout();
     };
@@ -20,7 +21,9 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
             $state.go("project", {projectId: d.data._id})
         });
     };
-
+    $scope.toLink = function(projectId){
+        return $location.protocol() + "://" +$location.host() + $state.href("troubleshoot",{projectId:projectId});
+    };
     $scope.toggleForm = function(){
         $scope.viewData.showForm = !$scope.viewData.showForm;
     }

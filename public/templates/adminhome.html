@@ -8,7 +8,7 @@
     <div class="col-md-6">
         <label>Minu vea tulistamised</label>
         <div  ng-repeat="project in projects">
-            <a ui-sref="project({projectId: project._id})">{{project.projectName}}</a> {{$location.protocol()}}://{{$location.host()}}/#/ts/{{project._id}}
+            <a ui-sref="project({projectId: project._id})">{{project.projectName}}</a> - <a href target="_blank" ui-sref="troubleshoot({projectId:project._id})">{{toLink(project._id)}}</a>
         </div>
     </div>
 
