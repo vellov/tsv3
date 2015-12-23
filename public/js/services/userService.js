@@ -21,7 +21,7 @@ userModule.factory('userService', ['$http', "$window", "AuthenticationService", 
                 $window.sessionStorage.token = d.data.token;
                 $window.sessionStorage.currentUser = JSON.stringify(d.data.user);
                 AuthenticationService.isAuthenticated = true;
-                $state.go("adminhome");
+                $state.go("admin");
             },function(e){
                 console.log(e);
             });
@@ -36,6 +36,10 @@ userModule.factory('userService', ['$http', "$window", "AuthenticationService", 
 
         register: function(formData){
             return $http.post('/api/users/registerUser', formData).then(function(d){
+                $window.sessionStorage.token = d.data.token;
+                $window.sessionStorage.currentUser = JSON.stringify(d.data.user);
+                AuthenticationService.isAuthenticated = true;
+                $state.go("admin");
             },function(e){
                 if(e.data == "username-taken"){
                     alert("Kasutajanimi juba olemas");

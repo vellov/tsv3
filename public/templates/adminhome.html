@@ -3,4 +3,14 @@
         <h5>Tere {{currentUser.username}}</h5>
         <button class="btn btn-default" ng-click="logout()">Logi välja</button>
     </div>
+
+    <form novalidate name="projectForm" ng-submit="projectForm.$valid && saveProject()">
+        <label>Küsimustiku nimi:</label>
+        <input type="text" ng-model="projectData.projectName">
+        <button class="btn btn-primary" type="submit">Salvesta</button>
+    </form>
+
+    <div ng-repeat="project in projects">
+        <a ui-sref="project({projectId: project._id})">{{project.projectName}}</a>
+    </div>
 </div>

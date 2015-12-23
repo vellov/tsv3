@@ -2,7 +2,8 @@ var appModule = angular.module('troubleshooting', [
     "ui.router",
     "ui.bootstrap",
     "ngSanitize",
-    "userModule"
+    "userModule",
+    "ngCkeditor"
 ]);
 appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
     //
@@ -26,10 +27,16 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             }
         })
 
-        .state("adminhome", {
-            url: "/adminhome",
+        .state("admin", {
+            url: "/admin",
             templateUrl: "templates/adminhome.html",
             controller: "adminController",
+            access: { requiredLogin: true }
+        })
+        .state("project",{
+            url: "/admin/:projectId",
+            controller:"projectController",
+            templateUrl: "templates/projectEdit.html",
             access: { requiredLogin: true }
         });
 
@@ -47,7 +54,7 @@ appModule.run(function($rootScope, $state, AuthenticationService, $window) {
         // auto redirect if logged in.
         if(nextRoute != null && nextRoute.access.redirect && AuthenticationService.isAuthenticated && $window.sessionStorage.token){
             event.preventDefault();
-            $state.go("adminhome");
+            $state.go("admin");
         }
     });
 });
