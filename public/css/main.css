@@ -1,0 +1,120 @@
+.ng-submitted .ng-invalid {
+  border: 1px solid red;
+}
+.nopadding {
+  padding: 0;
+}
+.w170 {
+  width: 170px !important;
+}
+.w200 {
+  width: 200px !important;
+}
+.w100p {
+  width: 100%;
+}
+.min-width-230 {
+  min-width: 230px;
+}
+.w70 {
+  width: 70px;
+}
+.min-height-150 {
+  min-height: 150px;
+}
+/* Margins*/
+.nomargin {
+  margin: 0 !important;
+}
+.m-t-xl {
+  margin-top: 50px;
+}
+.m-b-xl {
+  margin-bottom: 50px;
+}
+.m-l {
+  margin: 30px 0;
+}
+.m-t-l {
+  margin-top: 30px;
+}
+.m-b-l {
+  margin-bottom: 30px;
+}
+.m-t-m {
+  margin-top: 20px;
+}
+.m-b-m {
+  margin-bottom: 20px;
+}
+.m-t-s {
+  margin-top: 10px;
+}
+.m-b-s {
+  margin-bottom: 10px;
+}
+.m-left-5 {
+  margin-left: 5px;
+}
+.m-left-10 {
+  margin-left: 10px;
+}
+.m-left-20 {
+  margin-left: 20px;
+}
+.m-t-none {
+  margin-top: 0;
+}
+.margin-bottom-none {
+  margin-bottom: 0 !important;
+}
+.clickable {
+  cursor: pointer;
+}
+.icon-color {
+  color: #ccc;
+}
+.counter-margin-26 {
+  margin-top: -26px;
+}
+.padding-sides-100 {
+  padding-left: 100px;
+  padding-right: 100px;
+}
+.confirm i {
+  color: red!important;
+}
+.panel-custom {
+  max-width: 700px;
+  margin: 100px auto 0 auto;
+}
+.panel-custom .panel-footer {
+  background-color: #ffffff;
+  min-height: 41px;
+}
+.list-group {
+  margin-bottom: 0;
+}
+.list-group:last-child {
+  margin-bottom: -1px;
+}
+.list-group .list-group-item:hover {
+  background-color: #f2f2f2;
+}
+.list-group .list-group-item.active:hover {
+  background-color: #357ebd;
+}
+.list-group .list-group-item.active i {
+  color: #ffffff;
+}
+.list-group .list-group-item.adding {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+  color: white;
+}
+.list-group .list-group-item.adding:hover {
+  background-color: #4cae4c;
+}
+.list-group .list-group-item.adding i {
+  color: #ffffff;
+}
