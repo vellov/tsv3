@@ -1,6 +1,6 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", function($scope, projectService, userService, project, questions){
+app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", "$location", function($scope, projectService, userService, project, questions, $location){
     $scope.currentUser = userService.getCurrentUser();
     $scope.project = project;
     $scope.questions = questions;
@@ -8,6 +8,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     $scope.showForm = false;
     $scope.editorOptions = {};
     $scope.viewData = {};
+    $scope.$location = $location;
     $scope.saveQuestion = function(){
         var data = angular.extend({projectId: project._id}, $scope.projectEditData);
         projectService.saveQuestion(data).then(function(d){
