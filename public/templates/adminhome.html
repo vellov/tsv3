@@ -10,6 +10,7 @@
         <div  ng-repeat="project in projects">
             <a ui-sref="project({projectId: project._id})">{{project.projectName}}</a> - <a href target="_blank" ui-sref="troubleshoot({projectId:project._id})">{{toLink(project._id)}}</a>
         </div>
+        <div class="text-muted" ng-if="projects.length == 0">Pole veel teinud ühtegi :(</div>
     </div>
 
     <div class="col-md-6">

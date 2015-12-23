@@ -118,3 +118,8 @@
 .list-group .list-group-item.adding i {
   color: #ffffff;
 }
+pre {
+  text-align: justify;
+  max-width: 75%;
+  margin: auto;
+}
