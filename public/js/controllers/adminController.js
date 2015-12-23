@@ -1,12 +1,11 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("adminController", ["$scope", "userService","projectService","$stateParams", function($scope, userService, projectService, $stateParams){
+app.controller("adminController", ["$scope", "userService","projectService", "$state", function($scope, userService, projectService, $state){
     $scope.currentUser = userService.getCurrentUser();
     $scope.projectData = { };
+    $scope.viewData = { };
     $scope.projects = [];
-    projectService.getUserProjects().then(function(d){
-        console.log(d);
-    });
+    $scope.showForm = false;
     $scope.logout = function(){
         userService.logout();
     };
@@ -17,14 +16,12 @@ app.controller("adminController", ["$scope", "userService","projectService","$st
 
     $scope.saveProject = function(){
         projectService.saveProject($scope.projectData).then(function(d){ // save project and add project to data.
-            $scope.projects.push(d.data);
-            resetForm();
+            $state.go("project", {projectId: d.data._id})
         });
     };
 
-
-    function resetForm(){
-        $scope.projectData = { };
+    $scope.toggleForm = function(){
+        $scope.viewData.showForm = !$scope.viewData.showForm;
     }
 
 }]);

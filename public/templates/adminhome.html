@@ -11,12 +11,18 @@
             <a ui-sref="project({projectId: project._id})">{{project.projectName}} - {{project.description}}</a>
         </div>
     </div>
-    <form class="col-md-6" novalidate name="projectForm" ng-submit="projectForm.$valid && saveProject()">
-        <div class="form-group">
-            <label>Küsimustiku nimi:</label>
-            <input class="form-control" type="text" ng-model="projectData.projectName">
-        </div>
-        <button class="btn btn-primary" type="submit">Salvesta</button>
-    </form>
+
+    <div class="col-md-6">
+        <form novalidate name="projectForm" ng-submit="projectForm.$valid && saveProject()" ng-if="viewData.showForm">
+            <div class="form-group">
+                <label>Küsimustiku nimi:</label>
+                <input class="form-control" type="text" ng-model="projectData.projectName" required>
+            </div>
+            <button type="button" class="btn btn-warning" ng-click="toggleForm()" ng-if="viewData.showForm">Tühista</button>
+            <button class="btn btn-success" type="submit">Salvesta</button>
+        </form>
+        <button type="button" class="btn btn-primary" ng-click="toggleForm()" ng-if="!viewData.showForm">Uus shoot <i class="glyphicon glyphicon-plus"></i></button>
+    </div>
+
 
 </div>

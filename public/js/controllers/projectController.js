@@ -6,9 +6,8 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     $scope.questions = questions;
     $scope.projectEditData = { };
     $scope.showForm = false;
-    $scope.editorOptions = {
-    };
-
+    $scope.editorOptions = {};
+    $scope.viewData = {};
     $scope.saveQuestion = function(){
         var data = angular.extend({projectId: project._id}, $scope.projectEditData);
         projectService.saveQuestion(data).then(function(d){
@@ -19,6 +18,8 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             }
             $scope.projectEditData = { };
             $scope.showForm = false;
+            delete $scope.viewData.activeId;
+            delete $scope.viewData.addingId;
         })
     };
 
@@ -26,6 +27,8 @@ app.controller("projectController", ["$scope","projectService", "userService", "
         $scope.projectEditData = { };
         $scope.showForm = true;
         $scope.projectEditData.parentId = id;
+        delete $scope.viewData.activeId;
+        $scope.viewData.addingId = id;
     };
 
     $scope.delete = function(question){
@@ -41,6 +44,8 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     $scope.edit = function(question){
         $scope.projectEditData = angular.copy(question);
         $scope.showForm = true;
+        delete $scope.viewData.addingId;
+        $scope.viewData.activeId = question._id;
     };
 
 

@@ -1,12 +1,13 @@
 <script type="text/ng-template"  id="tree_item_renderer.html">
-   <a href ng-click="edit(data)">{{data.title}}</a>
-   <a href ng-click="add(data._id)"><i class="glyphicon glyphicon-plus"></i></a>
-    <a href ng-click="delete(data)" ng-if="!data._confirmDelete && data.parentId"><i class="glyphicon glyphicon-minus"></i></a>
-   <a href ng-click="delete(data)" ng-if="data._confirmDelete" class="confirm"><i class="glyphicon glyphicon-minus"></i></a>
-
-   <ul class="list-unstyled">
-        <li class="m-left-20" ng-repeat="data in questions | filter:{parentId:data._id}:true" ng-include="'tree_item_renderer.html'"></li>
-    </ul>
+    <div class="list-group-item clickable" ng-class="{'active':data._id == viewData.activeId, 'adding':data._id == viewData.addingId }" ng-click="edit(data)">
+        {{data.title}}
+        <div class="pull-right">
+        <a href ng-click="add(data._id);$event.stopPropagation()"><i class="glyphicon glyphicon-plus"></i></a>
+        <a href ng-click="delete(data);$event.stopPropagation()" ng-if="!data._confirmDelete && data.parentId"><i class="glyphicon glyphicon-minus"></i></a>
+        <a href ng-click="delete(data);$event.stopPropagation()" ng-if="data._confirmDelete" class="confirm"><i class="glyphicon glyphicon-minus"></i></a>
+        </div>
+    </div>
+    <div class="m-left-20 list-group" ng-repeat="data in questions | filter:{parentId:data._id}:true" ng-include="'tree_item_renderer.html'"></div>
 </script>
 
 <div>
@@ -22,19 +23,17 @@
         <div ng-if="questions.length == 0">
             <a href ng-click="add()">Lisa esimene küsimus <i class="glyphicon glyphicon-plus"></i></a>
         </div>
-        <ul class="list-unstyled">
-            <li ng-repeat="data in questions | filter: {parentId: ''}:true" ng-include="'tree_item_renderer.html'"></li>
-        </ul>
+        <div class="list-group" ng-repeat="data in questions | filter: {parentId: ''}:true" ng-include="'tree_item_renderer.html'"></div>
     </div>
     <div class="col-md-6" ng-if="showForm">
         <form novalidate name="projectEditForm" ng-submit="projectEditForm.$valid && saveQuestion()">
             <div class="form-group">
                 <label>Küsimuse pealkiri:</label>
-                <input type="text" class="form-control" ng-model="projectEditData.title">
+                <input type="text" class="form-control" ng-model="projectEditData.title" required>
             </div>
             <div class="form-group">
                 <label>Vaate sisu</label>
-                <textarea ckeditor="editorOptions" ng-model="projectEditData.content"></textarea>
+                <textarea ckeditor="editorOptions" ng-model="projectEditData.content" required></textarea>
             </div>
             <button class="btn btn-primary" type="submit">Salvesta</button>
         </form>

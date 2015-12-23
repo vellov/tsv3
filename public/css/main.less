@@ -93,7 +93,9 @@
 .margin-bottom-none {
   margin-bottom: 0 !important;
 }
-
+.clickable {
+  cursor: pointer;
+}
 .icon-color {
   color: #ccc;
 }
@@ -106,7 +108,9 @@
 
 }
 .confirm {
-  color:red;
+  i{
+    color:red!important;
+  }
 }
 .panel-custom {
   max-width: 700px;
@@ -117,4 +121,37 @@
     min-height: 41px;
     text-align: center;
   }
+}
+
+.list-group {
+  margin-bottom: 0;
+  &:last-child {
+    margin-bottom: -1px;
+  }
+  .list-group-item{
+    &:hover{
+      background-color: darken(#ffffff, 5%);;
+    }
+    &.active {
+      &:hover {
+        background-color: darken(#428bca, 5%);
+      }
+      i {
+        color:#ffffff;
+      }
+    }
+    &.adding {
+      background-color: #5cb85c;
+      border-color:#4cae4c;
+      color:white;
+      &:hover {
+        background-color: darken(#5cb85c, 5%);
+      }
+      i {
+        color:#ffffff;
+      }
+    }
+
+  }
+
 }
