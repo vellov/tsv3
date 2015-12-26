@@ -181,6 +181,8 @@ module.exports = function(app) {
                     Question.update({_id:req.body._id},{
                         title: req.body.title,
                         content:req.body.content,
+                        parentId: req.body.parentId,
+                        position: req.body.position
                     }, function(error, result){
                         if(error){
                             res.send(error);
@@ -200,7 +202,8 @@ module.exports = function(app) {
                         projectId: req.body.projectId,
                         title: req.body.title,
                         content:req.body.content,
-                        parentId:req.body.parentId ? req.body.parentId : ""
+                        parentId:req.body.parentId ? req.body.parentId : "",
+                        position:req.body.position ? req.body.position: 0
                     }, function(error, result){
                         if(error){
                             res.send(error);

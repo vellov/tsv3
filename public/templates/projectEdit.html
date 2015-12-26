@@ -1,13 +1,13 @@
-<script type="text/ng-template"  id="tree_item_renderer.html">
-    <div class="list-group-item clickable" ng-class="{'active':data._id == viewData.activeId, 'adding':data._id == viewData.addingId }" ng-click="edit(data)">
+<script type="text/ng-template" id="nodes_renderer.html">
+    <div class="list-group-item" ui-tree-handle>
         {{data.title}}
-        <div class="pull-right">
-        <a href ng-click="add(data._id);$event.stopPropagation()"><i class="glyphicon glyphicon-plus"></i></a>
-        <a href ng-click="delete(data);$event.stopPropagation()" ng-if="!data._confirmDelete && data.parentId"><i class="glyphicon glyphicon-minus"></i></a>
-        <a href ng-click="delete(data);$event.stopPropagation()" ng-if="data._confirmDelete" class="confirm"><i class="glyphicon glyphicon-minus"></i></a>
-        </div>
+        <a class="pull-right btn btn-danger btn-xs m-left-5" href ng-click="delete(data)" ng-if="data.parentId" data-nodrag><i class="glyphicon glyphicon-remove"></i></a>
+        <a class="pull-right btn btn-primary btn-xs m-left-5" href ng-click="edit(data)" data-nodrag><i class="glyphicon glyphicon-edit"></i></a>
+        <a class="pull-right btn btn-success btn-xs" href ng-click="add(data._id)" data-nodrag><i class="glyphicon glyphicon-plus"></i></a>
     </div>
-    <div class="m-left-20 list-group" ng-repeat="data in questions | filter:{parentId:data._id}:true" ng-include="'tree_item_renderer.html'"></div>
+    <ol ui-tree-nodes="" ng-model="data.child">
+        <li ng-repeat="data in data.child" ui-tree-node  ng-include="'nodes_renderer.html'"></li>
+    </ol>
 </script>
 
 <div>
@@ -17,6 +17,7 @@
         <button class="btn btn-default" ng-click="logout()">Logi välja</button>
     </div>
 
+    <!-- VASAK VAADE -->
     <div class="col-md-4">
         <h5><a target="_blank" ui-sref="troubleshoot({projectId:project._id})">Eelvaade</a> </h5>
         <h5>Küsimustik: {{project.projectName}}</h5>
@@ -24,8 +25,16 @@
         <div ng-if="questions.length == 0">
             <a href ng-click="add()">Lisa esimene küsimus <i class="glyphicon glyphicon-plus"></i></a>
         </div>
-        <div class="list-group" ng-repeat="data in questions | filter: {parentId: ''}:true" ng-include="'tree_item_renderer.html'"></div>
+        <!-- Küsimuste puu -->
+        <div ui-tree="treeOptions" data-empty-placeholder-enabled="false">
+            <ol ui-tree-nodes="" ng-model="sortedData" id="tree-root" >
+                <li class="list-group" ng-repeat="data in sortedData" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+            </ol>
+        </div>
     </div>
+
+
+    <!-- Küsimuse lisamine -->
     <div class="col-md-6">
         <form novalidate name="projectEditForm" ng-submit="projectEditForm.$valid && saveQuestion()" ng-if="showForm">
             <div class="form-group">
@@ -39,10 +48,13 @@
             <button class="btn btn-primary" type="submit">Salvesta</button>
         </form>
     </div>
+
+
+    <!-- Abi paremal -->
     <div class="col-md-2 pull-right m-t-m">
-            <p><label class="label label-primary">Sinine</label> - Vastava küsimuse muutmine</p>
-            <p><label class="label label-success">Roheline</label> - Küsimusele alamvaliku tegemine</p>
-            <p><a><i class="glyphicon glyphicon-plus"></i></a> - Lisamine</p>
-            <p><a><i class="glyphicon glyphicon-minus"></i></a> - Eemaldamine</p>
+        <p><span class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></span> - Vastava küsimuse kustutamine</p>
+        <p><a class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> - Vastava küsimuse muutmine</p>
+        <p><a class="btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></a> - Vastavale küsimusele alamküsimuse loomine</p>
+        <p><span><i class="glyphicon glyphicon-move"></i></span> - Küsimuse asukoha muutmine lohistades</p>
     </div>
 </div>

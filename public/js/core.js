@@ -3,7 +3,8 @@ var appModule = angular.module('troubleshooting', [
     "ui.bootstrap",
     "ngSanitize",
     "userModule",
-    "ngCkeditor"
+    "ngCkeditor",
+    "ui.tree"
 ]);
 appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
     //

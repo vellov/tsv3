@@ -3,12 +3,39 @@ var app = window.angular.module("troubleshooting");
 app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", "$location", function($scope, projectService, userService, project, questions, $location){
     $scope.currentUser = userService.getCurrentUser();
     $scope.project = project;
-    $scope.questions = questions;
+    $scope.questions = questions ? questions : [];
     $scope.projectEditData = { };
     $scope.showForm = false;
     $scope.editorOptions = {};
     $scope.viewData = {};
     $scope.$location = $location;
+    $scope.sortedData = [];
+    $scope.treeOptions = {
+        accept: function(sourceNodeScope, destNodesScope, destIndex) {
+            return true;
+        },
+        dropped: function(event){
+            var data = event.source.nodeScope.$modelValue;
+            data.parentId = event.dest.nodesScope.$nodeScope.$modelValue._id;
+
+            var siblings = listToTree.GetItemById(data.parentId).child;
+            var sent = 0;
+            var back = 0;
+            for(var i in siblings){
+                 sent++;
+                 siblings[i].position = i;
+                 projectService.saveQuestion(siblings[i]).then(function(d){
+                     back++;
+                     if(sent == back){
+                         $scope.questions = d.data;
+                     }
+                })
+            }
+
+        }
+    };
+
+
     $scope.saveQuestion = function(){
         var data = angular.extend({projectId: project._id}, $scope.projectEditData);
         projectService.saveQuestion(data).then(function(d){
@@ -53,5 +80,20 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     $scope.logout = function(){
         userService.logout();
     };
+
+    var listToTree;
+
+    $scope.$watch(function(){
+        return $scope.questions;
+    }, function(n){
+        listToTree = new LTT(n,
+            {
+                key_id: "_id",
+                key_parent: "parentId",
+                position: "position"
+            }
+        );
+        $scope.sortedData = listToTree.GetTree();
+    },true);
 
 }]);

@@ -5,5 +5,6 @@ module.exports = mongoose.model('Question', {
     creatorUserId:  { type: String, default: "" },
     parentId:       { type: String, default: "" },
     content:        { type: String, default: "" },
-    title:          { type: String, default: "" }
+    title:          { type: String, default: "" },
+    position:       { type: Number, default: 0}
 });
