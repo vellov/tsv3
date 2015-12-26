@@ -12,7 +12,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     $scope.sortedData = [];
     $scope.treeOptions = {
         accept: function(sourceNodeScope, destNodesScope, destIndex) {
-            return true;
+            return destNodesScope.$nodeScope; //Keela 0 tasemele liigutamine
         },
         dropped: function(event){
             var data = event.source.nodeScope.$modelValue;
@@ -32,6 +32,9 @@ app.controller("projectController", ["$scope","projectService", "userService", "
                 })
             }
 
+        },
+        beforeDrag: function(source){
+            return source.$modelValue.parentId != ""; //Keela juure liigutamine
         }
     };
 

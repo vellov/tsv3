@@ -65,6 +65,9 @@
 .m-t-none {
   margin-top: 0;
 }
+.m-right-5 {
+  margin-right: 5px;
+}
 .margin-bottom-none {
   margin-bottom: 0 !important;
 }
@@ -81,8 +84,8 @@
   padding-left: 100px;
   padding-right: 100px;
 }
-.confirm i {
-  color: red!important;
+.attention-red {
+  color: red;
 }
 .panel-custom {
   max-width: 700px;

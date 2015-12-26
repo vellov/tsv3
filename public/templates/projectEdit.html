@@ -1,11 +1,14 @@
 <script type="text/ng-template" id="nodes_renderer.html">
     <div class="list-group-item" ui-tree-handle>
+        <a class="btn btn-success btn-xs m-right-5" data-nodrag ng-if="data.child && data.child.length > 0" ng-click="toggle(this)">
+            <span class="glyphicon" ng-class="{'glyphicon-chevron-right':collapsed,'glyphicon-chevron-down':!collapsed}"></span>
+        </a>
         {{data.title}}
         <a class="pull-right btn btn-danger btn-xs m-left-5" href ng-click="delete(data)" ng-if="data.parentId" data-nodrag><i class="glyphicon glyphicon-remove"></i></a>
         <a class="pull-right btn btn-primary btn-xs m-left-5" href ng-click="edit(data)" data-nodrag><i class="glyphicon glyphicon-edit"></i></a>
         <a class="pull-right btn btn-success btn-xs" href ng-click="add(data._id)" data-nodrag><i class="glyphicon glyphicon-plus"></i></a>
     </div>
-    <ol ui-tree-nodes="" ng-model="data.child">
+    <ol ui-tree-nodes="" ng-class="{'hidden':collapsed}" ng-model="data.child">
         <li ng-repeat="data in data.child" ui-tree-node  ng-include="'nodes_renderer.html'"></li>
     </ol>
 </script>
@@ -27,7 +30,7 @@
         </div>
         <!-- Küsimuste puu -->
         <div ui-tree="treeOptions" data-empty-placeholder-enabled="false">
-            <ol ui-tree-nodes="" ng-model="sortedData" id="tree-root" >
+            <ol ui-tree-nodes="" ng-model="sortedData" id="tree-root">
                 <li class="list-group" ng-repeat="data in sortedData" ui-tree-node ng-include="'nodes_renderer.html'"></li>
             </ol>
         </div>
@@ -55,6 +58,8 @@
         <p><span class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></span> - Vastava küsimuse kustutamine</p>
         <p><a class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> - Vastava küsimuse muutmine</p>
         <p><a class="btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></a> - Vastavale küsimusele alamküsimuse loomine</p>
+        <p><a class="btn btn-success btn-xs"><i class="glyphicon glyphicon-chevron-down"></i></a> - Peida alam küsimused</p>
         <p><span><i class="glyphicon glyphicon-move"></i></span> - Küsimuse asukoha muutmine lohistades</p>
+        <p class="attention-red">NB: Esimest küsimust ei saa liigutada!</p>
     </div>
 </div>

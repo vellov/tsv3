@@ -41,6 +41,7 @@ LTT = (function() {
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             item = _ref[_i];
             if (item[this.key_parent] === parent) {
+                if(!item.child) item.child = [];
                 result.push(item);
             }
         }
