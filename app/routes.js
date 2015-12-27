@@ -250,7 +250,7 @@ module.exports = function(app) {
         QuestionStatistics.findOneAndUpdate(
             { questionId: req.body.questionId}, // find question statistic
             { $inc: toInc }, // update according to type
-            { upsert: true}
+            { upsert: true} // creates new if didn't find any
         )
     });
 

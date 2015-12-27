@@ -49,7 +49,7 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             }
         })
         .state("troubleshoot",{
-            url:"/ts/:projectId",
+            url:"/ts/:projectId/:questionId?",
             controller: "questionViewController",
             templateUrl: "templates/main.html",
             access: { requiredLogin: false},

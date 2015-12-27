@@ -1,53 +1,46 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("questionViewController", ["$scope","projectService", "userService", "questions", function($scope, projectService, userService, questions) {
+app.controller("questionViewController", ["$scope","projectService", "userService", "questions", "$stateParams", "statisticsService", function($scope, projectService, userService, questions, $stateParams, statisticsService) {
 
-    $scope.questions = questions;
-    $scope.breadCrumbs = [];
-    $scope.setItemActive = function(item){
-        var idx = $scope.breadCrumbs.indexOf(item);
-        if(idx > -1){
-            var newArr = [];
-            for(var i = 0; i<idx;i++){
-                newArr.push($scope.breadCrumbs[i]);
-            }
-            $scope.breadCrumbs = newArr;
-            $scope.view = item;
-        } else {
-            $scope.breadCrumbs.push($scope.view);
-            $scope.view = item;
-        }
-    };
-
-    $scope.activateNextChild = function(){
-        $scope.setItemActive($scope.currentViewChilds[0]);
-    };
-
-    $scope.activatePreviousItem = function(){
-        $scope.view = $scope.breadCrumbs.pop();
-    };
-
-    $scope.init = function(){
-        $scope.view = {parentId: ""};
+    $scope.viewData = { };
+    function findQuestionById(questionId){
         for(var i in questions){
-           if(questions[i].parentId == ""){
-               $scope.view = questions[i];
-               break;
-           }
+            if(questions[i]._id == questionId){
+                return questions[i];
+            }
         }
-    };
-    $scope.$watch(
-        function(){
-            return $scope.view.parentId;
-        },
-        function(){
-            $scope.currentViewChilds = $scope.questions.filter(function(question){
-                return  question.parentId == $scope.view._id;
-            });
+    }
 
+    function findQuestionsByParentId(parentId){
+        var result = [];
+        if(!parentId) parentId = "";
+        for (var i in questions){
+            if(questions[i].parentId == parentId){
+                result.push(questions[i]);
+            }
+        }
+        return result;
+    }
+
+    $scope.$watch(function(){
+        return $stateParams.questionId;
+    }, function(n){
+        if(!n){
+            $scope.viewData.activeQuestion = findQuestionsByParentId()[0]; // finds root (always only 1 root question)
+        } else {
+            $scope.viewData.activeQuestion = findQuestionById(n);
+        }
+        $scope.viewData.children = findQuestionsByParentId($scope.viewData.activeQuestion._id);
+        statisticsService.addHit($scope.viewData.activeQuestion._id);
     });
 
-    $scope.init();
+    $scope.addForward = function(){
+        statisticsService.addForward($scope.viewData.activeQuestion);
+
+    };
+    $scope.back = function(){
+        statisticsService.addBack($scope.viewData.activeQuestion);
+    };
 
 
 }]);

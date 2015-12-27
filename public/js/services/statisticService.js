@@ -3,7 +3,7 @@
  */
 var appModule = angular.module('troubleshooting');
 
-appModule.factory("statisticsService", function($http, $window){
+appModule.factory("statisticsService", function($http){
     return {
         addHit: function(questionId){
             var data = {

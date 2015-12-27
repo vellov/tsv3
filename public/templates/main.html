@@ -1,16 +1,16 @@
 <div class="panel panel-info panel-custom">
-    <div class="panel-heading">{{view.title}}</div>
+    <div class="panel-heading">{{viewData.activeQuestion.title}}</div>
     <div class="panel-body text-center">
-        <p ng-bind-html="view.content"></p>
-        <div ng-if="currentViewChilds.length > 1" ng-repeat="child in currentViewChilds">
-            <a href class="btn btn-primary w200 m-t-s" ng-click="setItemActive(child)">{{child.title}}</a>
+        <p ng-bind-html="viewData.activeQuestion.content"></p>
+        <div ng-if="viewData.children.length > 1" ng-repeat="child in viewData.children | orderBy: 'position'">
+            <a href class="btn btn-primary w200 m-t-s" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: child._id})" ng-click="addForward()">{{child.title}}</a>
         </div>
     </div>
 
     <div class="panel-footer">
         <div class="pull-left">
-            <a href ng-click="activatePreviousItem()" ng-if="breadCrumbs.length"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
-            <a href class="m-left-10" ng-click="setItemActive(child)" ng-repeat="child in currentViewChilds" ng-if="currentViewChilds.length == 1">Edasi <i class="glyphicon glyphicon-arrow-right"></i></a>
+            <a href ng-click="back()" ng-if="viewData.activeQuestion.parentId" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: viewData.activeQuestion.parentId})"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
+            <a href class="m-left-10" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: child._id})" ng-repeat="child in viewData.children" ng-if="viewData.children.length == 1">Edasi <i class="glyphicon glyphicon-arrow-right"></i></a>
         </div>
         <div class="pull-right">
             <span class="text-muted">&#169; Vello Vaherpuu 2015, Tartu Ülikool</span>
