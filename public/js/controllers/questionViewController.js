@@ -1,3 +1,5 @@
+var app = window.angular.module("troubleshooting");
+
 app.controller("questionViewController", ["$scope","projectService", "userService", "questions", function($scope, projectService, userService, questions) {
 
     $scope.questions = questions;

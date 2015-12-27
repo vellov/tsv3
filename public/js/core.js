@@ -58,6 +58,17 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
                     return projectService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
                 }
             }
+        })
+        .state("statistics", {
+            url:"/admin/statistics/:projectId",
+            controller: "statisticsViewController",
+            templateUrl: "templates/statistics.html",
+            access: { requiredLogin: true},
+            resolve: {
+                data: function(){
+                    return "tere";
+                }
+            }
         });
 
 

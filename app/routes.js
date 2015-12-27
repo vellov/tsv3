@@ -1,10 +1,11 @@
-var User        = require('./models/user');
-var Project     = require('./models/project');
-var Question    = require('./models/question');
-var moment 		= require('moment');
-var AM          = require('./modules/account-manager');
-var jwt         = require('jsonwebtoken');
-var config      = require('./modules/config');
+var User                = require('./models/user');
+var Project             = require('./models/project');
+var Question            = require('./models/question');
+var QuestionStatistics  = require('./models/questionStatistics');
+var moment 		        = require('moment');
+var AM                  = require('./modules/account-manager');
+var jwt                 = require('jsonwebtoken');
+var config              = require('./modules/config');
 function getUsers(res){
     User.find(function(err, users) {
 
@@ -235,6 +236,22 @@ module.exports = function(app) {
 
             }
         });
+    });
+
+    app.post('/api/questionStatistics/save', function(req, res){
+        var toInc;
+        if(req.body.type == "VIEW"){
+            toInc = { views: 1};
+        } else if(req.body.type == "FORWARD"){
+            toInc = { forward: 1};
+        } else if(req.body.type == "BACK"){
+            toInc = {back: 1};
+        }
+        QuestionStatistics.findOneAndUpdate(
+            { questionId: req.body.questionId}, // find question statistic
+            { $inc: toInc }, // update according to type
+            { upsert: true}
+        )
     });
 
 	// application -------------------------------------------------------------

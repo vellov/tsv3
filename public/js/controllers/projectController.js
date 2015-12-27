@@ -1,6 +1,6 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", "$location", function($scope, projectService, userService, project, questions, $location){
+app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", "$location", "statisticsService", function($scope, projectService, userService, project, questions, $location, statisticsService){
     $scope.currentUser = userService.getCurrentUser();
     $scope.project = project;
     $scope.questions = questions ? questions : [];
