@@ -7,24 +7,24 @@ appModule.factory("statisticsService", function($http){
     return {
         addHit: function(questionId){
             var data = {
-                questionId:questionId,
-                type : "VIEW"
+                questionId: questionId,
+                type : "views"
             };
             return $http.post("/api/questionStatistics/save", data);
         },
 
         addForward: function(questionId){
             var data = {
-                questionId:questionId,
-                type : "FORWARD"
+                questionId: questionId,
+                type : "forward"
             };
             return $http.post("/api/questionStatistics/save", data);
         },
 
         addBack: function(questionId){
             var data = {
-                questionId:questionId,
-                type : "BACK"
+                questionId: questionId,
+                type : "back"
             };
             return $http.post("/api/questionStatistics/save", data);
         }

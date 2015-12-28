@@ -1,11 +1,11 @@
 var User                = require('./models/user');
 var Project             = require('./models/project');
 var Question            = require('./models/question');
-var QuestionStatistics  = require('./models/questionStatistics');
 var moment 		        = require('moment');
 var AM                  = require('./modules/account-manager');
 var jwt                 = require('jsonwebtoken');
 var config              = require('./modules/config');
+
 function getUsers(res){
     User.find(function(err, users) {
 
@@ -167,9 +167,12 @@ module.exports = function(app) {
 
     app.get('/api/questions/:projectId', function(req, res){
         Question.find({projectId:req.params.projectId},function(err, questions) {
-            if (err)
-                res.send(err)
-            res.json(questions); // return all currentuser projects in JSON format
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(questions);
+            }
+
         });
     });
 
@@ -239,22 +242,18 @@ module.exports = function(app) {
     });
 
     app.post('/api/questionStatistics/save', function(req, res){
-        var toInc;
-        if(req.body.type == "VIEW"){
-            toInc = { views: 1};
-        } else if(req.body.type == "FORWARD"){
-            toInc = { forward: 1};
-        } else if(req.body.type == "BACK"){
-            toInc = {back: 1};
-        }
-        QuestionStatistics.findOneAndUpdate(
-            { questionId: req.body.questionId}, // find question statistic
-            { $inc: toInc }, // update according to type
-            { upsert: true}, // creates new if didn't find any,
+        var inc = {};
+        var field = "statistics." + req.body.type;
+        inc[field] = 1;
+        Question.findOneAndUpdate(
+            { _id: req.body.questionId}, // find question statistic
+            { $inc: inc }, // update according to type
             function(err, suc){
-                if(err)
+                if(err){
                     res.send(err);
-                res.send(200);
+                } else{
+                    res.send(200);
+                }
             }
         )
     });

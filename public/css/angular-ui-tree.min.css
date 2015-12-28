@@ -12,6 +12,10 @@
     border-color: #dce2e8;
 }
 
+.nodrag .angular-ui-tree-handle {
+    cursor: default;
+}
+
 .angular-ui-tree-placeholder {
     background: #f0f9ff;
     border: 2px dashed #bed2db;

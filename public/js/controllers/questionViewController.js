@@ -35,11 +35,11 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
     });
 
     $scope.addForward = function(){
-        statisticsService.addForward($scope.viewData.activeQuestion);
+        statisticsService.addForward($scope.viewData.activeQuestion._id);
 
     };
     $scope.back = function(){
-        statisticsService.addBack($scope.viewData.activeQuestion);
+        statisticsService.addBack($scope.viewData.activeQuestion._id);
     };
 
 

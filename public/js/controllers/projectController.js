@@ -85,7 +85,6 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     };
 
     var listToTree;
-
     $scope.$watch(function(){
         return $scope.questions;
     }, function(n){

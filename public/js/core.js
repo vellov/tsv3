@@ -4,7 +4,8 @@ var appModule = angular.module('troubleshooting', [
     "ngSanitize",
     "userModule",
     "ngCkeditor",
-    "ui.tree"
+    "ui.tree",
+    "chart.js"
 ]);
 appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
     //
@@ -65,8 +66,8 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             templateUrl: "templates/statistics.html",
             access: { requiredLogin: true},
             resolve: {
-                data: function(){
-                    return "tere";
+                questions: function($stateParams, projectService){
+                    return projectService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
                 }
             }
         });
