@@ -7,9 +7,8 @@ module.exports = mongoose.model('Question', {
     content:        { type: String, default: "" },
     title:          { type: String, default: "" },
     position:       { type: Number, default: 0},
-    statistics: {
-        views:             { type: Number, default: 0},
-        forward:           { type: Number, default: 0},
-        back:              { type: Number, default: 0}
-    }
+    statistics: [{
+        type:       {type: String, default: ""},
+        date:       {type: Date, default: ""}
+    }]
 });

@@ -1,7 +1,7 @@
 <div class="panel panel-info panel-custom">
     <div class="panel-heading">{{viewData.activeQuestion.title}}</div>
     <div class="panel-body text-center">
-        <p ng-bind-html="viewData.activeQuestion.content"></p>
+        <p ng-bind-html="trustAsHtml(viewData.activeQuestion.content)"></p>
         <div ng-if="viewData.children.length > 1" ng-repeat="child in viewData.children | orderBy: 'position'">
             <a href class="btn btn-primary w200 m-t-s" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: child._id})" ng-click="addForward()">{{child.title}}</a>
         </div>

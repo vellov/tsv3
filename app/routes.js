@@ -242,10 +242,30 @@ module.exports = function(app) {
     });
 
     app.post('/api/questionStatistics/save', function(req, res){
-        var inc = {};
-        var field = "statistics." + req.body.type;
-        inc[field] = 1;
-        Question.findOneAndUpdate(
+        Question.findById(req.body.questionId, function(err, question){
+          /*  .statistics.create({type:req.body.type}, function(err, createed){
+                if (err){
+                    res.send(err);
+                } else {
+                    console.log(createed);
+                    res.send(createed);
+                }
+            });*/
+            if(err){
+                console.log(err);
+                res.send(err);
+            } else {
+                question.statistics.push({type:req.body.type, date: Date.now()});
+                question.save(function(err,suc){
+                    console.log(question);
+                })
+            }
+            res.send(200);
+        })
+
+
+
+        /*(
             { _id: req.body.questionId}, // find question statistic
             { $inc: inc }, // update according to type
             function(err, suc){
@@ -255,7 +275,7 @@ module.exports = function(app) {
                     res.send(200);
                 }
             }
-        )
+        )*/
     });
 
 	// application -------------------------------------------------------------

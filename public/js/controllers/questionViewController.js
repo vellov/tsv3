@@ -1,6 +1,6 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("questionViewController", ["$scope","projectService", "userService", "questions", "$stateParams", "statisticsService", function($scope, projectService, userService, questions, $stateParams, statisticsService) {
+app.controller("questionViewController", ["$scope","projectService", "userService", "questions", "$stateParams", "statisticsService", "$sce", function($scope, projectService, userService, questions, $stateParams, statisticsService, $sce) {
 
     $scope.viewData = { };
     function findQuestionById(questionId){
@@ -42,5 +42,8 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
         statisticsService.addBack($scope.viewData.activeQuestion._id);
     };
 
+    $scope.trustAsHtml = function(string) {
+        return $sce.trustAsHtml(string);
+    };
 
 }]);

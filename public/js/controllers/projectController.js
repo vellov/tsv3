@@ -6,7 +6,9 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     $scope.questions = questions ? questions : [];
     $scope.projectEditData = { };
     $scope.showForm = false;
-    $scope.editorOptions = {};
+    $scope.editorOptions = {
+        language: 'et'
+    };
     $scope.viewData = {};
     $scope.$location = $location;
     $scope.sortedData = [];
