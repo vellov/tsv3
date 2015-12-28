@@ -18,7 +18,7 @@ appModule.factory("projectService", function($http, $window){
        },
 
        getProjectQuestions: function(projectId){
-           return $http.get("/api/questions/"+projectId);
+           return $http.get("/api/questions/" + projectId);
        },
 
        saveQuestion: function(data){

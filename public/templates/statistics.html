@@ -4,7 +4,7 @@
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right':collapsed,'glyphicon-chevron-down':!collapsed}"></span>
         </a>
         {{data.title}}
-        <a class="pull-right btn btn-primary btn-xs m-left-5" href ng-click="viewStatistics(data)"><i class="glyphicon glyphicon-signal"></i></a>
+        <a class="pull-right btn btn-primary btn-xs m-left-5" href ng-click="switchView(data)"><i class="glyphicon glyphicon-signal"></i></a>
     </div>
     <ol ui-tree-nodes="" ng-class="{'hidden':collapsed}" ng-model="data.child">
         <li ng-repeat="data in data.child" ui-tree-node ng-include="'nodes_renderer.html'"></li>
@@ -23,6 +23,8 @@
     </div>
 
     <div class="col-md-6">
-        {{statistics.data}}
+        <canvas id="doughnut" class="chart chart-doughnut"
+                chart-data="data" chart-labels="labels" chart-legend="true" chart-options="chartOptions">
+        </canvas>
     </div>
 </div>

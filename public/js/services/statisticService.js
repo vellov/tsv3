@@ -27,6 +27,10 @@ appModule.factory("statisticsService", function($http){
                 type : "back"
             };
             return $http.post("/api/questionStatistics/save", data);
+        },
+
+        getProjectQuestions: function(projectId){
+            return $http.get("/api/questions/statistics/" + projectId);
         }
     }
 });

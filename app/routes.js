@@ -166,7 +166,7 @@ module.exports = function(app) {
     });
 
     app.get('/api/questions/:projectId', function(req, res){
-        Question.find({projectId:req.params.projectId},function(err, questions) {
+        Question.find({projectId:req.params.projectId},'_id parentId content title position', function(err, questions) {
             if (err) {
                 res.send(err);
             } else {
@@ -243,37 +243,72 @@ module.exports = function(app) {
 
     app.post('/api/questionStatistics/save', function(req, res){
         Question.findById(req.body.questionId, function(err, question){
-          /*  .statistics.create({type:req.body.type}, function(err, createed){
-                if (err){
-                    res.send(err);
-                } else {
-                    console.log(createed);
-                    res.send(createed);
-                }
-            });*/
             if(err){
-                console.log(err);
                 res.send(err);
             } else {
                 question.statistics.push({type:req.body.type, date: Date.now()});
-                question.save(function(err,suc){
-                    console.log(question);
+                question.save(function(err, result){
+                    if(err){
+                        res.send(err);
+                    } else {
+                        res.send(result);
+                    }
                 })
             }
-            res.send(200);
-        })
+        });
+    });
 
-
-
-        /*(
-            { _id: req.body.questionId}, // find question statistic
-            { $inc: inc }, // update according to type
-            function(err, suc){
-                if(err){
-                    res.send(err);
-                } else{
-                    res.send(200);
+    app.get('/api/questions/statistics/:projectId', function(req, res){
+        Question.find({projectId:req.params.projectId},"parentId title position").lean().exec(function(err,results){
+           if(err){
+               res.send(err);
+           } else{
+               var sent = 0;
+               var rec = 0;
+               for(var i in results){
+                   sent++;
+                   Question.aggregate([
+                           { $match:{_id:results[i]._id} },
+                           { $unwind: "$statistics" },
+                           {
+                               $group: {
+                                   _id: "$statistics.type",
+                                   sum: { $sum: 1}
+                               }
+                           }],function(err, kala){
+                           //console.log(err,kala);
+                           //      res.json(kala);
+                           for (var j in kala){
+                               results[rec][kala[j]._id] = kala[j].sum;
+                           }
+                           //results[i].data = kala;
+                           //res.json(result);
+                           rec++;
+                           if(sent == rec){
+                               //console.log(sent,results)
+                               res.json(results);
+                           }
+                       }
+                   );
+               }
+           }
+        });
+        /*Question.aggregate([
+                {
+                    $match:{
+                        projectId: req.params.projectId
+                    }
+                },
+                {
+                    $group:{
+                        _id:"$statistics.type",
+                        test:{$push:"$statistics.type"},
+                        count: {$sum:1}
+                    }
                 }
+            ], function(err,result){
+                console.log(err,result);
+                res.send(result);
             }
         )*/
     });
