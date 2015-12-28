@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="nodes_renderer.html">
-    <div class="list-group-item" ui-tree-handle>
+    <div class="list-group-item" ng-class="{'active':statistics.activeData._id == data._id}" ui-tree-handle>
         <a class="btn btn-success btn-xs m-right-5" ng-if="data.child && data.child.length > 0" ng-click="toggle(this)">
             <span class="glyphicon" ng-class="{'glyphicon-chevron-right':collapsed,'glyphicon-chevron-down':!collapsed}"></span>
         </a>
