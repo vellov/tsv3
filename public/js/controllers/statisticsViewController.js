@@ -3,7 +3,7 @@
  */
 var app = window.angular.module("troubleshooting");
 
-app.controller("statisticsViewController", ["$scope", "questions", "statisticsService", function($scope, questions, statisticsService) {
+app.controller("statisticsViewController", ["$scope", "questions", "statisticsService","utils", function($scope, questions, statisticsService, utils) {
     $scope.statistics = {};
     $scope.sortedData = {};
     $scope.labels = ["Edasi mindud", "Tagasi mindud", "Vaadatud"];
@@ -21,21 +21,10 @@ app.controller("statisticsViewController", ["$scope", "questions", "statisticsSe
     );
     $scope.sortedData = listToTree.GetTree();
 
-    function findQuestionsByParentId(parentId) {
-        var result = [];
-        if (!parentId) parentId = "";
-        for (var i in questions) {
-            if (questions[i].parentId == parentId) {
-                result.push(questions[i]);
-            }
-        }
-        return result;
-    }
-
     function assignData(data){
         $scope.data = [[data.forward, data.back, data.views]];
     }
-    var rootQuestion = findQuestionsByParentId()[0];
+    var rootQuestion = utils.findQuestionsByParentId(questions)[0];
     $scope.statistics.activeQuestionId = rootQuestion._id;
     statisticsService.getQuestionStatistics(rootQuestion._id).then(function (d) {
         $scope.statistics.activeQuestionId = d.data._id;

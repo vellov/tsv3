@@ -1,37 +1,19 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("questionViewController", ["$scope","projectService", "userService", "questions", "$stateParams", "statisticsService", "$sce", "$state", function($scope, projectService, userService, questions, $stateParams, statisticsService, $sce, $state) {
+app.controller("questionViewController", ["$scope","projectService", "userService", "questions", "$stateParams", "statisticsService", "$sce", "$state", "utils", function($scope, projectService, userService, questions, $stateParams, statisticsService, $sce, $state, utils) {
 
     $scope.viewData = { };
-    function findQuestionById(questionId){
-        for(var i in questions){
-            if(questions[i]._id == questionId){
-                return questions[i];
-            }
-        }
-    }
-
-    function findQuestionsByParentId(parentId){
-        var result = [];
-        if(!parentId) parentId = "";
-        for (var i in questions){
-            if(questions[i].parentId == parentId){
-                result.push(questions[i]);
-            }
-        }
-        return result;
-    }
 
     function setBackOrForward(questionId){
-        var currentQuestion = findQuestionById(questionId);
+        var currentQuestion = utils.findQuestionById(questions, questionId);
         if(statisticsService.getLastViewData().questionId){
-            var oldQuestion = findQuestionById(statisticsService.getLastViewData().questionId);
+            var oldQuestion = utils.findQuestionById(questions, statisticsService.getLastViewData().questionId);
 
             if(currentQuestion.parentId == oldQuestion._id){
-                statisticsService.addForward(questionId);
+                statisticsService.addForward(oldQuestion._id);
             }
             else if(currentQuestion._id == oldQuestion.parentId){
-                statisticsService.addBack(questionId);
+                statisticsService.addBack(oldQuestion._id);
             }
         }
     }
@@ -44,11 +26,11 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
         return $stateParams.questionId;
     }, function(n){
         if(!n){
-            $scope.viewData.activeQuestion = findQuestionsByParentId()[0]; // finds root (always only 1 root question)
+            $scope.viewData.activeQuestion = utils.findQuestionsByParentId(questions)[0]; // finds root (always only 1 root question)
         } else {
-            $scope.viewData.activeQuestion = findQuestionById(n);
+            $scope.viewData.activeQuestion = utils.findQuestionById(questions, n);
         }
-        $scope.viewData.children = findQuestionsByParentId($scope.viewData.activeQuestion._id);
+        $scope.viewData.children = utils.findQuestionsByParentId(questions, $scope.viewData.activeQuestion._id);
         statisticsService.addHit($scope.viewData.activeQuestion._id);
         setBackOrForward($scope.viewData.activeQuestion._id);
     });

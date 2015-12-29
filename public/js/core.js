@@ -1,4 +1,5 @@
 var appModule = angular.module('troubleshooting', [
+    "utils",
     "ui.router",
     "ui.bootstrap",
     "ngSanitize",
