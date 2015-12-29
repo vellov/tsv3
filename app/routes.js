@@ -30,9 +30,29 @@ function getUser(res, id){
         });
     });
 }
+
+function getUserProjects(userId, res){
+    Project.find({creatorUserId:userId, $or:[
+        {
+            "deleted": {
+                $exists:false
+            }
+        },
+        {
+            deleted:false
+        }
+    ]},function(err, projects) {
+        if (err)
+            res.send(err);
+
+        res.json(projects); // return all user projects in JSON format which are not deleted
+    });
+}
+
 function findQuestiosnByProject(userId, projectId, callback){
     Question.find({creatorUserId:userId, projectId:projectId}, callback);
 }
+
 function deleteQuestionChildren(question, doneCallback){
 
     var findChildren  = function(parentId, callback){
@@ -129,12 +149,23 @@ module.exports = function(app) {
 
     app.get('/api/projects', function(req, res){
         verifyToken(req.headers.authorization, function(err, decoded){
-            Project.find({creatorUserId:decoded._id},function(err, projects) {
-                if (err)
-                    res.send(err)
-                res.json(projects); // return all currentuser projects in JSON format
-            });
+            getUserProjects(decoded._id, res);
         });
+    });
+
+    app.delete('/api/projects/delete/:projectId', function(req,res){
+        verifyToken(req.headers.authorization, function(err, decoded){
+            Project.findById(req.params.projectId, function(err, project){
+                if(err){
+                    res.send(err);
+                } else {
+                    project.softdelete(function(err,deleted){
+                        getUserProjects(decoded._id, res);
+                    })
+                }
+            })
+        });
+
     });
 
     app.get('/api/projects/:projectId', function(req, res){
@@ -166,14 +197,20 @@ module.exports = function(app) {
     });
 
     app.get('/api/questions/:projectId', function(req, res){
-        Question.find({projectId:req.params.projectId},'_id parentId content title position projectId', function(err, questions) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.json(questions);
-            }
-
+        Project.findById(req.params.projectId, function(err,result){
+           if(result.deleted){
+               res.status(400).send({code: "1", description:"Deleted"});
+           } else{
+               Question.find({projectId:req.params.projectId},'_id parentId content title position projectId', function(err, questions) {
+                   if (err) {
+                       res.send(err);
+                   } else {
+                       res.json(questions);
+                   }
+               });
+           }
         });
+
     });
 
     app.post('/api/questions/save', function(req, res){

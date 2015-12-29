@@ -17,6 +17,10 @@ appModule.factory("projectService", function($http, $window){
            return $http.post("/api/projects/save", data); //returns old + new project
        },
 
+       deleteProject: function(projectId){
+           return $http.delete("/api/projects/delete/" + projectId);
+       },
+
        getProjectQuestions: function(projectId){
            return $http.get("/api/questions/" + projectId);
        },

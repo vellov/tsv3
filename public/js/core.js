@@ -44,8 +44,14 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
                 project: function($stateParams, projectService){
                     return projectService.getProjectById($stateParams.projectId).then(function(d){return d.data;});
                 },
-                questions: function($stateParams, projectService){
-                    return projectService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
+                questions: function($stateParams, projectService, $state){
+                    return projectService.getProjectQuestions($stateParams.projectId).then(
+                        function(d){
+                            return d.data;
+                        },
+                        function(e){
+                            $state.go("admin");
+                        });
                 }
             }
         })
@@ -55,8 +61,16 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             templateUrl: "templates/main.html",
             access: { requiredLogin: false},
             resolve: {
-                questions: function($stateParams, projectService){
-                    return projectService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
+                questions: function($stateParams, projectService, $state){
+                    return projectService.getProjectQuestions($stateParams.projectId).then(
+                        function(d){
+                            return d.data;
+                        },
+                        function(e){
+                            if(e.data.code == 1){
+                                $state.go("deleted");
+                            }
+                        });
                 }
             }
         })
@@ -66,10 +80,21 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             templateUrl: "templates/statistics.html",
             access: { requiredLogin: true},
             resolve: {
-                questions: function($stateParams, projectService){
-                    return projectService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
+                questions: function($stateParams, projectService, $state){
+                    return projectService.getProjectQuestions($stateParams.projectId).then(
+                        function(d){
+                            return d.data;
+                        },
+                        function(e){
+                            $state.go("admin");
+                        });
                 }
             }
+        })
+        .state("deleted", {
+            url:"/err",
+            templateUrl: "templates/deleted.html",
+            access: { requiredLogin: false}
         });
 
 

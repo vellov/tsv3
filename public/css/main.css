@@ -50,6 +50,9 @@
 .m-t-s {
   margin-top: 10px;
 }
+.m-t-xs {
+  margin-top: 5px;
+}
 .m-b-s {
   margin-bottom: 10px;
 }
@@ -120,6 +123,9 @@
 }
 .list-group .list-group-item.adding i {
   color: #ffffff;
+}
+.row.colored:nth-child(odd) {
+  background-color: #f9f9f9;
 }
 pre {
   text-align: justify;

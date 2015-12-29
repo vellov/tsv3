@@ -21,6 +21,13 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
             $state.go("project", {projectId: d.data._id})
         });
     };
+
+    $scope.deleteProject = function(id){
+        projectService.deleteProject(id).then(function(d){
+            $scope.projects = d.data;
+        })
+    };
+
     $scope.toLink = function(projectId){
         return $location.protocol() + "://" +$location.host() + $state.href("troubleshoot",{projectId:projectId});
     };
