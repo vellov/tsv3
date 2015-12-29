@@ -3,14 +3,14 @@
     <div class="panel-body text-center">
         <p ng-bind-html="trustAsHtml(viewData.activeQuestion.content)"></p>
         <div ng-if="viewData.children.length > 1" ng-repeat="child in viewData.children | orderBy: 'position'">
-            <a href class="btn btn-primary w200 m-t-s" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: child._id})" ng-click="addForward()">{{child.title}}</a>
+            <a href class="btn btn-primary w200 m-t-s" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: child._id})">{{child.title}}</a>
         </div>
     </div>
 
     <div class="panel-footer">
         <div class="pull-left">
-            <a href ng-click="back()" ng-if="viewData.activeQuestion.parentId" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: viewData.activeQuestion.parentId})"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
-            <a href ng-click="addForward()" class="m-left-10" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: child._id})" ng-repeat="child in viewData.children" ng-if="viewData.children.length == 1">Edasi <i class="glyphicon glyphicon-arrow-right"></i></a>
+            <a href ng-if="viewData.activeQuestion.parentId" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: viewData.activeQuestion.parentId})"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
+            <a href class="m-left-10" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: child._id})" ng-repeat="child in viewData.children" ng-if="viewData.children.length == 1">Edasi <i class="glyphicon glyphicon-arrow-right"></i></a>
         </div>
         <div class="pull-right">
             <span class="text-muted">&#169; Vello Vaherpuu 2015, Tartu Ülikool</span>
