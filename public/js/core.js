@@ -66,8 +66,8 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             templateUrl: "templates/statistics.html",
             access: { requiredLogin: true},
             resolve: {
-                questions: function($stateParams, statisticsService){
-                    return statisticsService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
+                questions: function($stateParams, projectService){
+                    return projectService.getProjectQuestions($stateParams.projectId).then(function(d){return d.data;});
                 }
             }
         });

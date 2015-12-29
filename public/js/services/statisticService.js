@@ -29,8 +29,8 @@ appModule.factory("statisticsService", function($http){
             return $http.post("/api/questionStatistics/save", data);
         },
 
-        getProjectQuestions: function(projectId){
-            return $http.get("/api/questions/statistics/" + projectId);
+        getQuestionStatistics: function(questionId){
+            return $http.get("/api/questions/statistics/" + questionId);
         }
     }
 });

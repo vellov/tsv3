@@ -5,7 +5,7 @@ var moment 		        = require('moment');
 var AM                  = require('./modules/account-manager');
 var jwt                 = require('jsonwebtoken');
 var config              = require('./modules/config');
-
+var mongoose            = require('mongoose');
 function getUsers(res){
     User.find(function(err, users) {
 
@@ -258,59 +258,39 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/api/questions/statistics/:projectId', function(req, res){
-        Question.find({projectId:req.params.projectId},"parentId title position").lean().exec(function(err,results){
-           if(err){
-               res.send(err);
-           } else{
-               var sent = 0;
-               var rec = 0;
-               for(var i in results){
-                   sent++;
-                   Question.aggregate([
-                           { $match:{_id:results[i]._id} },
-                           { $unwind: "$statistics" },
-                           {
-                               $group: {
-                                   _id: "$statistics.type",
-                                   sum: { $sum: 1}
-                               }
-                           }],function(err, kala){
-                           //console.log(err,kala);
-                           //      res.json(kala);
-                           for (var j in kala){
-                               results[rec][kala[j]._id] = kala[j].sum;
-                           }
-                           //results[i].data = kala;
-                           //res.json(result);
-                           rec++;
-                           if(sent == rec){
-                               //console.log(sent,results)
-                               res.json(results);
-                           }
-                       }
-                   );
-               }
-           }
-        });
-        /*Question.aggregate([
+    app.get('/api/questions/statistics/:questionId', function(req, res){
+        Question.aggregate(
+            [
+                { $match: { _id: mongoose.Types.ObjectId(req.params.questionId) } },
+                { $unwind: "$statistics" },
                 {
-                    $match:{
-                        projectId: req.params.projectId
-                    }
-                },
-                {
-                    $group:{
-                        _id:"$statistics.type",
-                        test:{$push:"$statistics.type"},
-                        count: {$sum:1}
+                    $group: {
+                        _id: req.params.questionId,
+                        views: {
+                            $sum: {
+                                $cond:[ { $eq:["$statistics.type", "views"] }, 1, 0]
+                            }
+                        },
+                        back: {
+                            $sum: {
+                                $cond:[ { $eq:["$statistics.type", "back"] }, 1, 0]
+                            }
+                        },
+                        forward: {
+                            $sum: {
+                                $cond:[ { $eq:["$statistics.type", "forward"] }, 1, 0]
+                            }
+                        }
                     }
                 }
-            ], function(err,result){
-                console.log(err,result);
-                res.send(result);
+            ],function(err, results){
+                if(err){
+                    res.send(err);
+                } else {
+                    res.json(results[0]);
+                }
             }
-        )*/
+        );
     });
 
 	// application -------------------------------------------------------------
