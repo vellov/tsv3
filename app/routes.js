@@ -166,7 +166,7 @@ module.exports = function(app) {
     });
 
     app.get('/api/questions/:projectId', function(req, res){
-        Question.find({projectId:req.params.projectId},'_id parentId content title position', function(err, questions) {
+        Question.find({projectId:req.params.projectId},'_id parentId content title position projectId', function(err, questions) {
             if (err) {
                 res.send(err);
             } else {
