@@ -8,7 +8,7 @@ var appModule = angular.module('troubleshooting', [
     "ui.tree",
     "chart.js",
     "ngAnimate",
-    "anim-in-out"
+    "hj.gsapifyRouter"
 ]);
 appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
     //
