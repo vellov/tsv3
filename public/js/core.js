@@ -6,7 +6,9 @@ var appModule = angular.module('troubleshooting', [
     "userModule",
     "ngCkeditor",
     "ui.tree",
-    "chart.js"
+    "chart.js",
+    "ngAnimate",
+    "anim-in-out"
 ]);
 appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
     //
@@ -34,13 +36,21 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             url: "/admin",
             templateUrl: "templates/adminhome.html",
             controller: "adminController",
-            access: { requiredLogin: true }
+            access: { requiredLogin: true },
+            header:{
+                show: true,
+                back: false
+            }
         })
         .state("project",{
             url: "/admin/:projectId",
             controller:"projectController",
             templateUrl: "templates/projectEdit.html",
             access: { requiredLogin: true },
+            header:{
+                show: true,
+                back: true
+            },
             resolve: {
                 project: function($stateParams, projectService){
                     return projectService.getProjectById($stateParams.projectId).then(function(d){return d.data;});
@@ -80,6 +90,10 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             controller: "statisticsViewController",
             templateUrl: "templates/statistics.html",
             access: { requiredLogin: true},
+            header:{
+                show: true,
+                back: true
+            },
             resolve: {
                 questions: function($stateParams, projectService, $state){
                     return projectService.getProjectQuestions($stateParams.projectId).then(
@@ -115,5 +129,7 @@ appModule.run(function($rootScope, $state, AuthenticationService, $window) {
             $state.go("admin");
         }
     });
+
+    $rootScope.$state = $state;
 });
 

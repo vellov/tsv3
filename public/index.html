@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/signin.css">
     <link rel="stylesheet" href="css/angular-ui-tree.min.css">
     <link rel="stylesheet" href="css/angular-chart.css">
+    <link rel="stylesheet" href="css/anim-in-out.css">
     <link rel="stylesheet" href="css/main.css">
 
     <!-- load angular -->
@@ -28,6 +29,8 @@
     <script src="js/lib/list-to-tree/list-to-tree.js"></script>
     <script src="js/lib/angular/Chart.js"></script>
     <script src="js/lib/angular/angular-chart.js"></script>
+    <script src="js/lib/angular/angular-animate.min.js"></script>
+    <script src="js/lib/angular/anim-in-out.js"></script>
 
     <script src="js/core.js"></script> <!-- load our main application -->
     <script src="js/utils.js"></script> <!-- load our main application -->
@@ -41,11 +44,14 @@
     <script src="js/controllers/projectController.js"></script> <!-- load up our controller -->
     <script src="js/controllers/questionViewController.js"></script> <!-- load up our controller -->
     <script src="js/controllers/statisticsViewController.js"></script> <!-- load up our controller -->
+    <script src="js/controllers/headerController.js"></script> <!-- load our todo service -->
+
 </head>
 <!-- SET THE CONTROLLER -->
 <body>
 	<div class="container">
-        <div ui-view></div>
+        <div ng-include="'templates/userHeader.html'"></div>
+        <div ui-view class="anim-in-out" data-anim-speed="500" ></div>
 	</div>
 </body>
 </html>

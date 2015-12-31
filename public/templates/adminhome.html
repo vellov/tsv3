@@ -1,11 +1,4 @@
 <div>
-    <div class="text-right">
-        <h5>{{currentUser.firstname}} {{currentUser.lastname}}</h5>
-        <button class="btn btn-default" ng-click="logout()">Logi välja</button>
-    </div>
-
-    <hr/>
-
     <div class="row">
         <div class="col-md-4">
             <form novalidate name="projectForm" ng-submit="projectForm.$valid && saveProject()" ng-if="viewData.showForm">
@@ -50,8 +43,4 @@
             <div class="text-muted" ng-if="projects.length == 0">Pole veel teinud ühtegi :(</div>
         </div>
     </div>
-
-
-
-
 </div>

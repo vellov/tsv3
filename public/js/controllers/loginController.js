@@ -24,8 +24,4 @@ app.controller("loginController", ["$scope", "userService", function($scope, use
         $scope.viewData.showLogin = true;
         $scope.viewData.showRegister = false;
     }
-
-    $scope.logout = function(){
-        userService.logout();
-    }
 }]);
