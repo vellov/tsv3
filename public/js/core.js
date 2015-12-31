@@ -7,8 +7,7 @@ var appModule = angular.module('troubleshooting', [
     "ngCkeditor",
     "ui.tree",
     "chart.js",
-    "ngAnimate",
-    "hj.gsapifyRouter"
+    "ngAnimate"
 ]);
 appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
     //
@@ -133,3 +132,19 @@ appModule.run(function($rootScope, $state, AuthenticationService, $window) {
     $rootScope.$state = $state;
 });
 
+appModule.directive('stateClass', ['$state', "utils", function($state, utils) {
+    return {
+        link: function($scope, $element, $attrs) {
+            var stateName = $state.current.name || 'init',
+                normalizedStateName = 'state-' + stateName.replace(/\./g, '-');
+            $element.addClass(normalizedStateName);
+
+            $scope.$watch(function(){
+                return utils.getClass();
+            }, function(n,o){
+                $element.removeClass(o);
+                $element.addClass(n);
+            });
+        }
+    }
+}]);

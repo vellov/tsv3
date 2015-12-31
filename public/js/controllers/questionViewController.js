@@ -61,10 +61,10 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
     };
 
     function setClassRight(){
-        $scope.viewData.class = "right";
+        utils.setClass("right");
     }
 
     function setClassLeft(){
-        $scope.viewData.class = "left";
+        utils.setClass("left");
     }
 }]);

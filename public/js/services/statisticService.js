@@ -5,6 +5,7 @@ var appModule = angular.module('troubleshooting');
 
 appModule.factory("statisticsService", function($http){
     var lastViewData = { };
+    var stateClass = "left";
     return {
 
         getLastViewData: function(){

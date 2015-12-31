@@ -97,8 +97,7 @@
   min-width: 390px;
   left: 0;
   right: 0;
-  top: 140px;
-  margin: auto;
+  margin: 100px auto;
 }
 .panel-custom .panel-footer {
   background-color: #ffffff;
@@ -137,4 +136,25 @@ pre {
   text-align: justify;
   max-width: 75%;
   margin: auto;
+}
+.state-troubleshoot.ng-enter,
+.state-troubleshoot.ng-leave {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+}
+.state-troubleshoot.right.ng-enter {
+  -webkit-animation-name: fadeInLeft;
+  animation-name: fadeInLeft;
+}
+.state-troubleshoot.right.ng-leave {
+  -webkit-animation-name: fadeOutRight;
+  animation-name: fadeOutRight;
+}
+.state-troubleshoot.left.ng-enter {
+  -webkit-animation-name: fadeInRight;
+  animation-name: fadeInRight;
+}
+.state-troubleshoot.left.ng-leave {
+  -webkit-animation-name: fadeOutLeft;
+  animation-name: fadeOutLeft;
 }

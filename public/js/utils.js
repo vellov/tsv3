@@ -4,6 +4,7 @@
 var utilsModule = angular.module("utils",[]);
 
 utilsModule.factory("utils", [function(){
+    var stateClass = "left";
     return {
         findQuestionById: function (questions, questionId) {
             for (var i in questions) {
@@ -22,6 +23,14 @@ utilsModule.factory("utils", [function(){
                 }
             }
             return result;
+        },
+
+        getClass: function(){
+            return stateClass;
+        },
+
+        setClass: function(Class){
+            stateClass = Class;
         }
     }
 }]);

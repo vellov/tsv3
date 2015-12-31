@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/signin.css">
     <link rel="stylesheet" href="css/angular-ui-tree.min.css">
     <link rel="stylesheet" href="css/angular-chart.css">
+    <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/main.css">
 
     <!-- load angular -->
@@ -29,8 +30,6 @@
     <script src="js/lib/angular/Chart.js"></script>
     <script src="js/lib/angular/angular-chart.js"></script>
     <script src="js/lib/angular/angular-animate.min.js"></script>
-    <script src="js/lib/animation/TweenMax.min.js"></script>
-    <script src="js/lib/animation/angular-gsapify-router.js"></script>
 
     <script src="js/core.js"></script> <!-- load our main application -->
     <script src="js/utils.js"></script> <!-- load our main application -->
@@ -51,7 +50,7 @@
 <body>
 	<div class="container">
         <div ng-include="'templates/userHeader.html'"></div>
-        <div ui-view></div>
+        <div ui-view state-class></div>
 	</div>
 </body>
 </html>
