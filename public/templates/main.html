@@ -1,4 +1,4 @@
-<div class="panel panel-info panel-custom anim-slide-left anim-fade">
+<div class="panel panel-info panel-custom anim-slide-{{viewData.class}} anim-fade">
     <div class="panel-heading">{{viewData.activeQuestion.title}}</div>
     <div class="panel-body text-center">
         <p ng-bind-html="trustAsHtml(viewData.activeQuestion.content)"></p>

@@ -10,14 +10,35 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
             var oldQuestion = utils.findQuestionById(questions, statisticsService.getLastViewData().questionId);
 
             if(currentQuestion.parentId == oldQuestion._id){
+                setClassLeft();
                 statisticsService.addForward(oldQuestion._id);
             }
             else if(currentQuestion._id == oldQuestion.parentId){
                 statisticsService.addBack(oldQuestion._id);
+                setClassRight();
+            }
+        }
+    }
+
+    function isParentOrChild(currentId, toBeId){
+        var currentQuestion = utils.findQuestionById(questions, currentId);
+        var nextQuestion = utils.findQuestionById(questions, toBeId);
+
+        if(currentQuestion && nextQuestion){
+            if(currentQuestion.parentId == nextQuestion._id){
+                return "CHILD";
+            } else if(currentQuestion._id == nextQuestion.parentId){
+                return "PARENT";
             }
         }
     }
     $scope.$on("$stateChangeStart", function(event, nextRoute, nextParams, fromRoute, fromParams) {
+        var currentQuestionType = isParentOrChild(fromParams.questionId,nextParams.questionId);
+        if(currentQuestionType == "PARENT"){
+            setClassLeft();
+        } else if(currentQuestionType == "CHILD"){
+            setClassRight();
+        }
         statisticsService.setLastViewData(fromParams);
     });
 
@@ -39,4 +60,11 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
         return $sce.trustAsHtml(string);
     };
 
+    function setClassRight(){
+        $scope.viewData.class = "right";
+    }
+
+    function setClassLeft(){
+        $scope.viewData.class = "left";
+    }
 }]);
