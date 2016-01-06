@@ -10,10 +10,6 @@
 .w200 {
   width: 200px !important;
 }
-.min-w200 {
-  min-width: 200px;
-}
-
 .w100p {
   width: 100%;
 }
@@ -167,4 +163,26 @@ pre {
 .state-troubleshoot.left.ng-leave {
   -webkit-animation-name: fadeOutLeft;
   animation-name: fadeOutLeft;
+}
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.question-arrow {
+  width: 12px;
+  float: left;
+  margin-right: 20px;
+}
+.question-title {
+  width: calc(100% - 32px - 84px);
+  padding-right: 0;
+  float: left;
+}
+.question-title.no-arrow {
+  width: calc(100% - 84px);
+}
+.question-buttons {
+  width: 84px;
+  float: right;
 }
