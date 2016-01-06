@@ -7,7 +7,6 @@ var database = require('./config/database'); 			// load the database config
 var morgan   = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var bcrypt = require('bcrypt');
 
 // configuration ===============================================================
 mongoose.connect(database.url); 	// connect to mongoDB database on modulus.io

@@ -5,7 +5,6 @@
   "main": "server.js",
   "author": "Vello Vaherpuu",
   "dependencies": {
-    "bcrypt": "*",
     "body-parser": "~1.4.3",
     "express": "~4.6.1",
     "foreman": "1.4.1",
