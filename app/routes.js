@@ -32,7 +32,7 @@ function getUser(res, id){
 }
 
 function getUserProjects(userId, res){
-    Project.find({creatorUserId:userId, $or:[
+    Project.find({$or:[
         {
             "deleted": {
                 $exists:false
