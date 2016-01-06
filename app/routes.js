@@ -50,7 +50,7 @@ function getUserProjects(userId, res){
 }
 
 function findQuestiosnByProject(userId, projectId, callback){
-    Question.find({creatorUserId:userId, projectId:projectId}, callback);
+    Question.find({/*creatorUserId:userId,*/ projectId:projectId}, callback);
 }
 
 function deleteQuestionChildren(question, doneCallback){
