@@ -5,7 +5,9 @@ var userModule = angular.module('userModule', []);
 userModule.factory('userService', ['$http', "$window", "AuthenticationService", "$state", function($http, $window, AuthenticationService, $state) {
     return {
         getCurrentUser : function() {
-            return JSON.parse($window.sessionStorage.currentUser);
+            var user = JSON.parse($window.sessionStorage.currentUser);
+            if(!user) return;
+            return user;
         },
 
         create : function(formData) {
