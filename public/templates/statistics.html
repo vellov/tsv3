@@ -1,10 +1,16 @@
 <script type="text/ng-template" id="nodes_renderer.html">
-    <div class="list-group-item" ng-class="{'active':statistics.activeQuestionId == data._id}" ui-tree-handle>
-        <a class="btn btn-success btn-xs m-right-5" ng-if="data.child && data.child.length > 0" ng-click="toggle(this)">
-            <span class="glyphicon" ng-class="{'glyphicon-chevron-right':collapsed,'glyphicon-chevron-down':!collapsed}"></span>
-        </a>
-        {{data.title}}
-        <a class="pull-right btn btn-primary btn-xs m-left-5" href ng-click="switchView(data._id)"><i class="glyphicon glyphicon-signal"></i></a>
+    <div class="list-group-item row" ng-class="{'active':statistics.activeQuestionId == data._id}" ui-tree-handle>
+        <div class="question-arrow" ng-if="data.child && data.child.length > 0" >
+            <a class="btn btn-success btn-xs m-right-5" ng-click="toggle(this)">
+                <span class="glyphicon" ng-class="{'glyphicon-chevron-right':collapsed,'glyphicon-chevron-down':!collapsed}"></span>
+            </a>
+        </div>
+       <div class="text-truncate question-title">
+           {{data.title}}
+       </div>
+        <div class="question-buttons">
+            <a class="pull-right btn btn-primary btn-xs m-left-5" href ng-click="switchView(data._id)"><i class="glyphicon glyphicon-signal"></i></a>
+        </div>
     </div>
     <ol ui-tree-nodes="" ng-class="{'hidden':collapsed}" ng-model="data.child">
         <li ng-repeat="data in data.child" ui-tree-node ng-include="'nodes_renderer.html'"></li>
