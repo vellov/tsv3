@@ -49,7 +49,7 @@ function getUserProjects(userId, res){
     });
 }
 
-function findQuestiosnByProject(userId, projectId, callback){
+function findQuestionsByProject(userId, projectId, callback){
     Question.find({/*creatorUserId:userId,*/ projectId:projectId}, callback);
 }
 
@@ -229,11 +229,13 @@ module.exports = function(app) {
                         if(error){
                             res.send(error);
                         } else {
-                            findQuestiosnByProject(decoded._id, req.body.projectId, function(err, questions) {
-                                if (err)
-                                    res.send(err);
-                                res.json(questions);
-                            });
+                            Question.findById(req.body._id, function(err, result){
+                                if(err){
+                                    res.send(error);
+                                } else {
+                                    res.json(result);
+                                }
+                            })
                         }
 
                     });
@@ -268,7 +270,7 @@ module.exports = function(app) {
             } else {
                 Question.findByIdAndRemove(req.params.id, function(err, obj){
                     deleteQuestionChildren(obj, function(){
-                        findQuestiosnByProject(decoded._id, obj.projectId, function(err, questions) {
+                        findQuestionsByProject(decoded._id, obj.projectId, function(err, questions) {
                             if (err)
                                 res.send(err);
                             res.json(questions);

@@ -21,18 +21,9 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             data.parentId = event.dest.nodesScope.$nodeScope.$modelValue._id;
 
             var siblings = listToTree.GetItemById(data.parentId).child;
-            var sent = 0;
-            var back = 0;
             for(var i in siblings){
-                 sent++;
                  siblings[i].position = i;
-                /* TODO: FIX ME CHANGE POS ONLY NOT THE WHOLE LIST */
-                 projectService.saveQuestion(siblings[i]).then(function(d){
-                     back++;
-                     if(sent == back){
-                         $scope.questions = d.data;
-                     }
-                })
+                 projectService.saveQuestion(siblings[i]);
             }
 
         },
@@ -51,11 +42,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             data.position = 0;
         }
         projectService.saveQuestion(data).then(function(d){
-            if(data._id){
-                $scope.questions = d.data;
-            } else {
-                $scope.questions.push(d.data);
-            }
+            $scope.questions.push(d.data);
             $scope.projectEditData = { };
             $scope.showForm = false;
             delete $scope.viewData.activeId;
