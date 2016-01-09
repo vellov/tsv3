@@ -42,14 +42,26 @@
                 <label>Küsimuse pealkiri:</label>
                 <input type="text" class="form-control" ng-model="projectEditData.title" required>
             </div>
+
             <div class="form-group">
-                <label>Nupu pealkiri</label>
+                <label>Nupu pealkiri <i class="glyphicon glyphicon-info-sign text-info" uib-tooltip="Vaikimisi küsimuse pealkiri" tooltip-placement="right"></i></label>
                 <input type="text" class="form-control" ng-model="projectEditData.buttonText">
             </div>
+
+            <div class="checkbox" ng-if="projectEditData.parentId">
+                <label><input type="checkbox" ng-model="projectEditData.hasBackButton">Tagasi nupp</label>
+            </div>
+
+            <div class="form-group" ng-if="projectEditData.hasBackButton">
+                <label>Tagasi nupu pealkiri <i class="glyphicon glyphicon-info-sign text-info" uib-tooltip='Vaikimisi "Tagasi"' tooltip-placement="right"></i></label>
+                <input type="text" class="form-control" ng-model="projectEditData.backButtonText">
+            </div>
+
             <div class="form-group">
                 <label>Vaate sisu</label>
                 <textarea ckeditor="editorOptions" ng-model="projectEditData.content"></textarea>
             </div>
+
             <button class="btn btn-primary" type="submit">Salvesta</button>
         </form>
     </div>

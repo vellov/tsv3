@@ -1,6 +1,6 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", "$location", "statisticsService", function($scope, projectService, userService, project, questions, $location, statisticsService){
+app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", "$location", "utils", function($scope, projectService, userService, project, questions, $location, utils){
     $scope.currentUser = userService.getCurrentUser();
     $scope.project = project;
     $scope.questions = questions ? questions : [];
@@ -42,7 +42,17 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             data.position = 0;
         }
         projectService.saveQuestion(data).then(function(d){
-            $scope.questions.push(d.data);
+            if(data._id){
+                for (var i in $scope.questions){ //May need opt;
+                    if($scope.questions[i]._id == data._id){
+                        $scope.questions[i] = d.data;
+                        break;
+                    }
+                }
+            } else {
+                $scope.questions.push(d.data);
+            }
+
             $scope.projectEditData = { };
             $scope.showForm = false;
             delete $scope.viewData.activeId;

@@ -201,7 +201,7 @@ module.exports = function(app) {
            if(result.deleted){
                res.status(400).send({code: "1", description:"Deleted"});
            } else{
-               Question.find({projectId:req.params.projectId},'_id parentId content title position projectId buttonText', function(err, questions) {
+               Question.find({projectId:req.params.projectId},'_id parentId content title position projectId buttonText hasBackButton backButtonText', function(err, questions) {
                    if (err) {
                        res.send(err);
                    } else {
@@ -224,7 +224,9 @@ module.exports = function(app) {
                         content:req.body.content,
                         parentId: req.body.parentId,
                         position: req.body.position,
-                        buttonText: req.body.buttonText ? req.body.buttonText : ""
+                        buttonText: req.body.buttonText ? req.body.buttonText : "",
+                        hasBackButton: req.body.hasBackButton ? req.body.hasBackButton : false,
+                        backButtonText: req.body.backButtonText ? req.body.backButtonText : ""
                     }, function(error, result){
                         if(error){
                             res.send(error);
@@ -248,7 +250,9 @@ module.exports = function(app) {
                         content:req.body.content,
                         parentId:req.body.parentId ? req.body.parentId : "",
                         position:req.body.position ? req.body.position: 0,
-                        buttonText: req.body.buttonText ? req.body.buttonText : ""
+                        buttonText: req.body.buttonText ? req.body.buttonText : "",
+                        hasBackButton: req.body.hasBackButton ? req.body.hasBackButton : false,
+                        backButtonText: req.body.backButtonText ? req.body.backButtonText : ""
                     }, function(error, result){
                         if(error){
                             res.send(error);
