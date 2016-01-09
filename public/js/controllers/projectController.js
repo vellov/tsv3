@@ -26,6 +26,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             for(var i in siblings){
                  sent++;
                  siblings[i].position = i;
+                /* TODO: FIX ME CHANGE POS ONLY NOT THE WHOLE LIST */
                  projectService.saveQuestion(siblings[i]).then(function(d){
                      back++;
                      if(sent == back){
@@ -43,6 +44,12 @@ app.controller("projectController", ["$scope","projectService", "userService", "
 
     $scope.saveQuestion = function(){
         var data = angular.extend({projectId: project._id}, $scope.projectEditData);
+        var siblings = listToTree.GetItemById(data.parentId).child;
+        if(siblings){
+            data.position = siblings.length;
+        } else {
+            data.position = 0;
+        }
         projectService.saveQuestion(data).then(function(d){
             if(data._id){
                 $scope.questions = d.data;
