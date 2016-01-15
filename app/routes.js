@@ -201,7 +201,7 @@ module.exports = function(app) {
            if(result.deleted){
                res.status(400).send({code: "1", description:"Deleted"});
            } else{
-               Question.find({projectId:req.params.projectId},'_id parentId content title position projectId buttonText hasBackButton backButtonText hasFoundSolutionButton hasFoundSolutionText creatorComments shortDescription', function(err, questions) {
+               Question.find({projectId:req.params.projectId},'_id parentId content title position projectId buttonText hasBackButton backButtonText hasFoundSolutionButton type creatorComments shortDescription', function(err, questions) {
                    if (err) {
                        res.send(err);
                    } else {
@@ -228,7 +228,7 @@ module.exports = function(app) {
                         hasBackButton: req.body.hasBackButton ? req.body.hasBackButton : false,
                         backButtonText: req.body.backButtonText ? req.body.backButtonText : "",
                         hasFoundSolutionButton: req.body.hasFoundSolutionButton ? req.body.hasFoundSolutionButton : false,
-                        hasFoundSolutionText: req.body.hasFoundSolutionText ? req.body.hasFoundSolutionText: "",
+                        type: req.body.type ? req.body.type: "STEP",
                         creatorComments: req.body.creatorComments ? req.body.creatorComments : "",
                         shortDescription: req.body.shortDescription ? req.body.shortDescription : ""
                     }, function(error, result){
@@ -258,7 +258,7 @@ module.exports = function(app) {
                         hasBackButton: req.body.hasBackButton ? req.body.hasBackButton : false,
                         backButtonText: req.body.backButtonText ? req.body.backButtonText : "",
                         hasFoundSolutionButton: req.body.hasFoundSolutionButton ? req.body.hasFoundSolutionButton : false,
-                        hasFoundSolutionText: req.body.hasFoundSolutionText ? req.body.hasFoundSolutionText: "",
+                        type: req.body.type ? req.body.type: "STEP",
                         creatorComments: req.body.creatorComments ? req.body.creatorComments : "",
                         shortDescription: req.body.shortDescription ? req.body.shortDescription : ""
                     }, function(error, result){

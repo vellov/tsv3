@@ -53,6 +53,36 @@ app.controller("projectController", ["$scope","projectService", "userService", "
                 $scope.questions.push(d.data);
             }
 
+            if(data.hasFoundSolutionButton){
+                var successPageData = {
+                    projectId: project._id,
+                    parentId: d.data._id,
+                    content: $scope.projectEditData.hasFoundSolutionText,
+                    type: "SUCCESS",
+                    title:$scope.projectEditData.hasFoundSolutionTitle,
+                    position: 0
+                };
+
+                var successStep = utils.findSuccessStepByParentId($scope.questions, data._id);
+                if(successStep) {
+                    successPageData._id = successStep._id;
+                }
+
+                projectService.saveQuestion(successPageData).then(function(d){
+                    if(successStep) {
+                        for (var i in $scope.questions) { //May need opt;
+                            if ($scope.questions[i]._id == d.data._id) {
+                                $scope.questions[i] = d.data;
+                                break;
+                            }
+                        }
+                    } else {
+                        $scope.questions.push(d.data);
+                    }
+                });
+
+            }
+
             $scope.projectEditData = { };
             $scope.showForm = false;
             delete $scope.viewData.activeId;
@@ -60,10 +90,13 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     };
 
     $scope.add = function(id){
+        var siblings = listToTree.GetItemById(id).child;
+        var pos = siblings ? siblings.length : 0;
         var data = {
             parentId: id,
             title: "Uus samm",
-            projectId: project._id
+            projectId: project._id,
+            position:pos
         };
         projectService.saveQuestion(data).then(function(d){
            $scope.questions.push(d.data);
@@ -83,6 +116,11 @@ app.controller("projectController", ["$scope","projectService", "userService", "
         $scope.projectEditData = angular.copy(question);
         $scope.showForm = true;
         $scope.viewData.activeId = question._id;
+        if(question.hasFoundSolutionButton){
+            var successStep = utils.findSuccessStepByParentId($scope.questions, question._id);
+            $scope.projectEditData.hasFoundSolutionText = successStep.content;
+            $scope.projectEditData.hasFoundSolutionTitle = successStep.title;
+        }
     };
 
 

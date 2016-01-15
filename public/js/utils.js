@@ -51,6 +51,15 @@ utilsModule.factory("utils", ["$uibModal", function($uibModal){
             return result;
         },
 
+        findSuccessStepByParentId: function(questions, parentId) {
+            var siblings = this.findQuestionsByParentId(questions, parentId);
+            for (var i in siblings){
+                if(siblings[i].type == "SUCCESS"){
+                    return siblings[i];
+                }
+            }
+        },
+
         getClass: function(){
             return stateClass;
         },

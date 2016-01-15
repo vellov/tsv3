@@ -11,7 +11,7 @@ module.exports = mongoose.model('Question', {
     hasBackButton:  { type: Boolean, default: false},
     backButtonText: { type: String, default: ""},
     hasFoundSolutionButton: { type: Boolean, default: false},
-    hasFoundSolutionText: {type: String, default:""},
+    type:           {type:String, default: "STEP"},
     creatorComments: {type: String, default:""},
     shortDescription: {type: String, default:""},
     statistics: [{
