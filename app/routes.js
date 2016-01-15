@@ -181,17 +181,34 @@ module.exports = function(app) {
             if(err){
                 res.status(400).send("Something bad happened, contact with support");
             } else {
-                Project.create({
-                    creatorUserId: decoded._id,
-                    projectName: req.body.projectName
-                }, function(error, result){
-                    if(error){
-                        res.send(error);
-                    } else {
-                        res.json(result);
-                    }
+                if(req.body._id){
+                    Project.findOneAndUpdate({_id: req.body._id},{
+                            projectName:                req.body.projectName,
+                            tags:                       req.body.tags ? req.body.tags : [],
+                            defaultSuccessPageTitle:    req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
+                            defaultSuccessPageContent:  req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
+                            updatedAt: new Date()
+                    },
+                         function(err, result){
+                             if (err) {
+                                 res.send(err);
+                             } else {
+                                 res.json(result);
+                             }
+                    })
+                } else {
+                    Project.create({
+                        creatorUserId: decoded._id,
+                        projectName: req.body.projectName
+                    }, function (error, result) {
+                        if (error) {
+                            res.send(error);
+                        } else {
+                            res.json(result);
+                        }
 
-                })
+                    })
+                }
             }
         });
     });

@@ -16,25 +16,26 @@
     <div class="row m-t-s">
         <div class="col-md-8">
             <div class="row">
-                <div class="col-md-offset-1 col-md-3">
+                <div class="col-md-3">
                     <h5>Troubleshootingud</h5>
                 </div>
                 <div class="col-md-2">
                     <h5>Statistika</h5>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-md-offset-1">
                     <h5>Link</h5>
                 </div>
             </div>
-            <div class="row m-t-xs colored" ng-repeat="project in projects">
-                <div class="col-md-1">
-                    <a href class="btn btn-xs btn-danger" ng-click="deleteProject(project._id)"><i class="glyphicon glyphicon-remove"></i></a>
-                </div>
+            <div class="row m-t-xs colored" ng-repeat="project in projects | orderBy:'_id'">
+
                 <div class="col-md-3">
                     <a ui-sref="project({projectId: project._id})">{{project.projectName}}</a>
                 </div>
                 <div class="col-md-2">
-                  <a ui-sref="statistics({projectId: project._id})"> Statistika</a>
+                  <a ui-sref="statistics({projectId: project._id})">Statistika</a>
+                </div>
+                <div class="col-md-1">
+                    <span class="clickable" ui-sref="projectSettings({projectId: project._id})"><i class="glyphicon glyphicon-cog" uib-tooltip="Seaded" tooltip-placement="top"></i></span>
                 </div>
                 <div class="col-md-2">
                     <a href target="_blank" ui-sref="troubleshoot({projectId:project._id})">{{toLink(project._id)}}</a>

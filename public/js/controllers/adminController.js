@@ -17,8 +17,8 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
     });
 
     $scope.saveProject = function(){
-        projectService.saveProject($scope.projectData).then(function(d){ // save project and add project to data.
-            $state.go("project", {projectId: d.data._id})
+        projectService.saveProject($scope.projectData).then(function(d){ // save project and go to settings page.
+            $state.go("projectSettings", { projectId: d.data._id })
         });
     };
 

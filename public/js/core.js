@@ -7,7 +7,8 @@ var appModule = angular.module('troubleshooting', [
     "ngCkeditor",
     "ui.tree",
     "chart.js",
-    "ngAnimate"
+    "ngAnimate",
+    "ngTagsInput"
 ]);
 appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
     //
@@ -81,6 +82,28 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
                                 $state.go("deleted");
                             }
                         });
+                }
+            }
+        })
+        .state("projectSettings", {
+            url:"/settings/:projectId",
+            controller:"projectSettingsController",
+            templateUrl:"templates/projectSettings.html",
+            access: { requiredLogin: true },
+            header:{
+                show: true,
+                back: true
+            },
+            resolve: {
+                project: function($stateParams, projectService){
+                    return projectService.getProjectById($stateParams.projectId).then(function(d){
+                        return d.data;
+                    },
+                    function(e){
+                        if(e.data.code == 1){
+                            $state.go("deleted");
+                        }
+                    })
                 }
             }
         })

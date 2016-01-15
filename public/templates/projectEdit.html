@@ -24,7 +24,9 @@
     <!-- VASAK VAADE -->
     <div class="col-md-6 col-xs-6">
         <h5><a target="_blank" ui-sref="troubleshoot({projectId:project._id})">Eelvaade</a> </h5>
-        <h5>Küsimustik: {{project.projectName}}</h5>
+        <h5>Küsimustik: {{project.projectName}}
+            <span class="m-left-5 clickable" ui-sref="projectSettings({projectId: project._id})"><i class="glyphicon glyphicon-cog" uib-tooltip="Seaded" tooltip-placement="top"></i></span>
+        </h5>
 
         <div ng-if="questions.length == 0">
             <a href ng-click="add()">Lisa esimene küsimus <i class="glyphicon glyphicon-plus"></i></a>
@@ -63,6 +65,11 @@
                 <textarea ckeditor="editorOptions" ng-model="projectEditData.content"></textarea>
             </div>
 
+            <div class="form-group">
+                <label>Kommentaarid <i class="glyphicon glyphicon-info-sign text-info" uib-tooltip='Süsteemisisesed kommentaarid' tooltip-placement="right"></i></label>
+                <textarea class="form-control" rows="3" ng-model="projectEditData.creatorComments"></textarea>
+            </div>
+
             <div class="checkbox">
                 <label class="m-right-5"><input type="checkbox" ng-model="projectEditData.hasBackButton">Tagasi nupp</label>
                 <label><input type="checkbox" ng-model="projectEditData.hasFoundSolutionButton">Näita leidsin lahenduse nuppu? <i class="glyphicon glyphicon-info-sign text-info" uib-tooltip='Vaikimisi väärtuseid saab seadistada üldsätetes' tooltip-placement="right"></i></label>
@@ -80,13 +87,10 @@
             </div>
             <div class="form-group" ng-if="projectEditData.hasFoundSolutionButton">
                 <label>Õnnestumise lehe sisu <i class="glyphicon glyphicon-info-sign text-info"></i></label>
-                <textarea rows="3" class="form-control" ng-model="projectEditData.hasFoundSolutionText"></textarea>
+                <textarea ckeditor="editorOptions" ng-model="projectEditData.hasFoundSolutionText"></textarea>
             </div>
 
-            <div class="form-group">
-                <label>Kommentaarid <i class="glyphicon glyphicon-info-sign text-info" uib-tooltip='Süsteemisisesed kommentaarid' tooltip-placement="right"></i></label>
-                <textarea class="form-control" rows="3" ng-model="projectEditData.creatorComments"></textarea>
-            </div>
+
 
             <button class="btn btn-primary" type="submit">Salvesta</button>
         </form>
