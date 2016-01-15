@@ -10,6 +10,10 @@ module.exports = mongoose.model('Question', {
     buttonText:     { type: String, default: "" },
     hasBackButton:  { type: Boolean, default: false},
     backButtonText: { type: String, default: ""},
+    hasFoundSolutionButton: { type: Boolean, default: false},
+    hasFoundSolutionText: {type: String, default:""},
+    creatorComments: {type: String, default:""},
+    shortDescription: {type: String, default:""},
     statistics: [{
         type:       {type: String, default: ""},
         date:       {type: Date, default: ""}

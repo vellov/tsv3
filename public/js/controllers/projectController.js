@@ -56,32 +56,32 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             $scope.projectEditData = { };
             $scope.showForm = false;
             delete $scope.viewData.activeId;
-            delete $scope.viewData.addingId;
         })
     };
 
     $scope.add = function(id){
-        $scope.projectEditData = { };
-        $scope.showForm = true;
-        $scope.projectEditData.parentId = id;
-        delete $scope.viewData.activeId;
-        $scope.viewData.addingId = id;
+        var data = {
+            parentId: id,
+            title: "Uus samm",
+            projectId: project._id
+        };
+        projectService.saveQuestion(data).then(function(d){
+           $scope.questions.push(d.data);
+        });
     };
 
     $scope.delete = function(question){
-       if(question._confirmDelete){
-           projectService.deleteQuestion(question._id).then(function(d){
-               $scope.questions = d.data;
-           })
-       } else {
-           question._confirmDelete = true;
-       }
+       utils.confirm("Oled kindel, et tahad ära kustutada?", "Kustutamisel kaovad ka kõik alamsammud.",
+           function(){
+               projectService.deleteQuestion(question._id).then(function(d){
+                   $scope.questions = d.data;
+               });
+           }, null, "Kustuta", "Tagasi");
     };
 
     $scope.edit = function(question){
         $scope.projectEditData = angular.copy(question);
         $scope.showForm = true;
-        delete $scope.viewData.addingId;
         $scope.viewData.activeId = question._id;
     };
 

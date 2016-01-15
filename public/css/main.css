@@ -90,6 +90,15 @@
   padding-left: 100px;
   padding-right: 100px;
 }
+a.btn-link:hover,
+a.btn-link:focus,
+a.btn-link:active,
+a.btn-link:visited {
+  text-decoration: none;
+}
+.container {
+  width: 90%;
+}
 .attention-red {
   color: red;
 }
@@ -147,23 +156,29 @@ pre {
   margin-right: auto;
 }
 .state-troubleshoot.ng-enter,
-.state-troubleshoot.ng-leave {
+.state-troubleshootSuccess.ng-enter,
+.state-troubleshoot.ng-leave,
+.state-troubleshootSuccess.ng-leave {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
 }
-.state-troubleshoot.right.ng-enter {
+.state-troubleshoot.right.ng-enter,
+.state-troubleshootSuccess.right.ng-enter {
   -webkit-animation-name: fadeInLeft;
   animation-name: fadeInLeft;
 }
-.state-troubleshoot.right.ng-leave {
+.state-troubleshoot.right.ng-leave,
+.state-troubleshootSuccess.right.ng-leave {
   -webkit-animation-name: fadeOutRight;
   animation-name: fadeOutRight;
 }
-.state-troubleshoot.left.ng-enter {
+.state-troubleshoot.left.ng-enter,
+.state-troubleshootSuccess.left.ng-enter {
   -webkit-animation-name: fadeInRight;
   animation-name: fadeInRight;
 }
-.state-troubleshoot.left.ng-leave {
+.state-troubleshoot.left.ng-leave,
+.state-troubleshootSuccess.left.ng-leave {
   -webkit-animation-name: fadeOutLeft;
   animation-name: fadeOutLeft;
 }
@@ -178,14 +193,14 @@ pre {
   margin-right: 20px;
 }
 .question-title {
-  width: calc(100% - 32px - 84px);
+  width: calc(100% - 32px - 75px - 19px);
   padding-right: 0;
   float: left;
 }
 .question-title.no-arrow {
-  width: calc(100% - 84px);
+  width: calc(100% - 75px - 19px);
 }
 .question-buttons {
-  width: 84px;
+  width: 75px;
   float: right;
 }

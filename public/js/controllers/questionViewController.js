@@ -33,7 +33,7 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
         }
     }
     $scope.$on("$stateChangeStart", function(event, nextRoute, nextParams, fromRoute, fromParams) {
-        var currentQuestionType = isParentOrChild(fromParams.questionId,nextParams.questionId);
+        var currentQuestionType = isParentOrChild(fromParams.questionId, nextParams.questionId);
         if(currentQuestionType == "PARENT"){
             setClassLeft();
         } else if(currentQuestionType == "CHILD"){

@@ -117,6 +117,15 @@
   padding-right: 100px;
 
 }
+a.btn-link {
+  &:hover, &:focus,
+  &:active, &:visited{
+    text-decoration: none;
+  }
+}
+.container {
+  width: 90%;
+}
 
 .attention-red{
   color:red;
@@ -185,7 +194,7 @@ pre {
   margin-left: auto;
   margin-right: auto;
 }
-.state-troubleshoot {
+.state-troubleshoot, .state-troubleshootSuccess {
   &.ng-enter, &.ng-leave{
     -webkit-animation-duration: 1s;
     animation-duration: 1s;
@@ -226,15 +235,15 @@ pre {
   margin-right: 20px;
 }
 .question-title {
-  width: calc(~"100% - 32px - 84px");
+  width: calc(~"100% - 32px - 75px - 19px"); //32 = arrow, 75 = buttons, 19=drag-handle
   padding-right: 0;
   float:left;
   &.no-arrow {
-    width: calc(~"100% - 84px");
+    width: calc(~"100% - 75px - 19px");
   }
 }
 
 .question-buttons{
-  width:84px;
+  width:75px;
   float:right;
 }

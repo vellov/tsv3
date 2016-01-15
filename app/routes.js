@@ -201,7 +201,7 @@ module.exports = function(app) {
            if(result.deleted){
                res.status(400).send({code: "1", description:"Deleted"});
            } else{
-               Question.find({projectId:req.params.projectId},'_id parentId content title position projectId buttonText hasBackButton backButtonText', function(err, questions) {
+               Question.find({projectId:req.params.projectId},'_id parentId content title position projectId buttonText hasBackButton backButtonText hasFoundSolutionButton hasFoundSolutionText creatorComments shortDescription', function(err, questions) {
                    if (err) {
                        res.send(err);
                    } else {
@@ -226,7 +226,11 @@ module.exports = function(app) {
                         position: req.body.position,
                         buttonText: req.body.buttonText ? req.body.buttonText : "",
                         hasBackButton: req.body.hasBackButton ? req.body.hasBackButton : false,
-                        backButtonText: req.body.backButtonText ? req.body.backButtonText : ""
+                        backButtonText: req.body.backButtonText ? req.body.backButtonText : "",
+                        hasFoundSolutionButton: req.body.hasFoundSolutionButton ? req.body.hasFoundSolutionButton : false,
+                        hasFoundSolutionText: req.body.hasFoundSolutionText ? req.body.hasFoundSolutionText: "",
+                        creatorComments: req.body.creatorComments ? req.body.creatorComments : "",
+                        shortDescription: req.body.shortDescription ? req.body.shortDescription : ""
                     }, function(error, result){
                         if(error){
                             res.send(error);
@@ -252,7 +256,11 @@ module.exports = function(app) {
                         position:req.body.position ? req.body.position: 0,
                         buttonText: req.body.buttonText ? req.body.buttonText : "",
                         hasBackButton: req.body.hasBackButton ? req.body.hasBackButton : false,
-                        backButtonText: req.body.backButtonText ? req.body.backButtonText : ""
+                        backButtonText: req.body.backButtonText ? req.body.backButtonText : "",
+                        hasFoundSolutionButton: req.body.hasFoundSolutionButton ? req.body.hasFoundSolutionButton : false,
+                        hasFoundSolutionText: req.body.hasFoundSolutionText ? req.body.hasFoundSolutionText: "",
+                        creatorComments: req.body.creatorComments ? req.body.creatorComments : "",
+                        shortDescription: req.body.shortDescription ? req.body.shortDescription : ""
                     }, function(error, result){
                         if(error){
                             res.send(error);
