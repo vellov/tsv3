@@ -8,6 +8,7 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
         var currentQuestion = utils.findQuestionById(questions, questionId);
         if(statisticsService.getLastViewData().questionId){
             var oldQuestion = utils.findQuestionById(questions, statisticsService.getLastViewData().questionId);
+            if(!oldQuestion) return;
 
             if(currentQuestion.parentId == oldQuestion._id){
                 setClassLeft();

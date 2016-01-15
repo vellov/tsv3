@@ -1,6 +1,6 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("adminController", ["$scope", "userService","projectService", "$state", "$location", function($scope, userService, projectService, $state, $location){
+app.controller("adminController", ["$scope", "userService","projectService", "$state", "$location", "projects", function($scope, userService, projectService, $state, $location, projects){
     $scope.currentUser = userService.getCurrentUser();
     $scope.projectData = { };
     $scope.viewData = { };
@@ -11,10 +11,7 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
     $scope.logout = function(){
         userService.logout();
     };
-
-    projectService.getUserProjects().then(function(d){ // on login get all user projects
-        $scope.projects = d.data;
-    });
+    $scope.projects = projects;
 
     $scope.saveProject = function(){
         projectService.saveProject($scope.projectData).then(function(d){ // save project and go to settings page.
@@ -29,7 +26,7 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
     };
 
     $scope.toLink = function(projectId){
-        return $location.protocol() + "://" +$location.host() + $state.href("troubleshoot",{projectId:projectId});
+        return $location.protocol() + "://" +$location.host() + $state.href("troubleshoot",{ projectId: projectId });
     };
     $scope.toggleForm = function(){
         $scope.viewData.showForm = !$scope.viewData.showForm;

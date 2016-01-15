@@ -187,7 +187,8 @@ module.exports = function(app) {
                             tags:                       req.body.tags ? req.body.tags : [],
                             defaultSuccessPageTitle:    req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
                             defaultSuccessPageContent:  req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
-                            updatedAt: new Date()
+                            updatedAt:                  new Date(),
+                            pageTitle:                  req.body.pageTitle ? req.body.pageTitle : ""
                     },
                          function(err, result){
                              if (err) {

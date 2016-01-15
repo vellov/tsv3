@@ -10,6 +10,30 @@ var appModule = angular.module('troubleshooting', [
     "ngAnimate",
     "ngTagsInput"
 ]);
+
+appModule.controller("headCtrl", ["$scope", "Page", function($scope, Page){
+    $scope.$watch(function(){
+        return Page.title();
+    }, function(n){
+        $scope.title = n;
+    })
+}]);
+
+appModule.factory("Page", function(){
+    var title = "TÜ Troubleshooting";
+    return {
+        title: function(){
+            return title;
+        },
+        setTitle: function(newTitle){
+            title = newTitle
+        },
+        resetTitle: function(){
+            title = "TÜ Troubleshooting";
+        }
+    }
+});
+
 appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
     //
     // For any unmatched url, redirect to home
@@ -40,6 +64,13 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             header:{
                 show: true,
                 back: false
+            },
+            resolve: {
+                projects: function(projectService){
+                    return projectService.getUserProjects().then(function(d){ // on login get all user projects
+                        return d.data;
+                    });
+                }
             }
         })
         .state("project",{
@@ -72,7 +103,13 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
             templateUrl: "templates/main.html",
             access: { requiredLogin: false},
             resolve: {
-                questions: function($stateParams, projectService, $state){
+                questions: function($stateParams, projectService, $state, statisticsService, Page){
+                    if(statisticsService.getLastViewData().projectId != $stateParams.projectId ){
+                        projectService.getProjectById($stateParams.projectId).then(function(d){
+                            Page.setTitle(d.data.pageTitle ? d.data.pageTitle : d.data.projectName);
+                            console.log(d);
+                        })
+                    }
                     return projectService.getProjectQuestions($stateParams.projectId).then(
                         function(d){
                             return d.data;
@@ -138,7 +175,7 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
     $httpProvider.interceptors.push("TokenInterceptor");
 }]);
 
-appModule.run(function($rootScope, $state, AuthenticationService, $window) {
+appModule.run(function($rootScope, $state, AuthenticationService, $window, Page) {
     $rootScope.$on("$stateChangeStart", function(event, nextRoute, currentRoute) {
         //prevent admin pages for non users.
         if (nextRoute != null && nextRoute.access != null && nextRoute.access.requiredLogin && !AuthenticationService.isAuthenticated && !$window.sessionStorage.token) {
@@ -149,6 +186,10 @@ appModule.run(function($rootScope, $state, AuthenticationService, $window) {
         if(nextRoute != null && nextRoute.access.redirect && AuthenticationService.isAuthenticated && $window.sessionStorage.token){
             event.preventDefault();
             $state.go("admin");
+        }
+
+        if(nextRoute.name != "troubleshoot"){
+            Page.resetTitle();
         }
     });
 

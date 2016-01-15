@@ -1,23 +1,34 @@
 <div>
     <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Filtreeri</label>
+                <input type="text" class="form-control" ng-model="search.$">
+            </div>
+        </div>
         <div class="col-md-4">
             <form novalidate name="projectForm" ng-submit="projectForm.$valid && saveProject()" ng-if="viewData.showForm">
                 <div class="form-group">
-                    <label>Küsimustiku nimi:</label>
+                    <label>Murelahendaja nimi:</label>
                     <input class="form-control" type="text" ng-model="projectData.projectName" required>
                 </div>
-                <button type="button" class="btn btn-warning" ng-click="toggleForm()" ng-if="viewData.showForm">Tühista</button>
-                <button class="btn btn-success" type="submit">Salvesta</button>
+                <button class="btn btn-success pull-right" type="submit">Salvesta</button>
+                <button type="button" class="btn btn-warning pull-right m-right-5" ng-click="toggleForm()" ng-if="viewData.showForm">Tühista</button>
+
             </form>
-            <button type="button" class="btn btn-primary" ng-click="toggleForm()" ng-if="!viewData.showForm">Uus shoot <i class="glyphicon glyphicon-plus"></i></button>
+            <button type="button" class="btn btn-primary m-t-l" ng-click="toggleForm()" ng-if="!viewData.showForm">Lisa murelahendaja <i class="glyphicon glyphicon-plus"></i></button>
         </div>
+
     </div>
 
     <div class="row m-t-s">
         <div class="col-md-8">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <h5>Troubleshootingud</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Sildid / koodid</h5>
                 </div>
                 <div class="col-md-2">
                     <h5>Statistika</h5>
@@ -26,10 +37,13 @@
                     <h5>Link</h5>
                 </div>
             </div>
-            <div class="row m-t-xs colored" ng-repeat="project in projects | orderBy:'_id'">
+            <div class="row m-t-xs colored" ng-repeat="project in projects | filter:search |orderBy:'_id'">
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <a ui-sref="project({projectId: project._id})">{{project.projectName}}</a>
+                </div>
+                <div class="col-md-3">
+                    <span ng-repeat="tag in project.tags">{{tag.text}}{{$last ? "" : ", "}}</span>
                 </div>
                 <div class="col-md-2">
                   <a ui-sref="statistics({projectId: project._id})">Statistika</a>

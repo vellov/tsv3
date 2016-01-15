@@ -1,12 +1,12 @@
 <!doctype html>
 
 <html ng-app="troubleshooting">
-<head>
+<head ng-controller="headCtrl">
 	<!-- META -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
 
-	<title>TÜ Troubleshooting</title>
+	<title ng-bind="title"></title>
 
 	<!-- SCROLLS -->
 	<link rel="stylesheet" href="css/bootstrap.min.css"><!-- load bootstrap -->

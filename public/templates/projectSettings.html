@@ -9,6 +9,10 @@
             <tags-input ng-model="projectSettings.tags" placeholder="Lisa"></tags-input>
         </div>
         <div class="form-group">
+            <label>Lehe Pealkiri <i class="glyphicon glyphicon-info-sign text-info" uib-tooltip="Vaikimisi murelahendaja nimi" tooltip-placement="right"></i></label>
+            <input type="text" class="form-control" ng-model="projectSettings.pageTitle">
+        </div>
+        <div class="form-group">
             <label>Õnnestumise lehe pealkirja vaikeväärtus</label>
             <input type="text" class="form-control" ng-model="projectSettings.defaultSuccessPageTitle">
         </div>
