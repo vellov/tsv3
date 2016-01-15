@@ -10,10 +10,11 @@ function getUsers(res){
     User.find(function(err, users) {
 
         // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-        if (err)
+        if (err) {
             res.send(err)
-
-        res.json(users); // return all todos in JSON format
+        } else {
+            res.json(users);
+        }
     });
 };
 
@@ -23,11 +24,12 @@ function getUser(res, id){
     }, function(err, user){
         if(err){
             res.send(err);
+        } else {
+            res.json({
+                _id: user._id,
+                username: user.username
+            });
         }
-        res.json({
-            _id:user._id,
-            username: user.username
-        });
     });
 }
 
@@ -42,10 +44,11 @@ function getUserProjects(userId, res){
             deleted:false
         }
     ]},function(err, projects) {
-        if (err)
+        if (err) {
             res.send(err);
-
-        res.json(projects); // return all user projects in JSON format which are not deleted
+        } else {
+            res.json(projects); // return all user projects in JSON format which are not deleted
+        }
     });
 }
 
@@ -301,9 +304,11 @@ module.exports = function(app) {
                 Question.findByIdAndRemove(req.params.id, function(err, obj){
                     deleteQuestionChildren(obj, function(){
                         findQuestionsByProject(decoded._id, obj.projectId, function(err, questions) {
-                            if (err)
+                            if (err) {
                                 res.send(err);
-                            res.json(questions);
+                            } else {
+                                res.json(questions);
+                            }
                         });
                     });
                 });
