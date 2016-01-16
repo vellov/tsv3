@@ -56,34 +56,31 @@ function findQuestionsByProject(userId, projectId, callback){
     Question.find({/*creatorUserId:userId,*/ projectId:projectId}, callback);
 }
 
-function deleteQuestionChildren(question, doneCallback){
+function deleteAndReassignParent(question, doneCallback){
 
     var findChildren  = function(parentId, callback){
         Question.find({parentId: parentId}, callback);
     };
 
-    var deleteChild = function(id, callback){
-        Question.findByIdAndRemove(id, callback)
-    };
-
-    var count = 0;
-    var deleteChildren = function(parentId) {
-        findChildren(parentId, function (err, children)  {
-            count += children.length;
-            for (var i in children) {
-                deleteChildren(children[i]._id); // delete children
-                deleteChild(children[i]._id, function (err, child) { //delete itself
-                    count--;
-                    if(count == 0){
-                        doneCallback();
-                    }
-                })
-            }
-        })
-    };
+    function reassignParent(newParentId, children){
+        var length = children.length;
+        var count = 0;
+        for(var i in children){
+            Question.update({
+                _id: children[i]._id
+            }, {
+                parentId: newParentId
+            }, function(err,result){
+                count++;
+                if (count == length){
+                    doneCallback();
+                }
+            })
+        }
+    }
 
     findChildren(question._id, function(err, childs){
-        if(childs.length > 0) deleteChildren(question._id);
+        if(childs.length > 0) reassignParent(question.parentId, childs);
         else doneCallback();
     });
 }
@@ -242,7 +239,7 @@ module.exports = function(app) {
                 if(req.body._id){
                     Question.update({_id:req.body._id},{
                         title: req.body.title,
-                        content:req.body.content,
+                        content:req.body.content ? req.body.content : "",
                         parentId: req.body.parentId,
                         position: req.body.position,
                         buttonText: req.body.buttonText ? req.body.buttonText : "",
@@ -254,6 +251,7 @@ module.exports = function(app) {
                         shortDescription: req.body.shortDescription ? req.body.shortDescription : ""
                     }, function(error, result){
                         if(error){
+                            console.log(error);
                             res.send(error);
                         } else {
                             Question.findById(req.body._id, function(err, result){
@@ -272,7 +270,7 @@ module.exports = function(app) {
                         creatorUserId: decoded._id,
                         projectId: req.body.projectId,
                         title: req.body.title,
-                        content:req.body.content,
+                        content:req.body.content ? req.body.content : "",
                         parentId:req.body.parentId ? req.body.parentId : "",
                         position:req.body.position ? req.body.position: 0,
                         buttonText: req.body.buttonText ? req.body.buttonText : "",
@@ -302,7 +300,7 @@ module.exports = function(app) {
                 res.status(400).send("Something bad happened, contact with support");
             } else {
                 Question.findByIdAndRemove(req.params.id, function(err, obj){
-                    deleteQuestionChildren(obj, function(){
+                    deleteAndReassignParent(obj, function(){
                         findQuestionsByProject(decoded._id, obj.projectId, function(err, questions) {
                             if (err) {
                                 res.send(err);
@@ -378,6 +376,9 @@ module.exports = function(app) {
                             res.send(result);
                         }
                     });
+                }
+                if(result.length == 0){
+                    res.send(result);
                 }
             }
         })

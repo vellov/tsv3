@@ -34,11 +34,11 @@ appModule.factory("Page", function(){
     }
 });
 
-appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", function($stateProvider, $urlRouterProvider, $httpProvider) {
+appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", "$rootScopeProvider", function($stateProvider, $urlRouterProvider, $httpProvider, $rootScopeProvider) {
     //
     // For any unmatched url, redirect to home
     $urlRouterProvider.otherwise("/");
-
+    $rootScopeProvider.digestTtl(20); //just in case if someone makes larger tree than 20 :);
     $stateProvider
         .state("home", {
             url: "/",
@@ -147,7 +147,7 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
         .state("statistics", {
             url:"/admin/statistics/:projectId",
             controller: "statisticsViewController",
-            templateUrl: "templates/statistics_new.html",
+            templateUrl: "templates/statistics.html",
             access: { requiredLogin: true},
             header:{
                 show: true,

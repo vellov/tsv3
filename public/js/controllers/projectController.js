@@ -20,10 +20,12 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             var data = event.source.nodeScope.$modelValue;
             data.parentId = event.dest.nodesScope.$nodeScope.$modelValue._id;
 
-            var siblings = listToTree.GetItemById(data.parentId).child;
+            var siblings = listToTree.GetItemById(data.parentId).children;
             for(var i in siblings){
-                 siblings[i].position = i;
-                 projectService.saveQuestion(siblings[i]);
+                siblings[i].position = i;
+                projectService.saveQuestion(siblings[i]).then(function(d){
+                    updateData(d.data);
+                });
             }
 
         },
@@ -32,10 +34,18 @@ app.controller("projectController", ["$scope","projectService", "userService", "
         }
     };
 
+    function updateData(question){
+        for (var i in $scope.questions){ //May need opt;
+            if($scope.questions[i]._id == question._id){
+                $scope.questions[i] = question;
+                break;
+            }
+        }
+    }
 
     $scope.saveQuestion = function(){
         var data = angular.extend({projectId: project._id}, $scope.projectEditData);
-        var siblings = listToTree.GetItemById(data.parentId).child;
+        var siblings = listToTree.GetItemById(data.parentId).children;
         if(siblings){
             data.position = siblings.length;
         } else {
@@ -43,12 +53,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
         }
         projectService.saveQuestion(data).then(function(d){
             if(data._id){
-                for (var i in $scope.questions){ //May need opt;
-                    if($scope.questions[i]._id == data._id){
-                        $scope.questions[i] = d.data;
-                        break;
-                    }
-                }
+                updateData(d.data);
             } else {
                 $scope.questions.push(d.data);
             }
@@ -90,7 +95,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     };
 
     $scope.add = function(id){
-        var siblings = listToTree.GetItemById(id).child;
+        var siblings = listToTree.GetItemById(id).children;
         var pos = siblings ? siblings.length : 0;
         var data = {
             parentId: id,
@@ -104,7 +109,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     };
 
     $scope.delete = function(question){
-       utils.confirm("Oled kindel, et tahad ära kustutada?", "Kustutamisel kaovad ka kõik alamsammud.",
+       utils.confirm("Oled kindel, et tahad ära kustutada?", "Kustutamisel jäävad alamsammud alles :)",
            function(){
                projectService.deleteQuestion(question._id).then(function(d){
                    $scope.questions = d.data;
@@ -118,8 +123,10 @@ app.controller("projectController", ["$scope","projectService", "userService", "
         $scope.viewData.activeId = question._id;
         if(question.hasFoundSolutionButton){
             var successStep = utils.findSuccessStepByParentId($scope.questions, question._id);
-            $scope.projectEditData.hasFoundSolutionText = successStep.content;
-            $scope.projectEditData.hasFoundSolutionTitle = successStep.title;
+            if(successStep) {
+                $scope.projectEditData.hasFoundSolutionText = successStep.content;
+                $scope.projectEditData.hasFoundSolutionTitle = successStep.title;
+            }
         }
     };
 

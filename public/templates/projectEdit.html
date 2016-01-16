@@ -1,12 +1,12 @@
 <script type="text/ng-template" id="nodes_renderer.html">
     <div class="list-group-item row clickable" ng-class="{'active': viewData.activeId == data._id}" ng-click="edit(data)">
-        <div class="question-arrow" ng-if="data.child && data.child.length > 0">
+        <div class="question-arrow" ng-if="(data.children && data.children.length > 1) || (data.children.length == 1 && data.children[0].type != 'SUCCESS') ">
             <a class="btn btn-success btn-xs m-right-5" ng-click="toggle(this); $event.stopPropagation();">
                 <span class="glyphicon" ng-class="{'glyphicon-chevron-right':collapsed,'glyphicon-chevron-down':!collapsed}"></span>
             </a>
         </div>
         <i class="glyphicon glyphicon-th" ui-tree-handle uib-tooltip='Liiguta' tooltip-placement="top"></i>
-        <div class="text-truncate question-title m-left-5" ng-class="{'no-arrow':!(data.child && data.child.length > 0)}" uib-tooltip="{{data.title}}" tooltip-placement="top" >
+        <div class="text-truncate question-title m-left-5" ng-class="{'no-arrow':!(data.children && data.children.length > 0)}" uib-tooltip="{{data.title}}" tooltip-placement="top" >
             <span><b>{{data.shortDescription}}</b> {{data.title}}</span>
         </div>
         <div class="question-buttons">
@@ -15,8 +15,8 @@
             <i class="glyphicon glyphicon-comment pull-right m-right-5" ng-if="data.creatorComments" uib-tooltip="{{data.creatorComments}}" tooltip-placement="top"></i>
         </div>
     </div>
-    <ol ui-tree-nodes="" ng-class="{'hidden':collapsed}" ng-model="data.child">
-        <li ng-repeat="data in data.child | filter:{type:'STEP'}:true" ui-tree-node  ng-include="'nodes_renderer.html'"></li>
+    <ol ui-tree-nodes="" ng-class="{'hidden':collapsed}" ng-model="data.children">
+        <li ng-repeat="data in data.children | filter:{type:'STEP'}:true" ui-tree-node  ng-include="'nodes_renderer.html'"></li>
     </ol>
 </script>
 

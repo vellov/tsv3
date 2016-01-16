@@ -245,4 +245,17 @@ tags-input .tags .tag-item {
   stroke: #ccc;
   stroke-width: 2px;
 }
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: auto;
+  height: auto;
+  padding: 3px 8px;
+  font: 12px sans-serif;
+  background: black;
+  border-radius: .25rem;
+  pointer-events: none;
+  color: white;
+}
 /* TREEE SVG END*/
