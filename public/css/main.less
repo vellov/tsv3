@@ -252,3 +252,61 @@ tags-input .tags .tag-item{
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
+.statistics-container {
+  text-align: center;
+  .statistics-box-row {
+    display:flex;
+    flex-direction: row;
+    .statistics-rounded-box {
+      border-radius: 25px;
+      border: 2px solid black;
+      padding: 20px;
+      width: 200px;
+      height: 150px;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      .content {
+        align-self: center;
+      }
+    }
+  }
+}
+
+/* TREEE SVG */
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+
+.node text {
+  font: 12px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+
+/* TREEE SVG END*/
+

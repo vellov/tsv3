@@ -41,7 +41,7 @@ LTT = (function() {
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             item = _ref[_i];
             if (item[this.key_parent] === parent) {
-                if(!item.child) item.child = [];
+                if(!item.children) item.children = [];
                 result.push(item);
             }
         }
@@ -61,20 +61,20 @@ LTT = (function() {
     };
 
     LTT.prototype.GetTree = function() {
-        var child, i, obj, parentId, result, _i, _j, _len, _len1, _ref;
+        var children, i, obj, parentId, result, _i, _j, _len, _len1, _ref;
         result = [];
         _ref = this.groupParent;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             parentId = _ref[_i];
             obj = this.GetItemById(parentId);
-            child = this.GetParentItems(parentId);
+            children = this.GetParentItems(parentId);
             if (obj === false) {
-                for (_j = 0, _len1 = child.length; _j < _len1; _j++) {
-                    i = child[_j];
+                for (_j = 0, _len1 = children.length; _j < _len1; _j++) {
+                    i = children[_j];
                     result.push(i);
                 }
             } else {
-                obj.child = child;
+                obj.children = children;
             }
         }
         return result;

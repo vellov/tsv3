@@ -147,15 +147,15 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", funct
         .state("statistics", {
             url:"/admin/statistics/:projectId",
             controller: "statisticsViewController",
-            templateUrl: "templates/statistics.html",
+            templateUrl: "templates/statistics_new.html",
             access: { requiredLogin: true},
             header:{
                 show: true,
                 back: true
             },
             resolve: {
-                questions: function($stateParams, projectService, $state){
-                    return projectService.getProjectQuestions($stateParams.projectId).then(
+                questions: function($stateParams, statisticsService, $state){
+                    return statisticsService.getQuestionStatistics($stateParams.projectId).then(
                         function(d){
                             return d.data;
                         },

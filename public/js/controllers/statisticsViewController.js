@@ -6,13 +6,26 @@ var app = window.angular.module("troubleshooting");
 app.controller("statisticsViewController", ["$scope", "questions", "statisticsService","utils", function($scope, questions, statisticsService, utils) {
     $scope.statistics = {};
     $scope.sortedData = {};
-    $scope.labels = ["Edasi mindud", "Tagasi mindud", "Vaadatud"];
+    $scope.labels = ["Vaadatud"];
+    var listToTree = new LTT(questions, {
+            key_id: "_id",
+            key_parent: "parentId",
+            position: "position"
+        }
+    );
+    console.log(questions);
+    $scope.questions = listToTree.GetTree();
+
+    $scope.d3TreeOpts = {
+        width:1000,
+        height:1000
+    };
 
     //DOUGHNOT CHART OPTS
     /*$scope.chartOptions= {
      legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%>: <%=segments[i].value%><%}%></li><%}%></ul>"
      };*/
-
+/*
     var listToTree = new LTT(questions, {
             key_id: "_id",
             key_parent: "parentId",
@@ -36,6 +49,6 @@ app.controller("statisticsViewController", ["$scope", "questions", "statisticsSe
         statisticsService.getQuestionStatistics(questionId).then(function (d) {
             assignData(d.data);
         });
-    };
+    };*/
 
 }]);

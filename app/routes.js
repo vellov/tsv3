@@ -347,14 +347,9 @@ module.exports = function(app) {
                                 $cond:[ { $eq:["$statistics.type", "views"] }, 1, 0]
                             }
                         },
-                        back: {
+                        foundSolution: {
                             $sum: {
-                                $cond:[ { $eq:["$statistics.type", "back"] }, 1, 0]
-                            }
-                        },
-                        forward: {
-                            $sum: {
-                                $cond:[ { $eq:["$statistics.type", "forward"] }, 1, 0]
+                                $cond:[ { $eq:["$statistics.type", "foundSolution"] }, 1, 0]
                             }
                         }
                     }
@@ -369,6 +364,25 @@ module.exports = function(app) {
         );
     });
 
+    app.get('/api/project/statistics/:projectId', function(req, res){
+        Question.find({projectId: req.params.projectId},'_id parentId title position hasFoundSolutionButton type', function(err, result){
+            if(err){
+                res.send(err);
+            } else {
+                var sent = 0;
+                for(var i in result){
+                    var question = result[i];
+                    getQuestionStatistics(question, function(){
+                        sent++;
+                        if(sent == result.length){
+                            res.send(result);
+                        }
+                    });
+                }
+            }
+        })
+    });
+
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {
 		res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
@@ -379,6 +393,38 @@ module.exports = function(app) {
 
 
 };
+
+function getQuestionStatistics(question, callback){
+    var qId = question._id;
+    Question.aggregate(
+        [
+            { $match: { _id: qId } },
+            { $unwind: "$statistics" },
+            {
+                $group: {
+                    _id: qId,
+                    views: {
+                        $sum: {
+                            $cond:[ { $eq:["$statistics.type", "views"] }, 1, 0]
+                        }
+                    },
+                    foundSolution: {
+                        $sum: {
+                            $cond:[ { $eq:["$statistics.type", "foundSolution"] }, 1, 0]
+                        }
+                    }
+                }
+            }
+        ],function(err, results){
+            if(err){
+                return err;
+            } else {
+                question.set("statisticsData", results[0], {strict:false});
+                callback();
+            }
+        }
+    );
+}
 
 function verifyToken(token, callback){
     jwt.verify(token.split(" ")[1], config.secretToken, callback);
