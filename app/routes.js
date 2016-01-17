@@ -336,38 +336,8 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/api/questions/statistics/:questionId', function(req, res){
-        Question.aggregate(
-            [
-                { $match: { _id: mongoose.Types.ObjectId(req.params.questionId) } },
-                { $unwind: "$statistics" },
-                {
-                    $group: {
-                        _id: req.params.questionId,
-                        views: {
-                            $sum: {
-                                $cond:[ { $eq:["$statistics.type", "views"] }, 1, 0]
-                            }
-                        },
-                        foundSolution: {
-                            $sum: {
-                                $cond:[ { $eq:["$statistics.type", "foundSolution"] }, 1, 0]
-                            }
-                        }
-                    }
-                }
-            ],function(err, results){
-                if(err){
-                    res.send(err);
-                } else {
-                    res.json(results[0]);
-                }
-            }
-        );
-    });
-
     app.get('/api/project/statistics/:projectId', function(req, res){
-        Question.find({projectId: req.params.projectId},'_id parentId title position hasFoundSolutionButton type', function(err, result){
+        Question.find({projectId: req.params.projectId, type:"STEP"},'_id parentId title position hasFoundSolutionButton', function(err, result){
             if(err){
                 res.send(err);
             } else {
@@ -394,7 +364,6 @@ module.exports = function(app) {
 	});
 
 
-    // PROJECTS (questions)
 
 
 };
