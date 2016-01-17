@@ -64,7 +64,8 @@ app.controller("projectController", ["$scope","projectService", "userService", "
                     parentId: d.data._id,
                     content: $scope.projectEditData.hasFoundSolutionText ? $scope.projectEditData.hasFoundSolutionText : project.defaultSuccessPageContent,
                     type: "SUCCESS",
-                    title:$scope.projectEditData.hasFoundSolutionTitle ? $scope.projectEditData.hasFoundSolutionTitle : project.defaultSuccessPageTitle,
+                    title: $scope.projectEditData.hasFoundSolutionTitle ? $scope.projectEditData.hasFoundSolutionTitle : project.defaultSuccessPageTitle,
+                    buttonText:  $scope.projectEditData.hasFoundSolutionButtonText ? $scope.hasFoundSolutionButtonText : project.defaultSuccessPageButtonText,
                     position: 0
                 };
 
@@ -126,7 +127,12 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             if(successStep) {
                 $scope.projectEditData.hasFoundSolutionText = successStep.content;
                 $scope.projectEditData.hasFoundSolutionTitle = successStep.title;
+                $scope.projectEditData.hasFoundSolutionButtonText = successStep.buttonText;
             }
+        } else {
+            $scope.projectEditData.hasFoundSolutionText =  project.defaultSuccessPageContent;
+            $scope.projectEditData.hasFoundSolutionTitle = project.defaultSuccessPageTitle;
+            $scope.projectEditData.hasFoundSolutionButtonText = project.defaultSuccessPageButtonText;
         }
     };
 

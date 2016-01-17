@@ -12,10 +12,8 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
 
             if(currentQuestion.parentId == oldQuestion._id){
                 setClassLeft();
-                statisticsService.addForward(oldQuestion._id);
             }
             else if(currentQuestion._id == oldQuestion.parentId){
-                statisticsService.addBack(oldQuestion._id);
                 setClassRight();
             }
         }
@@ -68,4 +66,10 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
     function setClassLeft(){
         utils.setClass("left");
     }
+
+    $scope.buttonClicked = function(question){
+        if(question.type == "SUCCESS"){
+            statisticsService.addFoundSolution(question.parentId);
+        }
+    };
 }]);

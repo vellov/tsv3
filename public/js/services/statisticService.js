@@ -24,18 +24,10 @@ appModule.factory("statisticsService", function($http){
             return $http.post("/api/questionStatistics/save", data);
         },
 
-        addForward: function(questionId){
+        addFoundSolution: function(questionId){
             var data = {
                 questionId: questionId,
-                type : "forward"
-            };
-            return $http.post("/api/questionStatistics/save", data);
-        },
-
-        addBack: function(questionId){
-            var data = {
-                questionId: questionId,
-                type : "back"
+                type : "foundSolution"
             };
             return $http.post("/api/questionStatistics/save", data);
         },

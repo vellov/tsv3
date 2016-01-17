@@ -187,6 +187,7 @@ module.exports = function(app) {
                             tags:                       req.body.tags ? req.body.tags : [],
                             defaultSuccessPageTitle:    req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
                             defaultSuccessPageContent:  req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
+                            defaultSuccessPageButtonText: req.body.defaultSuccessPageButtonText ? req.body.defaultSuccessPageButtonText : "",
                             updatedAt:                  new Date(),
                             pageTitle:                  req.body.pageTitle ? req.body.pageTitle : ""
                     },
@@ -200,7 +201,10 @@ module.exports = function(app) {
                 } else {
                     Project.create({
                         creatorUserId: decoded._id,
-                        projectName: req.body.projectName
+                        projectName: req.body.projectName,
+                        defaultSuccessPageTitle:    req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
+                        defaultSuccessPageContent:  req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
+                        defaultSuccessPageButtonText: req.body.defaultSuccessPageButtonText ? req.body.defaultSuccessPageButtonText : "",
                     }, function (error, result) {
                         if (error) {
                             res.send(error);

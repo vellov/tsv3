@@ -10,6 +10,7 @@ var projectSchema = new Schema({
     tags:                      { type: Array, default: [] },
     defaultSuccessPageTitle:   { type: String, default: "" },
     defaultSuccessPageContent: { type: String, default: "" },
+    defaultSuccessPageButtonText: { type: String, default: "" },
     pageTitle:                 { type: String, default: ""},
     createdAt:                 { type: Date },
     updatedAt:                 { type: Date }

@@ -14,7 +14,11 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
     $scope.projects = projects;
 
     $scope.saveProject = function(){
-        projectService.saveProject($scope.projectData).then(function(d){ // save project and go to settings page.
+        var data = angular.copy($scope.projectData);
+        data.defaultSuccessPageTitle = "Sain korda";
+        data.defaultSuccessPageButtonText = "Sain korda";
+        data.defaultSuccessPageContent = "<p>Hea töö! </p>";
+        projectService.saveProject(data).then(function(d){ // save project and go to settings page.
             $state.go("projectSettings", { projectId: d.data._id })
         });
     };
