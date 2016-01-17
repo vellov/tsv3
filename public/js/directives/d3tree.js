@@ -155,6 +155,7 @@ app.directive("d3Tree", function(){
 
                nodeUpdate.select("circle")
                    .attr("r", 10)
+                   .attr("class", function(d){ return d.hasFoundSolutionButton ? "hasSuccessPage" : ""})
                    .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
                nodeUpdate.select("text")

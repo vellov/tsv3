@@ -22,36 +22,36 @@
     </div>
 
     <div class="row m-t-s">
-        <div class="col-md-8">
+        <div class="col-md-12 col-xs-12">
             <div class="row">
-                <div class="col-md-4">
-                    <h5>Troubleshootingud</h5>
+                <div class="col-md-3 col-xs-3">
+                    <h5>Murelahendajad</h5>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2 col-xs-2">
                     <h5>Sildid / koodid</h5>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-xs-2">
                     <h5>Statistika</h5>
                 </div>
-                <div class="col-md-2 col-md-offset-1">
+                <div class="col-md-2 col-md-offset-1 col-xs-2 col-xs-offset-1">
                     <h5>Link</h5>
                 </div>
             </div>
             <div class="row m-t-xs colored" ng-repeat="project in projects | filter:search |orderBy:'_id'">
 
-                <div class="col-md-4">
+                <div class="col-md-3 col-xs-3">
                     <a ui-sref="project({projectId: project._id})">{{project.projectName}}</a>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2 col-xs-2">
                     <span ng-repeat="tag in project.tags">{{tag.text}}{{$last ? "" : ", "}}</span>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-xs-2">
                   <a ui-sref="statistics({projectId: project._id})">Statistika</a>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 col-xs-1">
                     <span class="clickable" ui-sref="projectSettings({projectId: project._id})"><i class="glyphicon glyphicon-cog" uib-tooltip="Seaded" tooltip-placement="top"></i></span>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4 col-xs-4 text-truncate">
                     <a href target="_blank" ui-sref="troubleshoot({projectId:project._id})">{{toLink(project._id)}}</a>
                 </div>
             </div>

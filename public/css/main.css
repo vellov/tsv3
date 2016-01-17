@@ -237,6 +237,9 @@ tags-input .tags .tag-item {
   stroke: steelblue;
   stroke-width: 3px;
 }
+.node circle.hasSuccessPage {
+  stroke: #5cb85c;
+}
 .node text {
   font: 12px sans-serif;
 }
