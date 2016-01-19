@@ -16,7 +16,7 @@
         </div>
     </div>
     <ol ui-tree-nodes="" ng-class="{'hidden':collapsed}" ng-model="data.children">
-        <li ng-repeat="data in data.children | filter:{type:'STEP'}:true" ui-tree-node  ng-include="'nodes_renderer.html'"></li>
+        <li ng-repeat="data in data.children" ui-tree-node  ng-include="'nodes_renderer.html'"></li>
     </ol>
 </script>
 

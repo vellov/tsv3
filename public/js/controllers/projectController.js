@@ -46,10 +46,12 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     $scope.saveQuestion = function(){
         var data = angular.extend({projectId: project._id}, $scope.projectEditData);
         var siblings = listToTree.GetItemById(data.parentId).children;
-        if(siblings){
-            data.position = siblings.length;
-        } else {
-            data.position = 0;
+        if(!data._id) {
+            if (siblings) {
+                data.position = siblings.length;
+            } else {
+                data.position = 0;
+            }
         }
         projectService.saveQuestion(data).then(function(d){
             if(data._id){
@@ -137,11 +139,12 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     };
 
 
-    $scope.logout = function(){
+    $scope.logout = function() {
         userService.logout();
     };
 
-    var listToTree;
+    var listToTree; //contains all questions
+    var sortedTree; // doesn't contain success questions
     $scope.$watch(function(){
         return $scope.questions;
     }, function(n){
@@ -152,7 +155,19 @@ app.controller("projectController", ["$scope","projectService", "userService", "
                 position: "position"
             }
         );
-        $scope.sortedData = listToTree.GetTree();
+        var arr = [];
+        for(var i in n){
+            if(n[i].type != "SUCCESS"){
+                arr.push(n[i]);
+            }
+        }
+        sortedTree = new LTT(arr,{
+                key_id: "_id",
+                key_parent: "parentId",
+                position: "position"
+            }
+        );
+        $scope.sortedData = sortedTree.GetTree();
     },true);
 
 }]);
