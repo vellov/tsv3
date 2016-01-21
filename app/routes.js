@@ -6,6 +6,7 @@ var AM                  = require('./modules/account-manager');
 var jwt                 = require('jsonwebtoken');
 var config              = require('./modules/config');
 var mongoose            = require('mongoose');
+var userAccessService   = require('./modules/userAccessService');
 function getUsers(res){
     User.find(function(err, users) {
 
@@ -34,21 +35,10 @@ function getUser(res, id){
 }
 
 function getUserProjects(userId, res){
-    Project.find({$or:[
-        {
-            "deleted": {
-                $exists:false
-            }
-        },
-        {
-            deleted:false
-        }
-    ]},function(err, projects) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.json(projects); // return all user projects in JSON format which are not deleted
-        }
+    userAccessService.findProjectsWithAccess(userId, function(projects){
+        res.json(projects);
+    }, function(err){
+        res.send(err);
     });
 }
 
@@ -159,7 +149,7 @@ module.exports = function(app) {
                 if(err){
                     res.send(err);
                 } else {
-                    project.softdelete(function(err,deleted){
+                    project.softdelete(function(err, deleted){
                         getUserProjects(decoded._id, res);
                     })
                 }
@@ -357,6 +347,30 @@ module.exports = function(app) {
             }
         })
     });
+
+   /* USER ACCESS PART */
+    app.post("/api/users/addAccess", function(req, res){
+        verifyToken(req.headers.authorization, function(err, decoded){
+            if(err) {
+                res.send(err);
+            } else {
+                User.find({email: req.body.email}, function(err, user){
+                    if(err){
+                        res.send(err);
+                    } else if(user.length > 1){
+                        userAccessService.saveAccess(userId, req, res);
+                    } else {
+                        res.status(400).send({code: "2", description: "User not found!"});
+                    }
+
+                })
+            }
+        });
+
+    });
+
+
+
 
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {

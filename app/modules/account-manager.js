@@ -24,9 +24,9 @@ exports.manualLogin = function(username, pass, callback)
 
 exports.addNewAccount = function(newData, callback)
 {
-    User.findOne({username: newData.username}, function(e, o) {
+    User.findOne({$or:[{username: newData.username},{email: newData.email}]}, function(e, o) {
         if (o){
-            callback('username-taken');
+            callback('username or email taken');
         } else{
             saltAndHash(newData.password, function(hash){
                 newData.password = hash;

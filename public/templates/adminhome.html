@@ -50,6 +50,7 @@
                 </div>
                 <div class="col-md-1 col-xs-1">
                     <span class="clickable" ui-sref="projectSettings({projectId: project._id})"><i class="glyphicon glyphicon-cog" uib-tooltip="Seaded" tooltip-placement="top"></i></span>
+                    <span class="clickable" ng-click="addAccess(project._id)"><i class="glyphicon glyphicon-user" uib-tooltip="Jaga teistega" tooltip-placement="top"></i></span>
                 </div>
                 <div class="col-md-4 col-xs-4 text-truncate">
                     <a href target="_blank" ui-sref="troubleshoot({projectId:project._id})">{{toLink(project._id)}}</a>

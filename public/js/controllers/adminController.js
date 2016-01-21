@@ -30,10 +30,14 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
     };
 
     $scope.toLink = function(projectId){
-        return $location.protocol() + "://" +$location.host() + $state.href("troubleshoot",{ projectId: projectId });
+        return $location.protocol() + "://" + $location.host() + $state.href("troubleshoot", { projectId: projectId });
     };
     $scope.toggleForm = function(){
         $scope.viewData.showForm = !$scope.viewData.showForm;
+    };
+
+    $scope.addAccess = function(projectId){
+        userService.addAccess(projectId);
     }
 
 }]);

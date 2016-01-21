@@ -18,7 +18,7 @@ userModule.factory('userService', ['$http', "$window", "AuthenticationService", 
             return $http.delete('/api/users/' + id);
         },
 
-        login: function(formData){
+        login: function(formData) {
             return $http.post('/api/users/login', formData).then(function(d){
                 $window.sessionStorage.token = d.data.token;
                 $window.sessionStorage.currentUser = JSON.stringify(d.data.user);
@@ -29,14 +29,14 @@ userModule.factory('userService', ['$http', "$window", "AuthenticationService", 
             });
         },
 
-        logout: function(){
+        logout: function() {
             AuthenticationService.isAuthenticated = false;
             delete $window.sessionStorage.token;
             delete $window.sessionStorage.currentUser;
             $state.go("login");
         },
 
-        register: function(formData){
+        register: function(formData) {
             return $http.post('/api/users/registerUser', formData).then(function(d){
                 $window.sessionStorage.token = d.data.token;
                 $window.sessionStorage.currentUser = JSON.stringify(d.data.user);
@@ -47,6 +47,10 @@ userModule.factory('userService', ['$http', "$window", "AuthenticationService", 
                     alert("Kasutajanimi juba olemas");
                 }
             });
+        },
+
+        addAccess: function(email) {
+            return $http.post('/api/users/addAccess', { email: email });
         }
     }
 }]);
