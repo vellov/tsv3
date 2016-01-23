@@ -2,7 +2,7 @@ var userModule = angular.module('userModule', []);
 
 	// super simple service
 	// each function returns a promise object 
-userModule.factory('userService', ['$http', "$window", "AuthenticationService", "$state", function($http, $window, AuthenticationService, $state) {
+userModule.factory('userService', ['$http', "$window", "AuthenticationService", "$state", "$uibModal", function($http, $window, AuthenticationService, $state, $uibModal) {
     return {
         getCurrentUser : function() {
             var user = JSON.parse($window.sessionStorage.currentUser);
@@ -49,8 +49,28 @@ userModule.factory('userService', ['$http', "$window", "AuthenticationService", 
             });
         },
 
-        addAccess: function(email) {
-            return $http.post('/api/users/addAccess', { email: email });
+        addAccess: function(projectId, text, write) {
+            return $http.post('/api/users/addAccess', {projectId: projectId, text: text, write: write});
+        },
+
+        findUserAccessByProjectId: function(projectId){
+            return $http.get('/api/userAccess/find/' + projectId);
+        },
+
+        openAccessModal: function(projectId){
+            var self = this;
+            var modal = $uibModal.open({
+                templateUrl: "templates/inviteUsersModal.html",
+                controller: "UserAccessModalController",
+                resolve: {
+                    projectId: function(){ return projectId; },
+                    userAccesses: function(){
+                        return self.findUserAccessByProjectId(projectId).then(function(d){
+                            return d.data;
+                        });
+                    }
+                }
+            });
         }
     }
 }]);

@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var options = { select: true };
 var projectSchema = new Schema({
     projectName:               { type: String, default: "" },
-    creatorUserId:             { type: String, default: "" },
+    creatorUser:               { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     deleted:                   { type: Boolean, default: false },
     deletedAt:                 { type: Date, default: "" },
     tags:                      { type: Array, default: [] },
@@ -13,7 +13,8 @@ var projectSchema = new Schema({
     defaultSuccessPageButtonText: { type: String, default: "" },
     pageTitle:                 { type: String, default: ""},
     createdAt:                 { type: Date },
-    updatedAt:                 { type: Date }
+    updatedAt:                 { type: Date },
+    lastModifier:              { type: mongoose.Schema.Types.ObjectId, ref: "User"}
 });
 projectSchema.pre('save', function (next) {
     if (!this.deleted) {

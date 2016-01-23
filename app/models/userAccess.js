@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 module.exports = mongoose.model('UserAccess', {
-    userId:     { type: String },
-    projectId:  { type: String },
+    user:     { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    project:  { type: mongoose.Schema.Types.ObjectId, ref: "Project"},
     write:      { type: Boolean, default: false}
 });

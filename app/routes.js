@@ -36,7 +36,7 @@ function getUser(res, id){
 
 function getUserProjects(userId, res){
     userAccessService.findProjectsWithAccess(userId, function(projects){
-        res.json(projects);
+        res.send(projects);
     }, function(err){
         res.send(err);
     });
@@ -126,7 +126,8 @@ module.exports = function(app) {
             username: req.body.username,
             password: req.body.password,
             firstname: req.body.firstname,
-            lastname: req.body.lastname
+            lastname: req.body.lastname,
+            email: req.body.email
         }, function(e,o){
             if (e){
                 res.status(400).send(e);
@@ -190,7 +191,7 @@ module.exports = function(app) {
                     })
                 } else {
                     Project.create({
-                        creatorUserId: decoded._id,
+                        creatorUser: decoded._id,
                         projectName: req.body.projectName,
                         defaultSuccessPageTitle:    req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
                         defaultSuccessPageContent:  req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
@@ -261,7 +262,7 @@ module.exports = function(app) {
                 }
                 else {
                     Question.create({
-                        creatorUserId: decoded._id,
+                        creatorUser: decoded._id,
                         projectId: req.body.projectId,
                         title: req.body.title,
                         content:req.body.content ? req.body.content : "",
@@ -327,7 +328,7 @@ module.exports = function(app) {
     });
 
     app.get('/api/project/statistics/:projectId', function(req, res){
-        Question.find({projectId: req.params.projectId, type:"STEP"},'_id parentId title position hasFoundSolutionButton', function(err, result){
+        Question.find({project: mongoose.Schema.Types.ObjectId(req.params.projectId), type:"STEP"},'_id parentId title position hasFoundSolutionButton', function(err, result){
             if(err){
                 res.send(err);
             } else {
@@ -354,21 +355,29 @@ module.exports = function(app) {
             if(err) {
                 res.send(err);
             } else {
-                User.find({email: req.body.email}, function(err, user){
-                    if(err){
-                        res.send(err);
-                    } else if(user.length > 1){
-                        userAccessService.saveAccess(userId, req, res);
+                userAccessService.hasWritePermission(decoded._id, req.body.projectId, function (err, result) {
+                    if (err) {
+                        res.status(400).send(err);
                     } else {
-                        res.status(400).send({code: "2", description: "User not found!"});
-                    }
+                        User.findOne({$or:[ { email: req.body.text }, { username: req.body.text } ]}, function(err, user){
+                            if(err){
+                                res.send(err);
+                            } else if(user){
+                                userAccessService.saveAccess(user._id, req, res);
+                            } else {
+                                res.status(400).send({code: "2", description: "User not found!"});
+                            }
 
-                })
+                        })
+                    }
+                });
             }
         });
-
     });
 
+    app.get('/api/userAccess/find/:projectId', function(req, res){
+        userAccessService.findProjectAccesses(req,res);
+    });
 
 
 

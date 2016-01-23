@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 module.exports = mongoose.model('Question', {
-    projectId:      { type: String, default: "" },
-    creatorUserId:  { type: String, default: "" },
+    project:        { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+    creatorUser:    { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     parentId:       { type: String, default: "" },
     content:        { type: String, default: "" },
     title:          { type: String, default: "" },

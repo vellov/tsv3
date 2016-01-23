@@ -2,6 +2,7 @@ var app = window.angular.module("troubleshooting");
 
 app.controller("adminController", ["$scope", "userService","projectService", "$state", "$location", "projects", function($scope, userService, projectService, $state, $location, projects){
     $scope.currentUser = userService.getCurrentUser();
+    $scope.userService = userService;
     $scope.projectData = { };
     $scope.viewData = { };
     $scope.projects = [];

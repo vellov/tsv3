@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h5 class="modal-title">Jaga murelahendajat</h5>
+</div>
+
+<div class="modal-body">
+    <form name="inviteUsersForm" novalidate ng-submit="inviteUsersForm.$valid && invite()">
+        <fieldset ng-disabled="blockerService.findBlocker('inviteUserModal')">
+            <p>Jaga teistega kasutajanime või Emaili kaudu.</p>
+            <table ng-if="userAccesses.length">
+                <th>
+                    Lisatud kasutajad
+                </th>
+                <tr ng-repeat="UA in userAccesses" class="text-capitalize">
+                    <td>{{UA.user.firstname}} {{UA.user.lastname}}</td>
+                </tr>
+            </table>
+            <div class="form-group m-t-s">
+                <input type="text" class="form-control" ng-model="data.text" placeholder="Kasutajanimi / E-mail">
+            </div>
+
+
+        </fieldset>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <div class="action-buttons">
+        <a class="btn btn-link" ng-click="$dismiss()">Tühista</a>
+        <button type="button" class="btn btn-primary" ng-click="utils.checkValidity(inviteUsersForm) && invite()">Jaga</button>
+    </div>
+</div>
