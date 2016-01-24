@@ -115,11 +115,6 @@ a.btn-link:visited {
   background-color: #ffffff;
   min-height: 41px;
 }
-.panel-custom ul {
-  display: table;
-  text-align: justify;
-  margin: auto;
-}
 .list-group {
   margin-bottom: 0;
 }

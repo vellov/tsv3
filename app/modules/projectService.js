@@ -151,7 +151,7 @@ exports.save = function(req, res){
 };
 
 exports.findProjectById = function(req, res) {
-    Project.findOne({_id:req.params.projectId},function(err, project) {
+    Project.findOne({_id: mongoose.Types.ObjectId(req.params.projectId)},function(err, project) {
         if (err) {
             res.send(err);
         } else {

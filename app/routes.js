@@ -164,11 +164,11 @@ module.exports = function(app) {
     });
 
     app.get("/api/questions/:projectId", function(req, res){
-        Project.findById(req.params.projectId, function(err,result){
+        Project.findById(mongoose.Types.ObjectId(req.params.projectId), function(err,result){
            if(result.deleted){
                res.status(400).send({code: "1", description:"Deleted"});
-           } else{
-               Question.find({project: req.params.projectId},'_id parentId content title position project buttonText hasBackButton backButtonText hasFoundSolutionButton type creatorComments shortDescription', function(err, questions) {
+           } else {
+               Question.find({project: mongoose.Types.ObjectId(req.params.projectId)},'_id parentId content title position project buttonText hasBackButton backButtonText hasFoundSolutionButton type creatorComments shortDescription', function(err, questions) {
                    if (err) {
                        res.send(err);
                    } else {
