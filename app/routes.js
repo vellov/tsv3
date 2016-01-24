@@ -37,29 +37,37 @@ function getUser(res, id){
 }
 
 function findQuestionsByProject(userId, projectId, callback){
-    Question.find({/*creatorUserId:userId,*/ projectId:projectId}, callback);
+    Question.find({/*creatorUserId:userId,*/ project: projectId}, callback);
 }
 
 function deleteAndReassignParent(question, doneCallback){
-
     var findChildren  = function(parentId, callback){
         Question.find({parentId: parentId}, callback);
     };
-
     function reassignParent(newParentId, children){
         var length = children.length;
         var count = 0;
         for(var i in children){
-            Question.update({
-                _id: children[i]._id
-            }, {
-                parentId: newParentId
-            }, function(err,result){
-                count++;
-                if (count == length){
-                    doneCallback();
-                }
-            })
+            if(children[i].type == "STEP"){
+                Question.update({
+                    _id: children[i]._id
+                }, {
+                    parentId: newParentId
+                }, function(err,result){
+                    count++;
+                    if (count == length){
+                        doneCallback();
+                    }
+                })
+            } else {
+                Question.findByIdAndRemove(children[i]._id, function(err,result) {
+                    count++;
+                    if (count == length){
+                        doneCallback();
+                    }
+                });
+            }
+
         }
     }
 
@@ -242,7 +250,7 @@ module.exports = function(app) {
             } else {
                 Question.findByIdAndRemove(req.params.id, function(err, obj){
                     deleteAndReassignParent(obj, function(){
-                        findQuestionsByProject(decoded._id, obj.projectId, function(err, questions) {
+                        findQuestionsByProject(decoded._id, obj.project, function(err, questions) {
                             if (err) {
                                 res.send(err);
                             } else {
