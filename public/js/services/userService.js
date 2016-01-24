@@ -53,6 +53,10 @@ userModule.factory('userService', ['$http', "$window", "AuthenticationService", 
             return $http.post('/api/users/addAccess', {projectId: projectId, text: text, write: write});
         },
 
+        deleteAccess: function(id){
+            return $http.delete("/api/userAccess/delete/" + id);
+        },
+
         findUserAccessByProjectId: function(projectId){
             return $http.get('/api/userAccess/find/' + projectId);
         },

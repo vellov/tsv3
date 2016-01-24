@@ -85,6 +85,15 @@ utilsModule.factory("utils", ["$uibModal", function($uibModal){
                 message, title, okCallback, cancelCallback, confirmButtonText
             );
         },
+        alert : function (message, title, okCallback, cancelCallback) {
+            return showDialog(
+                '<div class="modal-header"><h5 class="modal-title">{{ title }}</h5></div>' +
+                '<div class="modal-body">{{ message }}</div>' +
+                '<div class="modal-footer">' +
+                '<input type="submit" class="btn btn-primary" ng-click="ok()" value="OK">' +
+                '</div>',
+                message, title, okCallback, cancelCallback);
+        },
 
         checkValidity: function (form) {
             form.$commitViewValue();
@@ -95,6 +104,7 @@ utilsModule.factory("utils", ["$uibModal", function($uibModal){
         now: function(){
             return Date.now || new Date().getTime || new Date().valueOf;
         }
+
     }
 
 }]);

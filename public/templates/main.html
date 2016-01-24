@@ -3,16 +3,16 @@
     <div class="panel-body">
         <p ng-bind-html="trustAsHtml(viewData.activeQuestion.content)"></p>
         <div class="text-center" ng-repeat="child in viewData.children | orderBy: ['type','position']">
-            <a href class="btn btn-primary min-w200 m-t-s" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: child._id})" ng-click="buttonClicked(child)">{{child.buttonText ? child.buttonText : child.title}}</a>
+            <a href class="btn btn-primary min-w200 m-t-s" ui-sref="troubleshoot({projectId:viewData.activeQuestion.project, questionId: child._id})" ng-click="buttonClicked(child)">{{child.buttonText ? child.buttonText : child.title}}</a>
         </div>
         <div class="text-center" ng-if="viewData.activeQuestion.hasBackButton">
-            <a href class="btn btn-primary min-w200 m-t-s" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: viewData.activeQuestion.parentId})">{{viewData.activeQuestion.backButtonText ? viewData.activeQuestion.backButtonText : "Tagasi"}}</a>
+            <a href class="btn btn-primary min-w200 m-t-s" ui-sref="troubleshoot({projectId:viewData.activeQuestion.project, questionId: viewData.activeQuestion.parentId})">{{viewData.activeQuestion.backButtonText ? viewData.activeQuestion.backButtonText : "Tagasi"}}</a>
         </div>
     </div>
 
     <div class="panel-footer">
         <div class="pull-left">
-            <a href ng-if="viewData.activeQuestion.parentId" ui-sref="troubleshoot({projectId:viewData.activeQuestion.projectId, questionId: viewData.activeQuestion.parentId})"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
+            <a href ng-if="viewData.activeQuestion.parentId" ui-sref="troubleshoot({projectId:viewData.activeQuestion.project, questionId: viewData.activeQuestion.parentId})"><i class="glyphicon glyphicon-arrow-left"></i> Tagasi</a>
         </div>
         <div class="pull-right">
             <span class="text-muted">&#169; 2016, Tartu Ülikool</span>

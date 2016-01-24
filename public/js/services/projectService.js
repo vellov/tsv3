@@ -26,7 +26,7 @@ appModule.factory("projectService", function($http, $window){
        },
 
        saveQuestion: function(data){
-           return $http.post("/api/questions/save",data);
+           return $http.post("/api/questions/save", data);
        },
 
        deleteQuestion: function(id){

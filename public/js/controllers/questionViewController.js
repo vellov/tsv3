@@ -51,7 +51,7 @@ app.controller("questionViewController", ["$scope","projectService", "userServic
             $scope.viewData.activeQuestion = utils.findQuestionById(questions, n);
         }
         $scope.viewData.children = utils.findQuestionsByParentId(questions, $scope.viewData.activeQuestion._id);
-
+        console.log($scope.viewData)
         if($scope.viewData.activeQuestion.type != "SUCCESS"){
             statisticsService.addHit($scope.viewData.activeQuestion._id);
         }

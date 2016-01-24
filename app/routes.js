@@ -7,6 +7,8 @@ var jwt                 = require('jsonwebtoken');
 var config              = require('./modules/config');
 var mongoose            = require('mongoose');
 var userAccessService   = require('./modules/userAccessService');
+var projectService      = require('./modules/projectService');
+
 function getUsers(res){
     User.find(function(err, users) {
 
@@ -17,7 +19,7 @@ function getUsers(res){
             res.json(users);
         }
     });
-};
+}
 
 function getUser(res, id){
     User.findOne({
@@ -31,14 +33,6 @@ function getUser(res, id){
                 username: user.username
             });
         }
-    });
-}
-
-function getUserProjects(userId, res){
-    userAccessService.findProjectsWithAccess(userId, function(projects){
-        res.send(projects);
-    }, function(err){
-        res.send(err);
     });
 }
 
@@ -138,83 +132,35 @@ module.exports = function(app) {
         });
     });
 
+    /**
+     * ---=====PROJECTS=====---
+     */
     app.get('/api/projects', function(req, res){
-        verifyToken(req.headers.authorization, function(err, decoded){
-            getUserProjects(decoded._id, res);
-        });
+        projectService.findUserProjects(req, res);
     });
 
-    app.delete('/api/projects/delete/:projectId', function(req,res){
-        verifyToken(req.headers.authorization, function(err, decoded){
-            Project.findById(req.params.projectId, function(err, project){
-                if(err){
-                    res.send(err);
-                } else {
-                    project.softdelete(function(err, deleted){
-                        getUserProjects(decoded._id, res);
-                    })
-                }
-            })
-        });
-
+    app.delete('/api/projects/delete/:projectId', function(req, res){
+        projectService.delete(req, res);
     });
 
     app.get('/api/projects/:projectId', function(req, res){
-        Project.findOne({_id:req.params.projectId},function(err, project) {
-            if (err)
-                res.send(err);
-            res.json(project); // return all currentuser projects in JSON format
-        });
+        projectService.findProjectById(req, res);
     });
 
     app.post('/api/projects/save', function(req, res){
-        verifyToken(req.headers.authorization, function(err, decoded){
-            if(err){
-                res.status(400).send("Something bad happened, contact with support");
-            } else {
-                if(req.body._id){
-                    Project.findOneAndUpdate({_id: req.body._id},{
-                            projectName:                req.body.projectName,
-                            tags:                       req.body.tags ? req.body.tags : [],
-                            defaultSuccessPageTitle:    req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
-                            defaultSuccessPageContent:  req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
-                            defaultSuccessPageButtonText: req.body.defaultSuccessPageButtonText ? req.body.defaultSuccessPageButtonText : "",
-                            updatedAt:                  new Date(),
-                            pageTitle:                  req.body.pageTitle ? req.body.pageTitle : ""
-                    },
-                         function(err, result){
-                             if (err) {
-                                 res.send(err);
-                             } else {
-                                 res.json(result);
-                             }
-                    })
-                } else {
-                    Project.create({
-                        creatorUser: decoded._id,
-                        projectName: req.body.projectName,
-                        defaultSuccessPageTitle:    req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
-                        defaultSuccessPageContent:  req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
-                        defaultSuccessPageButtonText: req.body.defaultSuccessPageButtonText ? req.body.defaultSuccessPageButtonText : "",
-                    }, function (error, result) {
-                        if (error) {
-                            res.send(error);
-                        } else {
-                            res.json(result);
-                        }
-
-                    })
-                }
-            }
-        });
+        projectService.save(req, res);
     });
 
-    app.get('/api/questions/:projectId', function(req, res){
+    app.get('/api/project/statistics/:projectId', function(req, res){
+        projectService.findProjectStatistics(req, res);
+    });
+
+    app.get("/api/questions/:projectId", function(req, res){
         Project.findById(req.params.projectId, function(err,result){
            if(result.deleted){
                res.status(400).send({code: "1", description:"Deleted"});
            } else{
-               Question.find({projectId:req.params.projectId},'_id parentId content title position projectId buttonText hasBackButton backButtonText hasFoundSolutionButton type creatorComments shortDescription', function(err, questions) {
+               Question.find({project: req.params.projectId},'_id parentId content title position project buttonText hasBackButton backButtonText hasFoundSolutionButton type creatorComments shortDescription', function(err, questions) {
                    if (err) {
                        res.send(err);
                    } else {
@@ -263,7 +209,7 @@ module.exports = function(app) {
                 else {
                     Question.create({
                         creatorUser: decoded._id,
-                        projectId: req.body.projectId,
+                        project: req.body.projectId,
                         title: req.body.title,
                         content:req.body.content ? req.body.content : "",
                         parentId:req.body.parentId ? req.body.parentId : "",
@@ -311,42 +257,7 @@ module.exports = function(app) {
     });
 
     app.post('/api/questionStatistics/save', function(req, res){
-        Question.findById(req.body.questionId, function(err, question){
-            if(err){
-                res.send(err);
-            } else {
-                question.statistics.push({type:req.body.type, date: Date.now()});
-                question.save(function(err, result){
-                    if(err){
-                        res.send(err);
-                    } else {
-                        res.send(result);
-                    }
-                })
-            }
-        });
-    });
-
-    app.get('/api/project/statistics/:projectId', function(req, res){
-        Question.find({project: mongoose.Schema.Types.ObjectId(req.params.projectId), type:"STEP"},'_id parentId title position hasFoundSolutionButton', function(err, result){
-            if(err){
-                res.send(err);
-            } else {
-                var sent = 0;
-                for(var i in result){
-                    var question = result[i];
-                    getQuestionStatistics(question, function(){
-                        sent++;
-                        if(sent == result.length){
-                            res.send(result);
-                        }
-                    });
-                }
-                if(result.length == 0){
-                    res.send(result);
-                }
-            }
-        })
+       projectService.saveQuestionStatistics(req, res);
     });
 
    /* USER ACCESS PART */
@@ -376,7 +287,17 @@ module.exports = function(app) {
     });
 
     app.get('/api/userAccess/find/:projectId', function(req, res){
-        userAccessService.findProjectAccesses(req,res);
+        userAccessService.findProjectAccesses(req, res);
+    });
+
+    app.delete('/api/userAccess/delete/:userAccessId', function(req, res){
+        verifyToken(req.headers.authorization, function(err, decoded) {
+            if(err){
+                res.send(err);
+            } else {
+                userAccessService.deleteAccess(decoded._id, req, res);
+            }
+        });
     });
 
 
@@ -390,38 +311,6 @@ module.exports = function(app) {
 
 
 };
-
-function getQuestionStatistics(question, callback){
-    var qId = question._id;
-    Question.aggregate(
-        [
-            { $match: { _id: qId } },
-            { $unwind: "$statistics" },
-            {
-                $group: {
-                    _id: qId,
-                    views: {
-                        $sum: {
-                            $cond:[ { $eq:["$statistics.type", "views"] }, 1, 0]
-                        }
-                    },
-                    foundSolution: {
-                        $sum: {
-                            $cond:[ { $eq:["$statistics.type", "foundSolution"] }, 1, 0]
-                        }
-                    }
-                }
-            }
-        ],function(err, results){
-            if(err){
-                return err;
-            } else {
-                question.set("statisticsData", results[0], {strict:false});
-                callback();
-            }
-        }
-    );
-}
 
 function verifyToken(token, callback){
     jwt.verify(token.split(" ")[1], config.secretToken, callback);

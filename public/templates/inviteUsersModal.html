@@ -10,15 +10,17 @@
                 <th>
                     Lisatud kasutajad
                 </th>
+                <th></th>
                 <tr ng-repeat="UA in userAccesses" class="text-capitalize">
                     <td>{{UA.user.firstname}} {{UA.user.lastname}}</td>
+                    <td>
+                        <a class="text-danger m-left-10" href ng-click="delete(UA)"><i class="glyphicon glyphicon-remove" uib-tooltip='Eemalda kasutaja' tooltip-placement="right"></i></a>
+                    </td>
                 </tr>
             </table>
             <div class="form-group m-t-s">
                 <input type="text" class="form-control" ng-model="data.text" placeholder="Kasutajanimi / E-mail">
             </div>
-
-
         </fieldset>
     </form>
 </div>

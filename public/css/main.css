@@ -187,6 +187,9 @@ pre {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.text-danger {
+  color: #d9534f;
+}
 .question-arrow {
   width: 12px;
   float: left;
@@ -248,7 +251,21 @@ tags-input .tags .tag-item {
   stroke: #ccc;
   stroke-width: 2px;
 }
-
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
 div.tooltip {
   position: absolute;
   text-align: center;

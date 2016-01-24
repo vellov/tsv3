@@ -17,8 +17,27 @@ function toObjId(id){
     }
 }
 
-exports.hasAccess = function(userId, projectId, successCallback, errorCallback){
-    successCallback(["567aec441e77b63e1129e00b"]);
+exports.hasAccess = function(userId, projectId, callback){
+    UserAccess.find({
+        user: userId,
+        project: mongoose.Types.ObjectId(projectId)
+    }, function(err, result){
+        if(err) {
+            callback(err);
+        } else if (result.length){
+            findProjects(userId, result, function(projects){ callback(null, projects) }, callback);
+        } else {
+            Project.find({creatorUser: userId, _id: mongoose.Types.ObjectId(projectId)}, function(err,result){
+                if(err){
+                    callback(err);
+                } else if(result) {
+                    callback(null, result);
+                } else {
+                    callback({code: "3", description: "User has no write access"})
+                }
+            });
+        }
+    })
 };
 
 exports.hasWritePermission = function(userId, projectId, callback) {
@@ -32,7 +51,15 @@ exports.hasWritePermission = function(userId, projectId, callback) {
         } else if (result.length){
             findProjects(userId, result, function(projects){ callback(null,projects) }, callback);
         } else {
-            callback({code: "3", description: "User has no write access"})
+            Project.find({creatorUser: userId, _id: mongoose.Types.ObjectId(projectId)}, function(err,result){
+                if(err){
+                    callback(err);
+                } else if(result) {
+                    callback(null, result);
+                } else {
+                    callback({code: "3", description: "User has no write access"})
+                }
+            });
         }
     });
 };
@@ -87,8 +114,14 @@ exports.saveAccess = function(userId, req, res){
 
 };
 
-exports.deleteAccess = function() {
-    console.log("deleteAccess");
+exports.deleteAccess = function(userId, req, res) {
+    UserAccess.findByIdAndRemove(req.params.userAccessId, function(err, result){
+        if(err){
+            res.send(err);
+        } else {
+            res.send(result);
+        }
+    });
 };
 
 

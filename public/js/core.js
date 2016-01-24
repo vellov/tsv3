@@ -107,7 +107,6 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", "$roo
                     if(statisticsService.getLastViewData().projectId != $stateParams.projectId ){
                         projectService.getProjectById($stateParams.projectId).then(function(d){
                             Page.setTitle(d.data.pageTitle ? d.data.pageTitle : d.data.projectName);
-                            console.log(d);
                         })
                     }
                     return projectService.getProjectQuestions($stateParams.projectId).then(
