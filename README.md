@@ -1,3 +1,28 @@
+**Murelahendaja / Troubleshooter**
+
+progtugi.cs.ut.ee/#/login
+Currently used in course PROGRAMMEERIMISE ALUSED (MTAT.TK.012).
+- - -
+**Description**
+
+Murelahendaja is an online tool which allows users to create and share step-by-step guides. In addition Murelahendaja allows insights into how visitors use each guide. Most of the functionality is based on the requirements of the course.
+
+- - -
+**Technical Details**
+
+Backend - node.js 
+<br /> Database - mongoDB + mongoose
+<br /> Frontend - AngularJS
+
+
+- - -
+**Not yet implemented**
+
+1. User groups
+2. User projects - multiple guides under one project (for ex. project = one particular course)
+3. Sort statistics by date
+4. Improve design
+- - -
 The MIT License (MIT)
 
 Copyright (c) 2016 Vello Vaherpuu
