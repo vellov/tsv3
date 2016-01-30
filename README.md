@@ -5,7 +5,7 @@ Murelahendaja can be found [Here](progtugi.cs.ut.ee/#/login)
 **Description**
 
 Murelahendaja is an online tool which allows users to create and share step-by-step guides. In addition Murelahendaja allows insights into how visitors use each guide. Most of the functionality is based on the requirements of the course.
-**No english support at the moment.**
+<br/>**No english support at the moment.**
 
 - - -
 **Technical Details**
