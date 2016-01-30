@@ -1,6 +1,6 @@
 **Murelahendaja / Troubleshooter**
 
-Murelahendaja can be found [Here](progtugi.cs.ut.ee/#/login) 
+Murelahendaja can be found [here](progtugi.cs.ut.ee/#/login) 
 <br/>Currently used in course PROGRAMMEERIMISE ALUSED (MTAT.TK.012).
 - - -
 **Description**
