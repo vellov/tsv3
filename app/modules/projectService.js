@@ -151,7 +151,7 @@ exports.save = function(req, res){
     });
 };
 
-function cloneQuestions(originalProjectId, clonedProject, res){
+function cloneQuestions(originalProjectId, clonedProject, userId, res){
     var count = 0;
 
     //Save root -> save children etc using recursion.
@@ -160,6 +160,7 @@ function cloneQuestions(originalProjectId, clonedProject, res){
         root._id = mongoose.Types.ObjectId();
         root.project = clonedProject._id;
         root.parentId = parent;
+        root.creatorUser = userId;
         delete root.statistics;
 
         Question.create(root, function(err, result){
@@ -226,7 +227,7 @@ exports.clone = function(req, res){
                         if(err) {
                             res.status(400).send(err);
                         } else {
-                            cloneQuestions(originalProject._id, clonedProject, res);
+                            cloneQuestions(originalProject._id, clonedProject, decoded._id, res);
                         }
                     });
                 }
