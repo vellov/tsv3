@@ -30,6 +30,12 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
         })
     };
 
+    $scope.cloneProject = function(id){
+        projectService.cloneProject(id).then(function(d){
+            $scope.projects.push(d.data);
+        })
+    };
+
     $scope.toLink = function(projectId){
         return $location.protocol() + "://" + $location.host() + $state.href("troubleshoot", { projectId: projectId });
     };

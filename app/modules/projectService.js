@@ -1,3 +1,4 @@
+var async             = require('async');
 var UserAccess        = require('../models/userAccess');
 var Project           = require('../models/project');
 var User              = require('../models/user');
@@ -111,7 +112,7 @@ exports.saveQuestionStatistics = function(req, res){
 exports.save = function(req, res){
     utils.verifyToken(req.headers.authorization, function(err, decoded){
         if(err){
-            res.status(400).send("Something bad happened, contact with support");
+            res.status(400).send("Authentication failed");
         } else {
             if(req.body._id){
                 Project.findOneAndUpdate({_id: req.body._id},{
@@ -134,8 +135,8 @@ exports.save = function(req, res){
                 Project.create({
                     creatorUser: decoded._id,
                     projectName: req.body.projectName,
-                    defaultSuccessPageTitle:    req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
-                    defaultSuccessPageContent:  req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
+                    defaultSuccessPageTitle: req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
+                    defaultSuccessPageContent: req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
                     defaultSuccessPageButtonText: req.body.defaultSuccessPageButtonText ? req.body.defaultSuccessPageButtonText : "",
                 }, function (error, result) {
                     if (error) {
@@ -148,6 +149,91 @@ exports.save = function(req, res){
             }
         }
     });
+};
+
+function cloneQuestions(originalProjectId, clonedProject, res){
+    var count = 0;
+
+    //Save root -> save children etc using recursion.
+    function saveTree(root, parent, callback){
+        //Assign new values before saving
+        root._id = mongoose.Types.ObjectId();
+        root.project = clonedProject._id;
+        root.parentId = parent;
+        delete root.statistics;
+
+        Question.create(root, function(err, result){
+            count--;
+            if(err){
+                callback(err);
+            } else {
+                if(root.children.length > 0){
+                    async.each(root.children, function(child, acb){
+                        saveTree(child, result._id, callback);
+                        acb(); //async callback
+                    });
+                } else {
+                    if(count <= 0){
+                        callback();
+                    }
+                }
+            }
+        });
+    }
+
+    Question.find({ project: originalProjectId }).lean().exec(function(err, questions){
+        if(err){
+            res.send(err);
+        } else {
+            count = questions.length;
+            var questionTree = utils.listToTree(questions, {
+                idKey: "_id",
+                parentKey: "parentId",
+                childrenKey: "children"
+            });
+            if(questionTree[0]){
+                saveTree(questionTree[0], null, function(err){
+                    if(err) {
+                        res.send(err);
+                    } else {
+                        res.send(clonedProject);
+                    }
+                });
+            } else {
+                res.send(clonedProject);
+            }
+        }
+    });
+}
+
+exports.clone = function(req, res){
+    utils.verifyToken(req.headers.authorization, function(err, decoded){
+        if(err){
+            res.status(400).send("Authentication failed");
+        } else {
+            Project.findById(req.body.id, function(err, originalProject){
+                if(err){
+                    res.status(400).send("Project not found!");
+                } else {
+                    Project.create({
+                        creatorUser: decoded._id,
+                        projectName: originalProject.projectName + "_CLONE",
+                        defaultSuccessPageTitle: originalProject.defaultSuccessPageTitle,
+                        defaultSuccessPageContent: originalProject.defaultSuccessPageContent,
+                        defaultSuccessPageButtonText: originalProject.defaultSuccessPageButtonText
+                    }, function(err, clonedProject){
+                        if(err) {
+                            res.status(400).send(err);
+                        } else {
+                            cloneQuestions(originalProject._id, clonedProject, res);
+                        }
+                    });
+                }
+
+            });
+
+        }
+    })
 };
 
 exports.findProjectById = function(req, res) {

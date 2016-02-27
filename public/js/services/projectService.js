@@ -17,6 +17,10 @@ appModule.factory("projectService", function($http, $window){
            return $http.post("/api/projects/save", data); //returns old + new project
        },
 
+       cloneProject: function(id){
+           return $http.post("/api/projects/clone", { id: id });
+       },
+
        deleteProject: function(projectId){
            return $http.delete("/api/projects/delete/" + projectId);
        },

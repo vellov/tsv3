@@ -159,6 +159,10 @@ module.exports = function(app) {
         projectService.save(req, res);
     });
 
+    app.post('/api/projects/clone', function(req,res){
+        projectService.clone(req, res);
+    });
+
     app.get('/api/project/statistics/:projectId', function(req, res){
         projectService.findProjectStatistics(req, res);
     });
