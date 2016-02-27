@@ -6,7 +6,6 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
     $scope.projectData = { };
     $scope.viewData = { };
     $scope.projects = [];
-    $scope.showForm = false;
     $scope.$location = $location;
     $scope.$state = $state;
     $scope.logout = function(){
@@ -47,12 +46,16 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
         });
     };
 
-    $scope.toLink = function(projectId){
-        return $location.protocol() + "://" + $location.host() + $state.href("troubleshoot", { projectId: projectId });
+    $scope.createProject = function(){
+        projectService.openProjectModal({},
+            function(p){
+                $scope.projects.push(p);
+            }
+        );
     };
 
-    $scope.toggleForm = function(){
-        $scope.viewData.showForm = !$scope.viewData.showForm;
+    $scope.toLink = function(projectId){
+        return $location.protocol() + "://" + $location.host() + $state.href("troubleshoot", { projectId: projectId });
     };
 
     $scope.addAccess = function(projectId){

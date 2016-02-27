@@ -7,16 +7,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <form novalidate name="projectForm" ng-submit="projectForm.$valid && saveProject()" ng-if="viewData.showForm">
-                <div class="form-group">
-                    <label>Murelahendaja nimi:</label>
-                    <input class="form-control" type="text" ng-model="projectData.projectName" required>
-                </div>
-                <button class="btn btn-success pull-right" type="submit">Salvesta</button>
-                <button type="button" class="btn btn-warning pull-right m-right-5" ng-click="toggleForm()" ng-if="viewData.showForm">Tühista</button>
-
-            </form>
-            <button type="button" class="btn btn-primary m-t-l" ng-click="toggleForm()" ng-if="!viewData.showForm">Lisa murelahendaja <i class="glyphicon glyphicon-plus"></i></button>
+            <button type="button" class="btn btn-primary m-t-l" ng-click="createProject()">Lisa murelahendaja <i class="glyphicon glyphicon-plus"></i></button>
         </div>
 
     </div>
