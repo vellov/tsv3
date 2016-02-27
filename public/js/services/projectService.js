@@ -3,7 +3,7 @@
  */
 var appModule = angular.module('troubleshooting');
 
-appModule.factory("projectService", function($http, $window){
+appModule.factory("projectService", ["$http", "$uibModal", function($http, $uibModal){
    return {
        getUserProjects: function(){
            return $http.get("/api/projects/"); // returns currentuser projects
@@ -35,6 +35,28 @@ appModule.factory("projectService", function($http, $window){
 
        deleteQuestion: function(id){
            return $http.delete("/api/questions/delete/" + id);
+       },
+
+       openProjectModal: function(project, saveCallback, deleteCallback){
+           var dialog = $uibModal.open({
+               templateUrl: "templates/projectSettings.html",
+               controller: "projectSettingsController",
+               resolve: {
+                   project: function(){
+                       return project;
+                   }
+               }
+           });
+
+           dialog.result.then(function(result){
+               if(!result) return;
+
+               if(result.type == "SAVE"){
+                   saveCallback(result.data);
+               } else if (result.type == "DELETE") {
+                   deleteCallback();
+               }
+           })
        }
    }
-});
+}]);

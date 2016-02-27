@@ -220,7 +220,8 @@ exports.clone = function(req, res){
                         projectName: originalProject.projectName + "_CLONE",
                         defaultSuccessPageTitle: originalProject.defaultSuccessPageTitle,
                         defaultSuccessPageContent: originalProject.defaultSuccessPageContent,
-                        defaultSuccessPageButtonText: originalProject.defaultSuccessPageButtonText
+                        defaultSuccessPageButtonText: originalProject.defaultSuccessPageButtonText,
+                        tags: originalProject.tags
                     }, function(err, clonedProject){
                         if(err) {
                             res.status(400).send(err);

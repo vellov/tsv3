@@ -5,18 +5,20 @@
 var app = window.angular.module("troubleshooting");
 
 app.controller("projectSettingsController", ["$scope", "project", "projectService","$window", "utils", function($scope, project, projectService, $window, utils){
+    $scope.utils = utils;
     $scope.projectSettings = angular.copy(project);
+
     $scope.save = function(){
         projectService.saveProject($scope.projectSettings).then(function(d){
-            $window.history.back();
+            $scope.$close({ type: "SAVE", data: d.data })
         });
     };
 
     $scope.delete = function(){
-          utils.confirm("Oled kindel, et soovid kustutada?", "Tagasi teed enam ei ole.", function(){
+          utils.confirm("Kustuta", "Oled kindel, et soovid kustutada?", function(){
               projectService.deleteProject(project._id).then(function(d){
-                  $window.history.back();
+                  $scope.$close({ type: "DELETE" })
               });
-          }, null, "Kustuta", "Tagasi")
+          }, null, "Kustuta", "Tagasi");
     };
 }]);

@@ -36,9 +36,21 @@ app.controller("adminController", ["$scope", "userService","projectService", "$s
         })
     };
 
+    $scope.openProjectSettings = function(project){
+        var id = $scope.projects.indexOf(project);
+        projectService.openProjectModal(project,
+            function(p){
+                $scope.projects[id] = p;
+            },
+            function(){
+                $scope.projects.splice(id,1);
+        });
+    };
+
     $scope.toLink = function(projectId){
         return $location.protocol() + "://" + $location.host() + $state.href("troubleshoot", { projectId: projectId });
     };
+
     $scope.toggleForm = function(){
         $scope.viewData.showForm = !$scope.viewData.showForm;
     };

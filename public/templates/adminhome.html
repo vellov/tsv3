@@ -49,7 +49,7 @@
                   <a ui-sref="statistics({projectId: project._id})">Statistika</a>
                 </div>
                 <div class="col-md-1 col-xs-1">
-                    <span class="clickable" ui-sref="projectSettings({projectId: project._id})"><i class="glyphicon glyphicon-cog" uib-tooltip="Seaded" tooltip-placement="top"></i></span>
+                    <span class="clickable" ng-click="openProjectSettings(project)"><i class="glyphicon glyphicon-cog" uib-tooltip="Seaded" tooltip-placement="top"></i></span>
                     <span class="clickable" ng-click="userService.openAccessModal(project._id)" ng-if="project.creatorUser == currentUser.id"><i class="glyphicon glyphicon-user" uib-tooltip="Jaga teistega" tooltip-placement="top"></i></span>
                     <span class="clickable" ng-click="cloneProject(project._id)"><i class="glyphicon glyphicon-duplicate" uib-tooltip="Klooni" tooltip-placement="top"></i></span>
                 </div>

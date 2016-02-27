@@ -1,6 +1,6 @@
 var app = window.angular.module("troubleshooting");
 
-app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", "$location", "utils", function($scope, projectService, userService, project, questions, $location, utils){
+app.controller("projectController", ["$scope","projectService", "userService", "project", "questions", "$location", "utils", "$state", function($scope, projectService, userService, project, questions, $location, utils, $state){
     $scope.currentUser = userService.getCurrentUser();
     $scope.project = project;
     $scope.questions = questions ? questions : [];
@@ -112,7 +112,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
     };
 
     $scope.delete = function(question){
-       utils.confirm("Oled kindel, et tahad ära kustutada?", "Kustutamisel jäävad alamsammud alles :)",
+       utils.confirm("Oled kindel, et tahad ära kustutada?", "Kustutamisel jäävad alamsammud alles.",
            function(){
                projectService.deleteQuestion(question._id).then(function(d){
                    $scope.questions = d.data;
@@ -136,11 +136,6 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             $scope.projectEditData.hasFoundSolutionTitle = project.defaultSuccessPageTitle;
             $scope.projectEditData.hasFoundSolutionButtonText = project.defaultSuccessPageButtonText;
         }
-    };
-
-
-    $scope.logout = function() {
-        userService.logout();
     };
 
     var listToTree; //contains all questions
@@ -168,6 +163,16 @@ app.controller("projectController", ["$scope","projectService", "userService", "
             }
         );
         $scope.sortedData = sortedTree.GetTree();
-    },true);
+    }, true);
+
+    $scope.openProjectSettings = function(){
+        projectService.openProjectModal($scope.project,
+            function(p){
+                $scope.project = p
+            },
+            function(){
+                $state.go("admin");
+            });
+    };
 
 }]);

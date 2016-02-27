@@ -25,7 +25,7 @@
     <div class="col-md-6 col-xs-6">
         <h5><a target="_blank" ui-sref="troubleshoot({projectId:project._id})">Eelvaade</a> </h5>
         <h5>Küsimustik: {{project.projectName}}
-            <span class="m-left-5 clickable" ui-sref="projectSettings({projectId: project._id})"><i class="glyphicon glyphicon-cog" uib-tooltip="Seaded" tooltip-placement="top"></i></span>
+            <span class="m-left-5 clickable" ng-click="openProjectSettings()"><i class="glyphicon glyphicon-cog" uib-tooltip="Seaded" tooltip-placement="top"></i></span>
         </h5>
 
         <div ng-if="questions.length == 0">
