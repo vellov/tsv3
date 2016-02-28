@@ -8,6 +8,19 @@ var database = require('./config/database'); 			// load the database config
 var morgan   = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+
+//Password recovery.
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var nodemailer = require('nodemailer');
+var passport = require('passport');
+var BasicStrategy = require('passport-http').Strategy;
+var bcrypt = require('bcrypt-nodejs');
+var async = require('async');
+var crypto = require('crypto');
+
+
 // configuration ===============================================================
 mongoose.connect(database.url); 	// connect to mongoDB database on modulus.io
 
@@ -18,6 +31,14 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request
 
+//Password recovery
+app.use(cookieParser());
+app.use(session({
+    secret: 'session secret key',
+    resave: true,
+    saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes ======================================================================
 require('./app/routes.js')(app);

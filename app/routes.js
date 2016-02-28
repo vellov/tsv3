@@ -2,12 +2,17 @@ var User                = require('./models/user');
 var Project             = require('./models/project');
 var Question            = require('./models/question');
 var moment 		        = require('moment');
-var AM                  = require('./modules/account-manager');
+var userService         = require('./modules/userService');
 var jwt                 = require('jsonwebtoken');
 var config              = require('./modules/config');
 var mongoose            = require('mongoose');
 var userAccessService   = require('./modules/userAccessService');
 var projectService      = require('./modules/projectService');
+var passport            = require('passport');
+var async               = require('async');
+var crypto 		        = require('crypto');
+var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
 
 function getUsers(res){
     User.find(function(err, users) {
@@ -78,7 +83,7 @@ function deleteAndReassignParent(question, doneCallback){
 }
 
 module.exports = function(app) {
-
+/*
 	// api ---------------------------------------------------------------------
 	app.get('/api/users', function(req, res) {
         getUsers(res);
@@ -138,6 +143,39 @@ module.exports = function(app) {
                 res.json({token:token, user:{id: o._id, username: o.username, firstname: o.firstname, lastname: o.lastname}});
             }
         });
+    });*/
+/*
+    app.post('/api/users/login', function(req, res, next) {
+        passport.authenticate('local', function(err, user, info) {
+            if (err) return next(err);
+            if (!user) {
+                res.status(400).send(info);
+            } else {
+                var token = jwt.sign(user, config.secretToken, { expiresInMinutes: 60 });
+                res.json({token:token, user:{id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname}});
+            }
+
+        })(req, res, next);
+    });*/
+
+    app.post('/api/users/login', function(req, res, next){
+       userService.login(req, res, next);
+    });
+
+    app.post('/api/users/registerUser', function(req, res) {
+        userService.registerUser(req, res);
+    });
+
+    app.post('/api/users/forgot', function(req, res) {
+       userService.forgotPassword(req, res);
+    });
+
+    app.get('/api/users/reset/:token', function(req, res) {
+       userService.tokenExpired(req, res);
+    });
+
+    app.post('/api/users/reset', function(req, res) {
+       userService.resetPassword(req, res);
     });
 
     /**

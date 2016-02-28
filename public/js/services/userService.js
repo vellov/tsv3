@@ -49,6 +49,18 @@ userModule.factory('userService', ['$http', "$window", "AuthenticationService", 
             });
         },
 
+        forgotPassword: function(formData){
+            return $http.post('/api/users/forgot', formData);
+        },
+
+        resetTokenExpired: function(token){
+            return $http.get('/api/users/reset/' + token);
+        },
+
+        resetPassword: function(formData){
+            return $http.post('/api/users/reset', formData);
+        },
+
         addAccess: function(projectId, text, write) {
             return $http.post('/api/users/addAccess', {projectId: projectId, text: text, write: write});
         },

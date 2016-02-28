@@ -8,7 +8,8 @@ var appModule = angular.module('troubleshooting', [
     "ui.tree",
     "chart.js",
     "ngAnimate",
-    "ngTagsInput"
+    "ngTagsInput",
+    "ngPassword"
 ]);
 
 appModule.controller("headCtrl", ["$scope", "Page", function($scope, Page){
@@ -53,6 +54,15 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", "$roo
             access: {
                 requiredLogin: false,
                 redirect: true
+            }
+        })
+
+        .state("reset", {
+            url: "/reset/:token",
+            templateUrl: "templates/resetPassword.html",
+            controller: "resetController",
+            access: {
+                requiredLogin:false
             }
         })
 
@@ -118,28 +128,6 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", "$roo
                                 $state.go("deleted");
                             }
                         });
-                }
-            }
-        })
-        .state("projectSettings", {
-            url:"/settings/:projectId",
-            controller:"projectSettingsController",
-            templateUrl:"templates/projectSettings.html",
-            access: { requiredLogin: true },
-            header:{
-                show: true,
-                back: true
-            },
-            resolve: {
-                project: function($stateParams, projectService){
-                    return projectService.getProjectById($stateParams.projectId).then(function(d){
-                        return d.data;
-                    },
-                    function(e){
-                        if(e.data.code == 1){
-                            $state.go("deleted");
-                        }
-                    })
                 }
             }
         })

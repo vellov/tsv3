@@ -1,4 +1,9 @@
 <div>
+    <div class="text-center">
+        <div class="alert alert-danger col-md-offset-4 col-md-4" ng-if="viewData.messages.err">{{viewData.messages.err}}</div>
+        <div class="alert alert-success col-md-offset-4 col-md-4" ng-if="viewData.messages.msg">{{viewData.messages.msg}}</div>
+    </div>
+
     <form name="loginForm" class="form-signin" novalidate ng-submit="loginForm.$valid && login()" ng-if="viewData.showLogin">
         <h2 class="form-signin-heading">Palun logi sisse</h2>
         <input type="text" ng-model="loginData.username" class="form-control" placeholder="Kasutajanimi" required autofocus>
@@ -6,6 +11,11 @@
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Logi sisse</button>
         <button class="btn btn-lg btn-primary btn-block" type="button" ng-click="showRegisterView()">Uus kasutaja</button>
+        <div class="text-right">
+            <a href ng-click="showForgotView()">Unustasin parooli</a>
+        </div>
+
+
     </form>
 
     <form name="registerForm" class="form-signin" novalidate ng-submit="registerForm.$valid && register()" ng-if="viewData.showRegister">
@@ -18,5 +28,13 @@
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Registreeri</button>
         <button class="btn btn-lg btn-default btn-block" type="button" ng-click="showLoginView()">Tagasi</button>
+    </form>
+
+    <form name="forgotForm" class="form-signin" novalidate ng-submit="forgotForm.$valid && forgotPassword()" ng-if="viewData.showForgot">
+        <h2 class="form-signin-heading">Unustasin parooli</h2>
+        <input type="email" ng-model="forgotData.email" class="form-control" placeholder="E-mail" required>
+
+        <button class="btn btn-default" type="button" ng-click="showLoginView()">Tagasi</button>
+        <button class="btn btn-primary" type="submit">Taasta</button>
     </form>
 </div>
