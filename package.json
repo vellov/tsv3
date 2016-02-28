@@ -6,8 +6,6 @@
   "author": "Vello Vaherpuu",
   "dependencies": {
     "async": "^1.5.2",
-    "bcrypt": "^0.8.5",
-    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.4.3",
     "cookie-parser": "^1.4.1",
     "express": "~4.6.1",

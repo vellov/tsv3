@@ -16,7 +16,6 @@ var session = require('express-session');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var BasicStrategy = require('passport-http').Strategy;
-var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var crypto = require('crypto');
 
