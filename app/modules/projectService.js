@@ -159,7 +159,7 @@ function cloneQuestions(originalProjectId, clonedProject, userId, res){
         //Assign new values before saving
         root._id = mongoose.Types.ObjectId();
         root.project = clonedProject._id;
-        root.parentId = parent;
+        if(parent) root.parentId = parent;
         root.creatorUser = userId;
         delete root.statistics;
 
