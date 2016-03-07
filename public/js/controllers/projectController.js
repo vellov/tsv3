@@ -67,7 +67,7 @@ app.controller("projectController", ["$scope","projectService", "userService", "
                     content: $scope.projectEditData.hasFoundSolutionText ? $scope.projectEditData.hasFoundSolutionText : project.defaultSuccessPageContent,
                     type: "SUCCESS",
                     title: $scope.projectEditData.hasFoundSolutionTitle ? $scope.projectEditData.hasFoundSolutionTitle : project.defaultSuccessPageTitle,
-                    buttonText:  $scope.projectEditData.hasFoundSolutionButtonText ? $scope.hasFoundSolutionButtonText : project.defaultSuccessPageButtonText,
+                    buttonText:  $scope.projectEditData.hasFoundSolutionButtonText ? $scope.projectEditData.hasFoundSolutionButtonText : project.defaultSuccessPageButtonText,
                     position: 0
                 };
 
