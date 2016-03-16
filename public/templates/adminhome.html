@@ -28,7 +28,7 @@
                     <h5>Link</h5>
                 </div>
             </div>
-            <div class="row m-t-xs colored" ng-repeat="project in projects | filter:search |orderBy:'_id'">
+            <div class="row m-t-xs colored" ng-repeat="project in projects | filter:search | orderBy:['projectName', _id]">
 
                 <div class="col-md-3 col-xs-3">
                     <a ui-sref="project({projectId: project._id})">{{project.projectName}}</a>
