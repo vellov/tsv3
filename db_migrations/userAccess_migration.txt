@@ -9,3 +9,6 @@ db.questions.update({}, {$rename:{"projectId":"project"}}, false, true);
 db.questions.find().snapshot().forEach(function(q){ if(typeof q.project == "string"){ q.project = ObjectId(q.project); db.questions.save(q); }});
 
 db.questions.find().snapshot().forEach(function(q){ if(typeof q.creatorUser == "string"){ q.creatorUser = ObjectId(q.creatorUser); db.questions.save(q)}});
+
+26.03.2016 //string -> objectId
+db.questions.find().snapshot().forEach(function(q){ if(typeof q.parentId == "string" && q.parentId != ""){ q.parentId = ObjectId(q.parentId); db.questions.save(q);    }});

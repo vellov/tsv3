@@ -8,6 +8,7 @@ var config              = require('./modules/config');
 var mongoose            = require('mongoose');
 var userAccessService   = require('./modules/userAccessService');
 var projectService      = require('./modules/projectService');
+var questionService     = require('./modules/questionService');
 var passport            = require('passport');
 var async               = require('async');
 var crypto 		        = require('crypto');
@@ -206,104 +207,15 @@ module.exports = function(app) {
     });
 
     app.get("/api/questions/:projectId", function(req, res){
-        Project.findById(mongoose.Types.ObjectId(req.params.projectId), function(err,result){
-           if(result.deleted){
-               res.status(400).send({code: "1", description:"Deleted"});
-           } else {
-               Question.find({project: mongoose.Types.ObjectId(req.params.projectId)},'_id parentId content title position project buttonText hasBackButton backButtonText hasFoundSolutionButton type creatorComments shortDescription', function(err, questions) {
-                   if (err) {
-                       res.send(err);
-                   } else {
-                       res.json(questions);
-                   }
-               });
-           }
-        });
-
+        questionService.getQuestionsByProjectId(req, res);
     });
 
     app.post('/api/questions/save', function(req, res){
-        verifyToken(req.headers.authorization, function(err, decoded){
-            if(err){
-                res.status(400).send("Something bad happened, contact with support");
-            } else {
-                if(req.body._id){
-                    Question.update({_id:req.body._id},{
-                        title: req.body.title,
-                        content:req.body.content ? req.body.content : "",
-                        parentId: req.body.parentId,
-                        position: req.body.position,
-                        buttonText: req.body.buttonText ? req.body.buttonText : "",
-                        hasBackButton: req.body.hasBackButton ? req.body.hasBackButton : false,
-                        backButtonText: req.body.backButtonText ? req.body.backButtonText : "",
-                        hasFoundSolutionButton: req.body.hasFoundSolutionButton ? req.body.hasFoundSolutionButton : false,
-                        type: req.body.type ? req.body.type: "STEP",
-                        creatorComments: req.body.creatorComments ? req.body.creatorComments : "",
-                        shortDescription: req.body.shortDescription ? req.body.shortDescription : ""
-                    }, function(error, result){
-                        if(error){
-                            console.log(error);
-                            res.send(error);
-                        } else {
-                            Question.findById(req.body._id, function(err, result){
-                                if(err){
-                                    res.send(error);
-                                } else {
-                                    res.json(result);
-                                }
-                            })
-                        }
-
-                    });
-                }
-                else {
-                    Question.create({
-                        creatorUser: decoded._id,
-                        project: req.body.projectId,
-                        title: req.body.title,
-                        content:req.body.content ? req.body.content : "",
-                        parentId:req.body.parentId ? req.body.parentId : "",
-                        position:req.body.position ? req.body.position: 0,
-                        buttonText: req.body.buttonText ? req.body.buttonText : "",
-                        hasBackButton: req.body.hasBackButton ? req.body.hasBackButton : false,
-                        backButtonText: req.body.backButtonText ? req.body.backButtonText : "",
-                        hasFoundSolutionButton: req.body.hasFoundSolutionButton ? req.body.hasFoundSolutionButton : false,
-                        type: req.body.type ? req.body.type: "STEP",
-                        creatorComments: req.body.creatorComments ? req.body.creatorComments : "",
-                        shortDescription: req.body.shortDescription ? req.body.shortDescription : ""
-                    }, function(error, result){
-                        if(error){
-                            res.send(error);
-                        } else {
-                            res.json(result);
-                        }
-
-                    });
-                }
-
-            }
-        });
+        questionService.save(req, res);
     });
 
     app.delete('/api/questions/delete/:id', function(req, res){
-        verifyToken(req.headers.authorization, function(err, decoded){
-            if(err){
-                res.status(400).send("Something bad happened, contact with support");
-            } else {
-                Question.findByIdAndRemove(req.params.id, function(err, obj){
-                    deleteAndReassignParent(obj, function(){
-                        findQuestionsByProject(decoded._id, obj.project, function(err, questions) {
-                            if (err) {
-                                res.send(err);
-                            } else {
-                                res.json(questions);
-                            }
-                        });
-                    });
-                });
-
-            }
-        });
+        questionService.delete(req, res);
     });
 
     app.post('/api/questionStatistics/save', function(req, res){
