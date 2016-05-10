@@ -135,6 +135,8 @@ exports.save = function(req, res){
                 Project.create({
                     creatorUser: decoded._id,
                     projectName: req.body.projectName,
+                    tags: req.body.tags ? req.body.tags: [],
+                    pageTitle: req.body.pageTitle ? req.body.pageTitle : "",
                     defaultSuccessPageTitle: req.body.defaultSuccessPageTitle ? req.body.defaultSuccessPageTitle : "",
                     defaultSuccessPageContent: req.body.defaultSuccessPageContent ? req.body.defaultSuccessPageContent: "",
                     defaultSuccessPageButtonText: req.body.defaultSuccessPageButtonText ? req.body.defaultSuccessPageButtonText : "",
