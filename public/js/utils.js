@@ -44,7 +44,9 @@ utilsModule.factory("utils", ["$uibModal", function($uibModal){
             var result = [];
             if (!parentId) parentId = "";
             for (var i in questions) {
-                if (questions[i].parentId == parentId) {
+                var questionParentId = questions[i].parentId;
+                if(questionParentId == "" || questionParentId == null || questionParentId == undefined) questionParentId = "";
+                if (questionParentId == parentId) {
                     result.push(questions[i]);
                 }
             }

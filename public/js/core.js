@@ -43,8 +43,7 @@ appModule.config(["$stateProvider", "$urlRouterProvider", "$httpProvider", "$roo
     $stateProvider
         .state("home", {
             url: "/",
-            templateUrl: "templates/main.html",
-            access: { requiredLogin: false }
+            access: { requiredLogin: true, redirect:true }
         })
 
         .state("login", {
