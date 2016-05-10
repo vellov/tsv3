@@ -13,7 +13,7 @@ exports.login = function(req, res, next){
     passport.authenticate('local', function(err, user, info) {
         if (err) return next(err);
         if (!user) {
-            res.status(400).send(info);
+            res.status(401).send(info);
         } else {
             var token = jwt.sign(user, config.secretToken, { expiresInMinutes: 60 });
             res.json({token:token, user:{id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname}});
@@ -22,22 +22,33 @@ exports.login = function(req, res, next){
 };
 
 exports.registerUser = function(req, res){
-    var user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname
+    User.find({$or:[{username: req.body.username},{email: req.body.email}]}, function(err, user){
+       if(err) {
+           res.status(400).send(err);
+       } else if (user) {
+           res.status(409).send({message: "User with this username or e-mail already exists!"});
+       } else {
+           var user = new User({
+               username: req.body.username,
+               email: req.body.email,
+               password: req.body.password,
+               firstname: req.body.firstname,
+               lastname: req.body.lastname
+           });
+
+           user.save(function(err, user) {
+               if (err){
+                   res.status(400).send(e);
+               } else {
+                   var token = jwt.sign(user, config.secretToken, { expiresInMinutes: 60 });
+                   res.json({token:token, user:{id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname}});
+               }
+           });
+       }
     });
 
-    user.save(function(err, user) {
-        if (err){
-            res.status(400).send(e);
-        } else {
-            var token = jwt.sign(user, config.secretToken, { expiresInMinutes: 60 });
-            res.json({token:token, user:{id: user._id, username: user.username, firstname: user.firstname, lastname: user.lastname}});
-        }
-    });
+
+
 };
 
 exports.forgotPassword = function(req, res){
@@ -51,7 +62,7 @@ exports.forgotPassword = function(req, res){
         function(token, done) {
             User.findOne({ email: req.body.email }, function(err, user) {
                 if (!user) {
-                    res.status(400).send({message: "No account with that email address exists."});
+                    res.status(404).send({message: "No account with this email address exists."});
                 }
                 else {
                     user.resetPasswordToken = token;

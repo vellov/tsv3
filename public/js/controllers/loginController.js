@@ -10,11 +10,15 @@ app.controller("loginController", ["$scope", "userService", function($scope, use
     $scope.registerData = {};
     $scope.forgotData = {};
     $scope.login = function(){
-        userService.login($scope.loginData);
+        userService.login($scope.loginData, function(msg){
+            $scope.viewData.messages.err = msg;
+        });
     };
 
     $scope.register = function(){
-        userService.register($scope.registerData);
+        userService.register($scope.registerData, function(msg){
+           $scope.viewData.messages.err = msg;
+        });
     };
 
     $scope.forgotPassword = function(){
