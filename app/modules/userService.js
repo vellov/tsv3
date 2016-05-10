@@ -25,7 +25,7 @@ exports.registerUser = function(req, res){
     User.find({$or:[{username: req.body.username},{email: req.body.email}]}, function(err, user){
        if(err) {
            res.status(400).send(err);
-       } else if (user) {
+       } else if (user.length > 0) {
            res.status(409).send({message: "User with this username or e-mail already exists!"});
        } else {
            var user = new User({
